@@ -39,6 +39,3 @@ flutter:
         pluginClass: DevCycleFlutterClientSdkPlugin
       ios:
         pluginClass: DevCycleFlutterClientSdkPlugin
-      web:
-        pluginClass: DevCycleFlutterClientSdkPlugin
-        fileName: devcycle_web.dart
