@@ -1,4 +1,4 @@
-#import "DevcycleFlutterClientSdkPlugin.h"
+#import "DevCycleFlutterClientSdkPlugin.h"
 #if __has_include(<devcycle_flutter_client_sdk/devcycle_flutter_client_sdk-Swift.h>)
 #import <devcycle_flutter_client_sdk/devcycle_flutter_client_sdk-Swift.h>
 #else
@@ -8,8 +8,8 @@
 #import "devcycle_flutter_client_sdk-Swift.h"
 #endif
 
-@implementation DevcycleFlutterClientSdkPlugin
+@implementation DevCycleFlutterClientSdkPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftDevcycleFlutterClientSdkPlugin registerWithRegistrar:registrar];
+  [SwiftDevCycleFlutterClientSdkPlugin registerWithRegistrar:registrar];
 }
 @end
