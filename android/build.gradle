@@ -1,3 +1,6 @@
+group 'com.example.devcycle_flutter_client_sdk'
+version '1.0-SNAPSHOT'
+
 buildscript {
     ext.kotlin_version = '1.6.10'
     repositories {
@@ -18,14 +21,26 @@ allprojects {
     }
 }
 
-rootProject.buildDir = '../build'
-subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
-    project.evaluationDependsOn(':app')
-}
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+android {
+    compileSdkVersion 31
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        minSdkVersion 16
+    }
 }
