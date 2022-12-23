@@ -1,10 +1,10 @@
 import Flutter
 import UIKit
 
-public class SwiftDevcycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
+public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "devcycle_flutter_client_sdk", binaryMessenger: registrar.messenger())
-    let instance = SwiftDevcycleFlutterClientSdkPlugin()
+    let instance = SwiftDevCycleFlutterClientSdkPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 

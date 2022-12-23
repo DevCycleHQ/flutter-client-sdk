@@ -1,4 +1,4 @@
 #import <Flutter/Flutter.h>
 
-@interface DevcycleFlutterClientSdkPlugin : NSObject<FlutterPlugin>
+@interface DevCycleFlutterClientSdkPlugin : NSObject<FlutterPlugin>
 @end
