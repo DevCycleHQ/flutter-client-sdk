@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 
 import 'devcycle_flutter_client_sdk_platform_interface.dart';
 
-/// An implementation of [DevcycleFlutterClientSdkPlatform] that uses method channels.
-class MethodChannelDevcycleFlutterClientSdk extends DevcycleFlutterClientSdkPlatform {
+/// An implementation of [DevCycleFlutterClientSdkPlatform] that uses method channels.
+class MethodChannelDevCycleFlutterClientSdk extends DevCycleFlutterClientSdkPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
   final methodChannel = const MethodChannel('devcycle_flutter_client_sdk');
