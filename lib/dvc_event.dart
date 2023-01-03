@@ -1,5 +1,3 @@
-part of devcycle_flutter_client_sdk;
-
 class DVCEvent {
   final String? type;
   final String? target;
@@ -12,7 +10,7 @@ class DVCEvent {
     value = builder._value,
     metaData = builder._metaData;
 
-  Map<String, dynamic> _toMap() {
+  Map<String, dynamic> toMap() {
     final Map<String, dynamic> result = <String, dynamic>{};
     result['type'] = type;
     result['target'] = target;
