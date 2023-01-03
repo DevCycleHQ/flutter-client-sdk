@@ -4,25 +4,25 @@ import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk_platform
 import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-class MockDevcycleFlutterClientSdkPlatform
+class MockDevCycleFlutterClientSdkPlatform
     with MockPlatformInterfaceMixin
-    implements DevcycleFlutterClientSdkPlatform {
+    implements DevCycleFlutterClientSdkPlatform {
 
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
 }
 
 void main() {
-  final DevcycleFlutterClientSdkPlatform initialPlatform = DevcycleFlutterClientSdkPlatform.instance;
+  final DevCycleFlutterClientSdkPlatform initialPlatform = DevCycleFlutterClientSdkPlatform.instance;
 
-  test('$MethodChannelDevcycleFlutterClientSdk is the default instance', () {
-    expect(initialPlatform, isInstanceOf<MethodChannelDevcycleFlutterClientSdk>());
+  test('$MethodChannelDevCycleFlutterClientSdk is the default instance', () {
+    expect(initialPlatform, isInstanceOf<MethodChannelDevCycleFlutterClientSdk>());
   });
 
   test('getPlatformVersion', () async {
     DVCClient devcycleFlutterClientSdkPlugin = DVCClient();
-    MockDevcycleFlutterClientSdkPlatform fakePlatform = MockDevcycleFlutterClientSdkPlatform();
-    DevcycleFlutterClientSdkPlatform.instance = fakePlatform;
+    MockDevCycleFlutterClientSdkPlatform fakePlatform = MockDevCycleFlutterClientSdkPlatform();
+    DevCycleFlutterClientSdkPlatform.instance = fakePlatform;
 
     expect(await devcycleFlutterClientSdkPlugin.getPlatformVersion(), '42');
   });
