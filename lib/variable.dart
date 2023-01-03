@@ -1,10 +1,8 @@
-part of devcycle_flutter_client_sdk;
-
-enum TypeEnum {
-  String,
-  Boolean,
-  Number,
-  JSON
+enum VariableType {
+  string,
+  boolean,
+  number,
+  json
 }
 
 class Variable<T> {
@@ -15,7 +13,7 @@ class Variable<T> {
   String? key;
 
   /// Variable type
-  TypeEnum? type;
+  VariableType? type;
 
   /// Variable value can be a string, number, boolean, or JSON
   T? value;
@@ -24,10 +22,11 @@ class Variable<T> {
 
   static Variable fromMap(Map<String, dynamic> map) {
     Variable variable = Variable();
+    String mapType = map['type'].toString().toLowerCase();
 
     variable.id = map['id'];
     variable.key = map['key'];
-    variable.type = map['type'];
+    variable.type = VariableType.values.firstWhere((e) => e.toString() == "VariableType.$mapType");
     variable.value = map['value'];
     variable.isDefaulted = map['isDefaulted'];
 
