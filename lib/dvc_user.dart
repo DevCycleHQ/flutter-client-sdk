@@ -1,5 +1,3 @@
-part of devcycle_flutter_client_sdk;
-
 class DVCUser {
   final String? userId;
   final bool isAnonymous;
@@ -18,7 +16,7 @@ class DVCUser {
     customData = builder._customData,
     privateCustomData = builder._privateCustomData;
 
-  Map<String, dynamic> _toMap() {
+  Map<String, dynamic> toMap() {
     final Map<String, dynamic> result = <String, dynamic>{};
     result['userId'] = userId;
     result['isAnonymous'] = isAnonymous;
