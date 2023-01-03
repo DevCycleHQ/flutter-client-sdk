@@ -1,6 +1,4 @@
-part of devcycle_flutter_client_sdk;
-
-enum TypeEnum {
+enum FeatureType {
   release,
   experiment,
   permission,
@@ -15,7 +13,7 @@ class Feature {
   String? key;
 
   /// Feature type
-  TypeEnum? type;
+  FeatureType? type;
 
   /// Bucketed feature variation ID
   String? variation;
@@ -34,7 +32,7 @@ class Feature {
 
     feature.id = map['id'];
     feature.key = map['key'];
-    feature.type = map['type'];
+    feature.type = FeatureType.values.firstWhere((e) => e.toString() == "FeatureType.${map['type']}");
     feature.variation = map['variation'];
     feature.evalReason = map['evalReason'];
     feature.variationName = map['variationName'];
