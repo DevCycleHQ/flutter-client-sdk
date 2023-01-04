@@ -3,7 +3,7 @@ import 'package:devcycle_flutter_client_sdk/feature.dart';
 
 void main() {
   test('builds feature object from a map', () {
-    Map<String, dynamic> featureMap = {
+    Map<String, dynamic> codecFeature = {
       "id": "feature1",
       "key": "feature-one",
       "type": "release",
@@ -11,7 +11,7 @@ void main() {
       "variationName": "Variation One",
       "variationKey": "var-one"
     };
-    Feature feature = Feature.fromMap(featureMap);
+    Feature feature = Feature.fromCodec(codecFeature);
     expect(feature.id, equals('feature1'));
     expect(feature.key, equals('feature-one'));
     expect(feature.type.toString(), equals('FeatureType.release'));

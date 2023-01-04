@@ -16,7 +16,7 @@ class DVCUser {
     customData = builder._customData,
     privateCustomData = builder._privateCustomData;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toCodec() {
     final Map<String, dynamic> result = <String, dynamic>{};
     result['userId'] = userId;
     result['isAnonymous'] = isAnonymous;

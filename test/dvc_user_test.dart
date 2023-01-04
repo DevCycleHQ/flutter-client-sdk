@@ -25,11 +25,11 @@ void main() {
       .name('a b')
       .country('de')
       .build();
-    Map<String, dynamic> userMap = user.toMap();
-    expect(userMap['userId'], equals('user1'));
-    expect(userMap['isAnonymous'], isFalse);
-    expect(userMap['email'], equals('test@example.com'));
-    expect(userMap['name'], equals('a b'));
-    expect(userMap['country'], equals('de'));
+    Map<String, dynamic> codecUser = user.toCodec();
+    expect(codecUser['userId'], equals('user1'));
+    expect(codecUser['isAnonymous'], isFalse);
+    expect(codecUser['email'], equals('test@example.com'));
+    expect(codecUser['name'], equals('a b'));
+    expect(codecUser['country'], equals('de'));
   });
 }

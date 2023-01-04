@@ -20,7 +20,7 @@ class Variable<T> {
   
   bool? isDefaulted;
 
-  static Variable fromMap(Map<String, dynamic> map) {
+  static Variable fromCodec(Map<String, dynamic> map) {
     Variable variable = Variable();
     String mapType = map['type'].toString().toLowerCase();
 

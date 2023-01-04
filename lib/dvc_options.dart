@@ -12,7 +12,7 @@ class DVCOptions {
     configCacheTTL = builder._configCacheTTL,
     disableConfigCache = builder._disableConfigCache;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toCodec() {
     final Map<String, dynamic> result = <String, dynamic>{};
     result['flushEventsIntervalMs'] = flushEventsIntervalMs;
     result['disableEventLogging'] = disableEventLogging;

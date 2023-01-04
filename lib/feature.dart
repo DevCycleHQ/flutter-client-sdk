@@ -27,7 +27,7 @@ class Feature {
   /// Variation key
   String? variationKey;
 
-  static Feature fromMap(Map<String, dynamic> map) {
+  static Feature fromCodec(Map<String, dynamic> map) {
     Feature feature = Feature();
 
     feature.id = map['id'];
