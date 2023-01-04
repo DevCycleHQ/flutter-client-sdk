@@ -1,0 +1,23 @@
+name: Flutter SDK Unit Tests
+
+# Leverages the Flutter GH Action at https://github.com/marketplace/actions/flutter-action
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v2
+      - name: Install and set Flutter version
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x'
+          channel: 'stable'
+      - name: Install Flutter packages
+        run: flutter pub get
+      - name: Run Unit Tests
+        run: flutter test
