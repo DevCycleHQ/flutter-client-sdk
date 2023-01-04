@@ -26,7 +26,7 @@ void main() {
         "hello": "world"
       })
       .build();
-    Map<String, dynamic> eventMap = event.toMap();
+    Map<String, dynamic> eventMap = event.toCodec();
     expect(eventMap['type'], equals('my event type'));
     expect(eventMap['target'], equals('my target'));
     expect(eventMap['value'], equals(1));
