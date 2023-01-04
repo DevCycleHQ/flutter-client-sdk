@@ -17,7 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  final _devcycleClient = DVCClient();
+  final _devcycleClient = DVCClientBuilder().build();
 
   @override
   void initState() {
