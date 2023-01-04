@@ -20,7 +20,7 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    DVCClient devcycleFlutterClientSdkPlugin = DVCClient();
+    DVCClient devcycleFlutterClientSdkPlugin = DVCClientBuilder().build();
     MockDevCycleFlutterClientSdkPlatform fakePlatform = MockDevCycleFlutterClientSdkPlatform();
     DevCycleFlutterClientSdkPlatform.instance = fakePlatform;
 
