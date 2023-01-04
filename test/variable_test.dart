@@ -3,14 +3,14 @@ import 'package:devcycle_flutter_client_sdk/variable.dart';
 
 void main() {
   test('builds string variable object from a map', () {
-    Map<String, dynamic> variableMap = {
+    Map<String, dynamic> codecVariable = {
       "id": "variable1",
       "key": "variable-one",
       "type": "String",
       "value": "hello world",
       "isDefaulted": false
     };
-    Variable variable = Variable.fromMap(variableMap);
+    Variable variable = Variable.fromCodec(codecVariable);
     expect(variable.id, equals('variable1'));
     expect(variable.key, equals('variable-one'));
     expect(variable.type.toString(), equals('VariableType.string'));
@@ -19,13 +19,13 @@ void main() {
   });
 
   test('builds boolean variable object from a map', () {
-    Map<String, dynamic> variableMap = {
+    Map<String, dynamic> codecVariable = {
       "id": "variable1",
       "key": "variable-one",
       "type": "Boolean",
       "value": true
     };
-    Variable variable = Variable.fromMap(variableMap);
+    Variable variable = Variable.fromCodec(codecVariable);
     expect(variable.id, equals('variable1'));
     expect(variable.key, equals('variable-one'));
     expect(variable.type.toString(), equals('VariableType.boolean'));
@@ -33,13 +33,13 @@ void main() {
   });
 
   test('builds number variable object from a map', () {
-    Map<String, dynamic> variableMap = {
+    Map<String, dynamic> codecVariable = {
       "id": "variable1",
       "key": "variable-one",
       "type": "Number",
       "value": 100
     };
-    Variable variable = Variable.fromMap(variableMap);
+    Variable variable = Variable.fromCodec(codecVariable);
     expect(variable.id, equals('variable1'));
     expect(variable.key, equals('variable-one'));
     expect(variable.type.toString(), equals('VariableType.number'));
@@ -47,13 +47,13 @@ void main() {
   });
 
   test('builds json variable object from a map', () {
-    Map<String, dynamic> variableMap = {
+    Map<String, dynamic> codecVariable = {
       "id": "variable1",
       "key": "variable-one",
       "type": "JSON",
       "value": { "hello": "world" }
     };
-    Variable variable = Variable.fromMap(variableMap);
+    Variable variable = Variable.fromCodec(codecVariable);
     expect(variable.id, equals('variable1'));
     expect(variable.key, equals('variable-one'));
     expect(variable.type.toString(), equals('VariableType.json'));

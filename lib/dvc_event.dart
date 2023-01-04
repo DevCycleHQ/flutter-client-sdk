@@ -10,7 +10,11 @@ class DVCEvent {
     value = builder._value,
     metaData = builder._metaData;
 
+<<<<<<< HEAD
   Map<String, dynamic> toMap() {
+=======
+  Map<String, dynamic> toCodec() {
+>>>>>>> 999b3d2 (Rename toMap methods to toCodec to align with Flutter terminology)
     final Map<String, dynamic> result = <String, dynamic>{};
     result['type'] = type;
     result['target'] = target;
