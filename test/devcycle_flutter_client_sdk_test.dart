@@ -10,9 +10,13 @@ class MockDevCycleFlutterClientSdkPlatform
 
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
+
+  @override
+  void initialize(String environmentKey, DVCUser user, DVCOptions? options) {}
 }
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   final DevCycleFlutterClientSdkPlatform initialPlatform = DevCycleFlutterClientSdkPlatform.instance;
 
   test('$MethodChannelDevCycleFlutterClientSdk is the default instance', () {
@@ -20,7 +24,11 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    DVCClient devcycleFlutterClientSdkPlugin = DVCClientBuilder().build();
+    DVCUser user = DVCUserBuilder().userId('123').build();
+    DVCClient devcycleFlutterClientSdkPlugin = DVCClientBuilder()
+      .environmentKey('SDK_KEY')
+      .user(user)
+      .build();
     MockDevCycleFlutterClientSdkPlatform fakePlatform = MockDevCycleFlutterClientSdkPlatform();
     DevCycleFlutterClientSdkPlatform.instance = fakePlatform;
 
