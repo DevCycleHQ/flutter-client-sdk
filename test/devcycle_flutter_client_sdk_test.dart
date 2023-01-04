@@ -1,3 +1,4 @@
+import 'package:devcycle_flutter_client_sdk/dvc_callback.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk.dart';
 import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk_platform_interface.dart';
@@ -16,6 +17,12 @@ class MockDevCycleFlutterClientSdkPlatform
   void initialize(String environmentKey, DVCUser user, DVCOptions? options) {
     hasInitialized = true;
   }
+  
+  @override
+  void identifyUser(DVCUser user, [DVCCallback? callback]) {}
+
+  @override
+  void resetUser([DVCCallback? callback]) {}
 }
 
 void main() {

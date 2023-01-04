@@ -8,6 +8,7 @@ import 'variable.dart';
 export 'dvc_user.dart';
 export 'dvc_event.dart';
 export 'dvc_options.dart';
+import 'dvc_callback.dart';
 
 typedef ClientInitializedCallback = void Function(Error? error);
 typedef VariableUpdateCallback = void Function(Variable variable);
@@ -50,6 +51,14 @@ class DVCClient {
 
   Future<String?> getPlatformVersion() {
     return DevCycleFlutterClientSdkPlatform.instance.getPlatformVersion();
+  }
+
+  void identifyUser(DVCUser user, [DVCCallback? callback]) {
+    DevCycleFlutterClientSdkPlatform.instance.identifyUser(user, callback);
+  }
+
+  void resetUser([DVCCallback? callback]) {
+    DevCycleFlutterClientSdkPlatform.instance.resetUser(callback);
   }
 }
 

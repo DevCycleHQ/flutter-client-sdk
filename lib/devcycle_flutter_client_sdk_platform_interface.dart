@@ -3,6 +3,7 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'devcycle_flutter_client_sdk_method_channel.dart';
 import 'dvc_user.dart';
 import 'dvc_options.dart';
+import 'dvc_callback.dart';
 
 abstract class DevCycleFlutterClientSdkPlatform extends PlatformInterface {
   /// Constructs a DevCycleFlutterClientSdkPlatform.
@@ -31,5 +32,13 @@ abstract class DevCycleFlutterClientSdkPlatform extends PlatformInterface {
 
   void initialize(String environmentKey, DVCUser user, DVCOptions? options) {
     throw UnimplementedError('initialize() has not been implemented.');
+  }
+
+  void identifyUser(DVCUser user, [DVCCallback? callback]) {
+    throw UnimplementedError('identifyUser() has not been implemented.');
+  }
+  
+  void resetUser([DVCCallback? callback]) {
+    throw UnimplementedError('resetUser() has not been implemented.');
   }
 }
