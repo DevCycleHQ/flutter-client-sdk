@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'devcycle_flutter_client_sdk_platform_interface.dart';
 import 'dvc_user.dart';
 import 'dvc_options.dart';
+import 'dvc_callback.dart';
 
 /// An implementation of [DevCycleFlutterClientSdkPlatform] that uses method channels.
 class MethodChannelDevCycleFlutterClientSdk extends DevCycleFlutterClientSdkPlatform {
@@ -24,6 +25,23 @@ class MethodChannelDevCycleFlutterClientSdk extends DevCycleFlutterClientSdkPlat
     methodChannel.invokeMethod(
       'initialize',
       { "environmentKey": environmentKey, "user": codecUser, "options": codecOptions }
+    );
+  }
+
+  @override
+  void identifyUser(DVCUser user, [DVCCallback? callback]) {
+    Map<String, dynamic> codecUser = user.toCodec();
+    methodChannel.invokeMethod(
+      'identifyUser',
+      { "user": codecUser, "callback": callback }
+    );
+  }
+
+  @override
+  void resetUser([DVCCallback? callback]) {
+    methodChannel.invokeMethod(
+      'resetUser',
+      { "callback": callback }
     );
   }
 }
