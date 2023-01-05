@@ -13,10 +13,6 @@ typedef ClientInitializedCallback = void Function(Error? error);
 typedef VariableUpdateCallback = void Function(Variable variable);
 typedef UserUpdateCallback = void Function(Map<String, Variable> variables);
 class DVCClient {
-  String environmentKey;
-  DVCUser user;
-  DVCOptions? options;
-
   static const _methodChannel = MethodChannel('devcycle_flutter_client_sdk');
 
   /// Callback triggered on client initialization
@@ -28,10 +24,12 @@ class DVCClient {
   // Map of callback IDs to user update callbacks. The ID is generated when reset is called
   Map<String, UserUpdateCallback> _resetCallbacks = Map();
 
-  DVCClient._builder(DVCClientBuilder builder) :
-    environmentKey = builder._environmentKey!,
-    user = builder._user!,
-    options = builder._options;
+  DVCClient._builder(DVCClientBuilder builder);
+
+  _init(String environmentKey, DVCUser user, DVCOptions? options) {
+    _methodChannel.setMethodCallHandler(_handleCallbacks);
+    DevCycleFlutterClientSdkPlatform.instance.initialize(environmentKey, user, options);
+  }
 
   Future<void> _handleCallbacks(MethodCall call) async {
     switch (call.method) {
@@ -48,11 +46,6 @@ class DVCClient {
         }
         break;
     }
-  }
-
-  _init() {
-    _methodChannel.setMethodCallHandler(_handleCallbacks);
-    DevCycleFlutterClientSdkPlatform.instance.initialize(environmentKey, user, options);
   }
 
   Future<String?> getPlatformVersion() {
@@ -84,7 +77,7 @@ class DVCClientBuilder {
     if (_environmentKey == null) throw Exception("SDK key must be set");
     if (_user == null) throw Exception("User must be set");
     DVCClient client = DVCClient._builder(this);
-    client._init();
+    client._init(_environmentKey!, _user!, _options);
     return client;
   }
 }
