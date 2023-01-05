@@ -1,6 +1,8 @@
 package com.devcycle.devcycle_flutter_client_sdk
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import androidx.annotation.NonNull
 import com.devcycle.sdk.android.api.DVCCallback
 import com.devcycle.sdk.android.api.DVCClient
@@ -29,6 +31,16 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(this)
   }
 
+  private fun callFlutter(method: String, arguments: Any?) {
+    // invokeMethod must be called on main thread
+    if (Looper.myLooper() == Looper.getMainLooper()) {
+      channel.invokeMethod(method, arguments)
+    } else {
+      // Call ourselves on the main thread
+      Handler(Looper.getMainLooper()).post { callFlutter(method, arguments) }
+    }
+  }
+
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull res: Result) {
     when (call.method) {
       "initialize" -> {
@@ -50,6 +62,8 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
           }
         }
         )
+
+        callFlutter("clientInitialized", null)
 
       }
       "getPlatformVersion" -> {
