@@ -9,11 +9,11 @@ import 'variable.dart';
 export 'dvc_user.dart';
 export 'dvc_event.dart';
 export 'dvc_options.dart';
-import 'dvc_callback.dart';
 
 typedef ClientInitializedCallback = void Function(Error? error);
 typedef VariableUpdateCallback = void Function(Variable variable);
 typedef UserUpdateCallback = void Function(Map<String, Variable> variables);
+
 class DVCClient {
   static const _methodChannel = MethodChannel('devcycle_flutter_client_sdk');
 
@@ -32,7 +32,8 @@ class DVCClient {
 
   _init(String environmentKey, DVCUser user, DVCOptions? options) {
     _methodChannel.setMethodCallHandler(_handleCallbacks);
-    DevCycleFlutterClientSdkPlatform.instance.initialize(environmentKey, user, options);
+    DevCycleFlutterClientSdkPlatform.instance
+        .initialize(environmentKey, user, options);
   }
 
   Future<void> _handleCallbacks(MethodCall call) async {
@@ -44,7 +45,8 @@ class DVCClient {
         break;
       case 'variableUpdated':
         Variable variable = Variable.fromCodec(call.arguments);
-        List<VariableUpdateCallback> callbacks = _variableUpdateCallbacks[variable.key] ?? [];
+        List<VariableUpdateCallback> callbacks =
+            _variableUpdateCallbacks[variable.key] ?? [];
         for (final callback in callbacks) {
           callback(variable);
         }
@@ -57,9 +59,9 @@ class DVCClient {
   }
 
   void identifyUser(DVCUser user, [UserUpdateCallback? callback]) {
-    if(callback != null) {
+    if (callback != null) {
       String callbackId = uuid.v4();
-      _identifyCallbacks[callbackId] =  callback;
+      _identifyCallbacks[callbackId] = callback;
       DevCycleFlutterClientSdkPlatform.instance.identifyUser(user, callbackId);
     } else {
       DevCycleFlutterClientSdkPlatform.instance.identifyUser(user);
@@ -67,9 +69,9 @@ class DVCClient {
   }
 
   void resetUser([UserUpdateCallback? callback]) {
-    if(callback != null) {
+    if (callback != null) {
       String callbackId = uuid.v4();
-      _resetCallbacks[callbackId] =  callback;
+      _resetCallbacks[callbackId] = callback;
       DevCycleFlutterClientSdkPlatform.instance.resetUser(callbackId);
     } else {
       DevCycleFlutterClientSdkPlatform.instance.resetUser();
