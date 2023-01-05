@@ -1,6 +1,6 @@
 class DVCUser {
   final String? userId;
-  final bool isAnonymous;
+  final bool? isAnonymous;
   final String? email;
   final String? name;
   final String? country;
@@ -17,14 +17,14 @@ class DVCUser {
     privateCustomData = builder._privateCustomData;
 
   Map<String, dynamic> toCodec() {
-    final Map<String, dynamic> result = <String, dynamic>{};
-    result['userId'] = userId;
-    result['isAnonymous'] = isAnonymous;
-    result['email'] = email;
-    result['name'] = name;
-    result['country'] = country;
-    result['customData'] = customData;
-    result['privateCustomData'] = privateCustomData;
+    final Map<String, dynamic> result = {};
+    if (userId != null) result['userId'] = userId;
+    if (isAnonymous != null) result['isAnonymous'] = isAnonymous;
+    if (email != null) result['email'] = email;
+    if (name != null) result['name'] = name;
+    if (country != null) result['country'] = country;
+    if (customData != null) result['customData'] = customData;
+    if (privateCustomData != null) result['privateCustomData'] = privateCustomData;
     return result;
   }
 }
@@ -32,7 +32,7 @@ class DVCUser {
 /// A builder for constructing [DVCUser] objects.
 class DVCUserBuilder {
   String? _userId;
-  bool _isAnonymous = true;
+  bool? _isAnonymous;
   String? _email;
   String? _name;
   String? _country;
