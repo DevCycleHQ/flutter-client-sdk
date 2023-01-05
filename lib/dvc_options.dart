@@ -14,11 +14,11 @@ class DVCOptions {
 
   Map<String, dynamic> toCodec() {
     final Map<String, dynamic> result = <String, dynamic>{};
-    result['flushEventsIntervalMs'] = flushEventsIntervalMs;
-    result['disableEventLogging'] = disableEventLogging;
-    result['enableEdgeDB'] = enableEdgeDB;
-    result['configCacheTTL'] = configCacheTTL;
-    result['disableConfigCache'] = disableConfigCache;
+    if (flushEventsIntervalMs != null) result['flushEventsIntervalMs'] = flushEventsIntervalMs;
+    if (disableEventLogging != null) result['disableEventLogging'] = disableEventLogging;
+    if (enableEdgeDB != null) result['enableEdgeDB'] = enableEdgeDB;
+    if (configCacheTTL != null) result['configCacheTTL'] = configCacheTTL;
+    if (disableConfigCache != null) result['disableConfigCache'] = disableConfigCache;
     return result;
   }
 }
