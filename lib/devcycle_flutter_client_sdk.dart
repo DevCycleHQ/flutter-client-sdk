@@ -17,7 +17,7 @@ typedef UserUpdateCallback = void Function(Map<String, Variable> variables);
 class DVCClient {
   static const _methodChannel = MethodChannel('devcycle_flutter_client_sdk');
 
-  static const uuid = Uuid();
+  static const _uuid = Uuid();
 
   /// Callback triggered on client initialization
   ClientInitializedCallback? _clientInitializedCallback;
@@ -60,7 +60,7 @@ class DVCClient {
 
   void identifyUser(DVCUser user, [UserUpdateCallback? callback]) {
     if (callback != null) {
-      String callbackId = uuid.v4();
+      String callbackId = _uuid.v4();
       _identifyCallbacks[callbackId] = callback;
       DevCycleFlutterClientSdkPlatform.instance.identifyUser(user, callbackId);
     } else {
@@ -70,7 +70,7 @@ class DVCClient {
 
   void resetUser([UserUpdateCallback? callback]) {
     if (callback != null) {
-      String callbackId = uuid.v4();
+      String callbackId = _uuid.v4();
       _resetCallbacks[callbackId] = callback;
       DevCycleFlutterClientSdkPlatform.instance.resetUser(callbackId);
     } else {
