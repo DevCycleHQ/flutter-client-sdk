@@ -35,11 +35,11 @@ class MethodChannelDevCycleFlutterClientSdk
   void identifyUser(DVCUser user, [String? callbackId]) {
     Map<String, dynamic> codecUser = user.toCodec();
     methodChannel.invokeMethod(
-        'identifyUser', {"user": codecUser, "callback": callbackId});
+        'identifyUser', {"user": codecUser, "callbackId": callbackId});
   }
 
   @override
   void resetUser([String? callbackId]) {
-    methodChannel.invokeMethod('resetUser', {"callback": callbackId});
+    methodChannel.invokeMethod('resetUser', {"callbackId": callbackId});
   }
 }
