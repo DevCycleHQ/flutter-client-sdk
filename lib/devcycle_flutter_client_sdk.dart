@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:uuid/uuid.dart';
 
 import 'devcycle_flutter_client_sdk_platform_interface.dart';
 import 'dvc_user.dart';
@@ -15,6 +16,8 @@ typedef VariableUpdateCallback = void Function(Variable variable);
 typedef UserUpdateCallback = void Function(Map<String, Variable> variables);
 class DVCClient {
   static const _methodChannel = MethodChannel('devcycle_flutter_client_sdk');
+
+  static const uuid = Uuid();
 
   /// Callback triggered on client initialization
   ClientInitializedCallback? _clientInitializedCallback;
@@ -53,12 +56,24 @@ class DVCClient {
     return DevCycleFlutterClientSdkPlatform.instance.getPlatformVersion();
   }
 
-  void identifyUser(DVCUser user, [DVCCallback? callback]) {
-    DevCycleFlutterClientSdkPlatform.instance.identifyUser(user, callback);
+  void identifyUser(DVCUser user, [UserUpdateCallback? callback]) {
+    if(callback != null) {
+      String callbackId = uuid.v4();
+      _identifyCallbacks[callbackId] =  callback;
+      DevCycleFlutterClientSdkPlatform.instance.identifyUser(user, callbackId);
+    } else {
+      DevCycleFlutterClientSdkPlatform.instance.identifyUser(user);
+    }
   }
 
-  void resetUser([DVCCallback? callback]) {
-    DevCycleFlutterClientSdkPlatform.instance.resetUser(callback);
+  void resetUser([UserUpdateCallback? callback]) {
+    if(callback != null) {
+      String callbackId = uuid.v4();
+      _resetCallbacks[callbackId] =  callback;
+      DevCycleFlutterClientSdkPlatform.instance.resetUser(callbackId);
+    } else {
+      DevCycleFlutterClientSdkPlatform.instance.resetUser();
+    }
   }
 }
 

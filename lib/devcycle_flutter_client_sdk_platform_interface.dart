@@ -1,3 +1,4 @@
+import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'devcycle_flutter_client_sdk_method_channel.dart';
@@ -34,11 +35,11 @@ abstract class DevCycleFlutterClientSdkPlatform extends PlatformInterface {
     throw UnimplementedError('initialize() has not been implemented.');
   }
 
-  void identifyUser(DVCUser user, [DVCCallback? callback]) {
+  void identifyUser(DVCUser user, [String? callbackId]) {
     throw UnimplementedError('identifyUser() has not been implemented.');
   }
   
-  void resetUser([DVCCallback? callback]) {
+  void resetUser([String? callbackId]) {
     throw UnimplementedError('resetUser() has not been implemented.');
   }
 }

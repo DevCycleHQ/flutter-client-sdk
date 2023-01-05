@@ -1,6 +1,5 @@
 class DVCCallback {
-  DVCCallback({this.onSuccess, this.onError});
+  DVCCallback({this.onError});
 
-  final Function? onSuccess;
   final Function? onError;
 }
