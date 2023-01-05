@@ -73,4 +73,47 @@ void main() {
       expect(clientBuilder.build, throwsException);
     });
   });
+
+  group('identifyUser', (){
+    test('identify user correctly', () {
+    DVCUser user = DVCUserBuilder()
+      .userId('user1')
+      .isAnonymous(false)
+      .email('test@example.com')
+      .name('a b')
+      .country('de')
+      .build();
+    DVCClient devcycleFlutterClientSdkPlugin = DVCClientBuilder()
+      .environmentKey('SDK_KEY')
+      .user(user)
+      .build();
+    devcycleFlutterClientSdkPlugin.identifyUser(user);
+    expect(devcycleFlutterClientSdkPlugin.user.userId, 'user1');
+    expect(devcycleFlutterClientSdkPlugin.user.isAnonymous, isFalse);
+    expect(devcycleFlutterClientSdkPlugin.user.email, 'test@example.com');
+    expect(devcycleFlutterClientSdkPlugin.user.name, 'a b');
+    expect(devcycleFlutterClientSdkPlugin.user.country, 'de');
+  });
+  });
+
+group('resetUser', (){
+  test('reset user from client', (){
+    DVCUser user = DVCUserBuilder()
+      .userId('user1')
+      .isAnonymous(false)
+      .email('test@example.com')
+      .name('a b')
+      .country('de')
+      .build();
+    DVCClient devcycleFlutterClientSdkPlugin = DVCClientBuilder()
+      .environmentKey('SDK_KEY')
+      .user(user)
+      .build();
+    devcycleFlutterClientSdkPlugin.resetUser();
+    expect(devcycleFlutterClientSdkPlugin.user.isAnonymous, isTrue);
+    expect(devcycleFlutterClientSdkPlugin.user.email, isNot('test@example.com'));
+    expect(devcycleFlutterClientSdkPlugin.user.name, isNull);
+    expect(devcycleFlutterClientSdkPlugin.user.country, isNull);
+  });
+});
 }
