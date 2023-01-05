@@ -1,3 +1,4 @@
+import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -29,19 +30,19 @@ class MethodChannelDevCycleFlutterClientSdk extends DevCycleFlutterClientSdkPlat
   }
 
   @override
-  void identifyUser(DVCUser user, [DVCCallback? callback]) {
+  void identifyUser(DVCUser user, [String? callbackId]) {
     Map<String, dynamic> codecUser = user.toCodec();
     methodChannel.invokeMethod(
       'identifyUser',
-      { "user": codecUser, "callback": callback }
+      { "user": codecUser, "callback": callbackId }
     );
   }
 
   @override
-  void resetUser([DVCCallback? callback]) {
+  void resetUser([String? callbackId]) {
     methodChannel.invokeMethod(
       'resetUser',
-      { "callback": callback }
+      { "callback": callbackId }
     );
   }
 }
