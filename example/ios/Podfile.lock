@@ -1,11 +1,20 @@
 PODS:
+  - DevCycle (1.6.3):
+    - LDSwiftEventSource (~> 3.0)
   - devcycle_flutter_client_sdk (0.0.1):
+    - DevCycle
     - Flutter
   - Flutter (1.0.0)
+  - LDSwiftEventSource (3.0.0)
 
 DEPENDENCIES:
   - devcycle_flutter_client_sdk (from `.symlinks/plugins/devcycle_flutter_client_sdk/ios`)
   - Flutter (from `Flutter`)
+
+SPEC REPOS:
+  trunk:
+    - DevCycle
+    - LDSwiftEventSource
 
 EXTERNAL SOURCES:
   devcycle_flutter_client_sdk:
@@ -14,9 +23,11 @@ EXTERNAL SOURCES:
     :path: Flutter
 
 SPEC CHECKSUMS:
-  devcycle_flutter_client_sdk: 122d04b6d731e892b784a5fb3b72c21d916fd4be
+  DevCycle: ed8801d75dfcdd1cb2a5d4e82cb5c760e5cc26dd
+  devcycle_flutter_client_sdk: f31d4479b7b1c365126586396f536a514ff9a46e
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  LDSwiftEventSource: 824ce51a4fa8e79498c9b67ae672bfa802bd7464
 
-PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
+PODFILE CHECKSUM: 4e8f8b2be68aeea4c0d5beb6ff1e79fface1d048
 
 COCOAPODS: 1.11.3
