@@ -84,7 +84,7 @@ void main() {
 
   group('identifyUser', () {
     test('identify user correctly', () {
-      // TODO: change this test to check the user object after client code is implemented
+      // TODO: update to mock the MethodChannel for proper testing
       DVCUser user1 = DVCUserBuilder()
           .userId('user1')
           .isAnonymous(false)
@@ -114,7 +114,7 @@ void main() {
 
   group('resetUser', () {
     test('reset user from client', () {
-      // TODO: change this test to check the user object after client code is implemented
+      // TODO: update to mock the MethodChannel for proper testing
       DVCUser user = DVCUserBuilder()
           .userId('user1')
           .isAnonymous(false)
