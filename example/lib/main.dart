@@ -17,7 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  final _devcycleClient = DVCClientBuilder()
+  final _dvcClient = DVCClientBuilder()
     .environmentKey('SDK_KEY')
     .user(DVCUserBuilder().userId('123').build())
     .build();
@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
     // We also handle the message potentially returning null.
     try {
       platformVersion =
-          await _devcycleClient.getPlatformVersion() ?? 'Unknown platform version';
+        await _dvcClient.getPlatformVersion() ?? 'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -50,6 +50,14 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void resetUser() {
+    _dvcClient.resetUser();
+  }
+
+  void identifyUser() {
+    _dvcClient.identifyUser(DVCUserBuilder().userId('test_user').build());
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -58,7 +66,26 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Running on: $_platformVersion\n'),
+              TextButton(
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                ),
+                onPressed: identifyUser,
+                child: const Text('Identify User')
+              ),
+              TextButton(
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                ),
+                onPressed: resetUser,
+                child: const Text('Reset User')
+              )
+            ],
+          )
         ),
       ),
     );
