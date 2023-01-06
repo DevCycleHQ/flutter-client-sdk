@@ -43,6 +43,38 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         })
       }
       result(nil)
+    case "identifyUser":
+        if let dvcUser = user, let _callbackId = args?["callbackId"] as? String {
+            try? self.dvcClient?.identifyUser(user: dvcUser, callback: { error, variables in
+                var callbackArgs: [String:Any] = [
+                    "callbackId": _callbackId
+                ]
+                if (error != nil) {
+                  callbackArgs["error"] = error
+                  self.channel.invokeMethod("userIdentified", arguments: callbackArgs)
+                } else {
+                  callbackArgs["variables"] = self.userVariablesToMap(variables: variables ?? [:])
+                  self.channel.invokeMethod("userIdentified", arguments: callbackArgs)
+                }
+            })
+        }
+      result(nil)
+    case "resetUser":
+        if let _callbackId = args?["callbackId"] as? String {
+            try? self.dvcClient?.resetUser(callback: { error, variables in
+                var callbackArgs: [String:Any] = [
+                    "callbackId": _callbackId
+                ]
+                if (error != nil) {
+                  callbackArgs["error"] = error
+                  self.channel.invokeMethod("userReset", arguments: callbackArgs)
+                } else {
+                  callbackArgs["variables"] = self.userVariablesToMap(variables: variables ?? [:])
+                  self.channel.invokeMethod("userReset", arguments: callbackArgs)
+                }
+            })
+        }
+      result(nil)
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
     default:
@@ -110,5 +142,21 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
 
     let options = optionsBuilder.build()
     return options
+  }
+
+  private func userVariablesToMap(variables: [String: Any]) -> [String: Any] {
+    var map: [String: Any] = [:]
+    for (key, value) in variables {
+        map[key] = self.variableToMap(variable: value as! DVCVariable<Any>)
+    }
+    return map
+  }
+
+  private func variableToMap(variable: DVCVariable<Any>) -> [String: Any] {
+    var map: [String: Any] = [:]
+    map["key"] = variable.key
+    map["value"] = variable.value
+    map["type"] = variable.type
+    return map
   }
 }
