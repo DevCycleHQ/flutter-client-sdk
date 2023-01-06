@@ -73,7 +73,8 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
             callFlutter("userIdentified", args)
           }
           override fun onError(t: Throwable) {
-            val args = listOf(t)
+            val args = mutableMapOf<String, Any>()
+            args["error"] = t
             callFlutter("userIdentified", args)
           }
         }
@@ -91,7 +92,8 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
             callFlutter("userReset", args)
           }
           override fun onError(t: Throwable) {
-            val args = listOf(t)
+            val args = mutableMapOf<String, Any>()
+            args["error"] = t
             callFlutter("userReset", args)
           }
         }

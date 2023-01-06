@@ -55,42 +55,55 @@ class DVCClient {
       case 'userIdentified':
         UserUpdateCallback? callback =
             _identifyCallbacks[call.arguments['callbackId']];
+        final error = call.arguments['error'];
         if (callback == null) {
           return;
         }
+        if (error != null) {
+          print(error);
+          callback(error);
+          return;
+        }
+
         Map<String, Variable> parsedVariables = Map();
         Map<String, Map<String, dynamic>> variables =
             call.arguments['variables'];
         for (final entry in variables.entries) {
-          Map<String, dynamic> codecVariable = {
+          parsedVariables[entry.key] = Variable.fromCodec({
             "id": entry.value["id"],
             "key": entry.value["key"],
             "type": entry.value["type"],
             "value": entry.value["value"],
-          };
-          parsedVariables[entry.key] = Variable.fromCodec(codecVariable);
+          });
         }
         callback(parsedVariables);
+        _identifyCallbacks.remove(call.arguments['callbackId']);
         break;
       case 'userReset':
+        final error = call.arguments['error'];
         UserUpdateCallback? callback =
-            _identifyCallbacks[call.arguments['callbackId']];
+            _resetCallbacks[call.arguments['callbackId']];
         if (callback == null) {
+          return;
+        }
+        if (error != null) {
+          print(error);
+          callback(error);
           return;
         }
         Map<String, Variable> parsedVariables = Map();
         Map<String, Map<String, dynamic>> variables =
             call.arguments['variables'];
         for (final entry in variables.entries) {
-          Map<String, dynamic> codecVariable = {
+          parsedVariables[entry.key] = Variable.fromCodec({
             "id": entry.value["id"],
             "key": entry.value["key"],
             "type": entry.value["type"],
             "value": entry.value["value"],
-          };
-          parsedVariables[entry.key] = Variable.fromCodec(codecVariable);
+          });
         }
         callback(parsedVariables);
+        _resetCallbacks.remove(call.arguments['callbackId']);
         break;
     }
   }
