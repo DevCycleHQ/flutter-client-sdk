@@ -66,7 +66,10 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         val callbackId = call.argument("callbackId") as String?
         val callback = object: DVCCallback<Map<String, Variable<Any>>> {
           override fun onSuccess(result: Map<String, Variable<Any>>) {
-            val args = listOf(null, callbackId, userVariablesToMap(result))
+            val args = mutableMapOf<String, Any>()
+            args["error"] = null
+            args["callbackId"] = callbackId
+            args["variables"] = userVariablesToMap(result)
             callFlutter("userIdentified", args)
           }
           override fun onError(t: Throwable) {
@@ -81,7 +84,10 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         val callbackId = call.argument("callbackId") as String?
         val callback = object: DVCCallback<Map<String, Variable<Any>>> {
           override fun onSuccess(result: Map<String, Variable<Any>>) {
-            val args = listOf(null, callbackId, userVariablesToMap(result))
+            val args = mutableMapOf<String, Any>()
+            args["error"] = null
+            args["callbackId"] = callbackId
+            args["variables"] = userVariablesToMap(result)
             callFlutter("userReset", args)
           }
           override fun onError(t: Throwable) {
