@@ -4,11 +4,10 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.NonNull
-import com.devcycle.sdk.android.api.DVCCallback
-import com.devcycle.sdk.android.api.DVCClient
-import com.devcycle.sdk.android.api.DVCOptions
-import com.devcycle.sdk.android.model.DVCUser
+import com.devcycle.sdk.android.api.*
+import com.devcycle.sdk.android.model.*
 
+import kotlin.collections.*
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -49,22 +48,49 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
           .withContext(context)
           .withEnvironmentKey(call.argument("environmentKey")!!)
           .withUser(getUserFromMap(call.argument("user")!!))
-          .withOptions(getOptionsFromMap(call.argument("options")!!))
+          .withOptions(getOptionsFromMap(call.argument("options")))
           .build()
 
         client.onInitialized(object : DVCCallback<String> {
           override fun onSuccess(result: String) {
-            res.success(null)
+            callFlutter("clientInitialized", null)
           }
 
           override fun onError(t: Throwable) {
-            res.success(t.message)
+            callFlutter("clientInitialized", t.message)
+          }
+        })
+      }
+      "identifyUser" -> {
+        val user = getUserFromMap(call.argument("user")!!)
+        val callbackId = call.argument("callbackId") as String?
+        val callback = object: DVCCallback<Map<String, Variable<Any>>> {
+          override fun onSuccess(result: Map<String, Variable<Any>>) {
+            val args = listOf(null, callbackId, userVariablesToMap(result))
+            callFlutter("userIdentified", args)
+          }
+          override fun onError(t: Throwable) {
+            val args = listOf(t)
+            callFlutter("userIdentified", args)
           }
         }
-        )
 
-        callFlutter("clientInitialized", null)
+        client.identifyUser(user, callback)
+      }
+      "resetUser" -> {
+        val callbackId = call.argument("callbackId") as String?
+        val callback = object: DVCCallback<Map<String, Variable<Any>>> {
+          override fun onSuccess(result: Map<String, Variable<Any>>) {
+            val args = listOf(null, callbackId, userVariablesToMap(result))
+            callFlutter("userReset", args)
+          }
+          override fun onError(t: Throwable) {
+            val args = listOf(t)
+            callFlutter("userReset", args)
+          }
+        }
 
+        client.resetUser(callback)
       }
       "getPlatformVersion" -> {
         res.success("Android ${android.os.Build.VERSION.RELEASE}")
@@ -108,21 +134,43 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     return userBuilder.build()
   }
 
-  private fun getOptionsFromMap(map: Map<String, Any>): DVCOptions {
+  private fun getOptionsFromMap(map: Map<String, Any>?): DVCOptions {
     val builder = DVCOptions.builder()
-    
-    val flushEventsIntervalMs = map["flushEventsIntervalMs"] as? Long
-    if (flushEventsIntervalMs is Long) builder.flushEventsIntervalMs(flushEventsIntervalMs)
 
-    val disableEventLogging = map["flushEventsIntervalMs"] as? Boolean
-    if (disableEventLogging is Boolean) builder.disableEventLogging(disableEventLogging)
+    if (map != null) {
+      val flushEventsIntervalMs = map["flushEventsIntervalMs"] as? Long
+      if (flushEventsIntervalMs is Long) builder.flushEventsIntervalMs(flushEventsIntervalMs)
 
-    val configCacheTTL = map["configCacheTTL"] as? Long
-    if (configCacheTTL is Long) builder.configCacheTTL(configCacheTTL)
+      val disableEventLogging = map["flushEventsIntervalMs"] as? Boolean
+      if (disableEventLogging is Boolean) builder.disableEventLogging(disableEventLogging)
 
-    val disableConfigCache = map["disableConfigCache"] as? Boolean
-    if (disableConfigCache is Boolean) builder.disableConfigCache(disableConfigCache)
+      val configCacheTTL = map["configCacheTTL"] as? Long
+      if (configCacheTTL is Long) builder.configCacheTTL(configCacheTTL)
+
+      val disableConfigCache = map["disableConfigCache"] as? Boolean
+      if (disableConfigCache is Boolean) builder.disableConfigCache(disableConfigCache)
+    }
 
     return builder.build()
+  }
+
+  private fun userVariablesToMap(variables: Map<String, Variable<Any>>): Map<String, Map<String, Any>> {
+    val map = mutableMapOf<String, Map<String, Any>>()
+
+    variables.forEach { (key, variable) ->
+      map[key] = variableToMap(variable)
+    }
+
+    return map
+  }
+
+  private fun variableToMap(variable: Variable<Any>): Map<String, Any> {
+    val variableAsMap = mutableMapOf<String, Any>()
+    variableAsMap["id"] = variable.id ?: ""
+    variableAsMap["key"] = variable.key
+    variableAsMap["type"] = variable.type.toString()
+    variableAsMap["value"] = variable.value
+
+    return variableAsMap
   }
 }
