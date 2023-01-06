@@ -52,6 +52,46 @@ class DVCClient {
           callback(variable);
         }
         break;
+      case 'userIdentified':
+        UserUpdateCallback? callback =
+            _identifyCallbacks[call.arguments['callbackId']];
+        if (callback == null) {
+          return;
+        }
+        Map<String, Variable> parsedVariables = Map();
+        Map<String, Map<String, dynamic>> variables =
+            call.arguments['variables'];
+        for (final entry in variables.entries) {
+          Map<String, dynamic> codecVariable = {
+            "id": entry.value["id"],
+            "key": entry.value["key"],
+            "type": entry.value["type"],
+            "value": entry.value["value"],
+          };
+          parsedVariables[entry.key] = Variable.fromCodec(codecVariable);
+        }
+        callback(parsedVariables);
+        break;
+      case 'userReset':
+        UserUpdateCallback? callback =
+            _identifyCallbacks[call.arguments['callbackId']];
+        if (callback == null) {
+          return;
+        }
+        Map<String, Variable> parsedVariables = Map();
+        Map<String, Map<String, dynamic>> variables =
+            call.arguments['variables'];
+        for (final entry in variables.entries) {
+          Map<String, dynamic> codecVariable = {
+            "id": entry.value["id"],
+            "key": entry.value["key"],
+            "type": entry.value["type"],
+            "value": entry.value["value"],
+          };
+          parsedVariables[entry.key] = Variable.fromCodec(codecVariable);
+        }
+        callback(parsedVariables);
+        break;
     }
   }
 
