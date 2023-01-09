@@ -79,14 +79,14 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
       })
       result(nil)
     case "allFeatures":
-      result(self.featuresToMap(self.dvcClient?.allFeatures()))
+        result(featuresToMap(features: self.dvcClient?.allFeatures() ?? [:]))
     case "allVariables":
-      result(self.variablesToMap(self.dvcClient?.allVariables()))
+        result(variablesToMap(variables: self.dvcClient?.allVariables() ?? [:]))
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
     case "variable":
       if let dvcClient = self.dvcClient, let varKey = args?["key"] as? String, let varDefaultValue = args?["defaultValue"] as? String {
-        let variable = self.dvcClient.variable(key: varKey, defaultValue: varDefaultValue)
+        let variable = dvcClient.variable(key: varKey, defaultValue: varDefaultValue)
         result(variable)
       } else {
         result(nil)
@@ -161,12 +161,12 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
   private func variablesToMap(variables: [String: Variable]) -> [String: Any] {
     var map: [String: Any] = [:]
     for (key, value) in variables {
-        map[key] = self.variableToMap(variable: value as! DVCVariable<Any>)
+        map[key] = variableToMap(variable: value)
     }
     return map
   }
 
-  private func variableToMap(variable: DVCVariable<Any>) -> [String: Any] {
+  private func variableToMap(variable: Variable) -> [String: Any] {
     var map: [String: Any] = [:]
     map["id"] = variable._id
     map["key"] = variable.key
@@ -179,7 +179,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
   private func featuresToMap(features: [String: Feature]) -> [String: Any] {
     var map: [String: Any] = [:]
     for (key, value) in features {
-        map[key] = self.featureToMap(feature: value)
+        map[key] = featureToMap(feature: value)
     }
     return map
   }
@@ -189,7 +189,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     map["id"] = feature._id
     map["key"] = feature.key
     map["type"] = feature.type
-    map["variation"] = feature.variation
+    map["variation"] = feature._variation
     map["evalReason"] = feature.evalReason
     map["variationKey"] = feature.variationKey
     map["variationName"] = feature.variationName
