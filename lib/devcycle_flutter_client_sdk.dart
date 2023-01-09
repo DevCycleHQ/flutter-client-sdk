@@ -125,6 +125,10 @@ class DVCClient {
     }
   }
 
+  Future<Variable?> variable(String key, dynamic defaultValue) {
+    return DevCycleFlutterClientSdkPlatform.instance.variable(key, defaultValue);
+  }
+
   Future<Map<String, Feature>> allFeatures() async {
     final features =
         await DevCycleFlutterClientSdkPlatform.instance.allFeatures();

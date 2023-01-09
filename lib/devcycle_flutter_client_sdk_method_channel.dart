@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import 'devcycle_flutter_client_sdk_platform_interface.dart';
 import 'feature.dart';
+import 'variable.dart';
 
 /// An implementation of [DevCycleFlutterClientSdkPlatform] that uses method channels.
 class MethodChannelDevCycleFlutterClientSdk
@@ -41,6 +42,13 @@ class MethodChannelDevCycleFlutterClientSdk
   @override
   void resetUser([String? callbackId]) {
     methodChannel.invokeMethod('resetUser', {"callbackId": callbackId});
+  }
+
+  @override
+  Future<Variable?> variable(String key, dynamic defaultValue) async {
+    Map<String, dynamic> result = await methodChannel.invokeMethod('variable', {"key": key, "defaultValue": defaultValue}) ?? {};
+    Variable? variable = result.isNotEmpty ? Variable.fromCodec(result) : null;
+    return variable;
   }
 
   @override

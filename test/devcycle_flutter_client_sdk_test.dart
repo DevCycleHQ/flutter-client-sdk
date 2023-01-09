@@ -124,6 +124,17 @@ void main() {
     });
   });
 
+  group('variable', () {
+    test('get variable', () {
+      DVCUser user = DVCUserBuilder().userId('user1').build();
+      DVCClient devcycleFlutterClientSdkPlugin =
+          DVCClientBuilder().environmentKey('SDK_KEY').user(user).build();
+      devcycleFlutterClientSdkPlugin.variable('test-key', 'default-value');
+      expect(methodCall?.method, 'variable');
+      expect(methodCall?.arguments, {'key': 'test-key', 'defaultValue': 'default-value'});
+    });
+  });
+
   group('allFeatures', () {
     test('fetch all features', () {
       DVCUser user = DVCUserBuilder().userId('user1').build();
