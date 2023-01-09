@@ -61,6 +61,7 @@ class DVCClient {
         if (error != null) {
           print(error);
           callback(error);
+          _identifyCallbacks.remove(call.arguments['callbackId']);
           return;
         }
 
@@ -68,12 +69,7 @@ class DVCClient {
         Map<String, Map<String, dynamic>> variables =
             call.arguments['variables'];
         for (final entry in variables.entries) {
-          parsedVariables[entry.key] = Variable.fromCodec({
-            "id": entry.value["id"],
-            "key": entry.value["key"],
-            "type": entry.value["type"],
-            "value": entry.value["value"],
-          });
+          parsedVariables[entry.key] = Variable.fromCodec(entry.value);
         }
         callback(parsedVariables);
         _identifyCallbacks.remove(call.arguments['callbackId']);
@@ -88,6 +84,7 @@ class DVCClient {
         if (error != null) {
           print(error);
           callback(error);
+          _resetCallbacks.remove(call.arguments['callbackId']);
           return;
         }
         Map<String, Variable> parsedVariables = Map();
