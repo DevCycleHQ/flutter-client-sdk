@@ -58,7 +58,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
             callbackArgs["error"] = error
             self.channel.invokeMethod("userIdentified", arguments: callbackArgs)
           } else {
-            callbackArgs["variables"] = self.userVariablesToMap(variables: variables ?? [:])
+            callbackArgs["variables"] = self.variablesToMap(variables: variables ?? [:])
             self.channel.invokeMethod("userIdentified", arguments: callbackArgs)
           }
         })
@@ -73,11 +73,15 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
           callbackArgs["error"] = error
           self.channel.invokeMethod("userReset", arguments: callbackArgs)
         } else {
-          callbackArgs["variables"] = self.userVariablesToMap(variables: variables ?? [:])
+          callbackArgs["variables"] = self.variablesToMap(variables: variables ?? [:])
           self.channel.invokeMethod("userReset", arguments: callbackArgs)
         }
       })
       result(nil)
+    case "allFeatures":
+      result(self.featuresToMap(self.dvcClient?.allFeatures()))
+    case "allVariables":
+      result(self.variablesToMap(self.dvcClient?.allVariables()))
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
     case "variable":
@@ -154,7 +158,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     return options
   }
 
-  private func userVariablesToMap(variables: [String: Any]) -> [String: Any] {
+  private func variablesToMap(variables: [String: Variable]) -> [String: Any] {
     var map: [String: Any] = [:]
     for (key, value) in variables {
         map[key] = self.variableToMap(variable: value as! DVCVariable<Any>)
@@ -164,9 +168,31 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
 
   private func variableToMap(variable: DVCVariable<Any>) -> [String: Any] {
     var map: [String: Any] = [:]
+    map["id"] = variable._id
     map["key"] = variable.key
-    map["value"] = variable.value
     map["type"] = variable.type
+    map["value"] = variable.value
+    map["evalReason"] = variable.evalReason
+    return map
+  }
+
+  private func featuresToMap(features: [String: Feature]) -> [String: Any] {
+    var map: [String: Any] = [:]
+    for (key, value) in features {
+        map[key] = self.featureToMap(feature: value)
+    }
+    return map
+  }
+
+  private func featureToMap(feature: Feature) -> [String: String] {
+    var map: [String: String] = [:]
+    map["id"] = feature._id
+    map["key"] = feature.key
+    map["type"] = feature.type
+    map["variation"] = feature.variation
+    map["evalReason"] = feature.evalReason
+    map["variationKey"] = feature.variationKey
+    map["variationName"] = feature.variationName
     return map
   }
 }
