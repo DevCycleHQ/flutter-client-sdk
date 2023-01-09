@@ -45,6 +45,15 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
       result(nil)
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
+    case "variable":
+      if let dvcClient = self.dvcClient {
+        let variableKey = args?["variableKey"] as? String
+        let defaultValue = args?["defaultValue"] as? String
+        let variable = self.dvcClient.variable(key: variableKey ?? "", defaultValue: defaultValue ?? "")
+        result(variable)
+      } else {
+        result(nil)
+      }
     default:
       result(FlutterMethodNotImplemented)
     }
