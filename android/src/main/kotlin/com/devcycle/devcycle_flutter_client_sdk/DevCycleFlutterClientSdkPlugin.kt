@@ -130,6 +130,27 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
           client.track(event)
         }
       }
+      "flushEvents" -> {
+        val callbackId = call.argument("callbackId") as String?
+        val callback = object: DVCCallback<String> {
+          override fun onSuccess(result: String) {
+            val args = mutableMapOf<String, Any?>()
+            args["error"] = null
+            args["callbackId"] = callbackId
+            args["result"] = result
+            callFlutter("eventsFlushed", args)
+          }
+
+          override fun onError(t: Throwable) {
+            val args = mutableMapOf<String, Any?>()
+            args["error"] = t
+            args["callbackId"] = callbackId
+            callFlutter("flushEvents", args)
+          }
+        }
+
+          client.flushEvents(callback)
+      }
       "getPlatformVersion" -> {
         res.success("Android ${android.os.Build.VERSION.RELEASE}")
       }
