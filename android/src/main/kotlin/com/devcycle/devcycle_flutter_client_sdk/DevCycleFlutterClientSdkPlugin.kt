@@ -75,6 +75,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
           override fun onError(t: Throwable) {
             val args = mutableMapOf<String, Any>()
             args["error"] = t
+            args["callbackId"] = callbackId
             callFlutter("userIdentified", args)
           }
         }
@@ -94,6 +95,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
           override fun onError(t: Throwable) {
             val args = mutableMapOf<String, Any>()
             args["error"] = t
+            args["callbackId"] = callbackId
             callFlutter("userReset", args)
           }
         }
