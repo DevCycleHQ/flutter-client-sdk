@@ -5,7 +5,7 @@ enum VariableType {
   json
 }
 
-class Variable<T> {
+class DVCVariable<T> {
   /// unique database id
   String? id;
 
@@ -20,8 +20,8 @@ class Variable<T> {
   
   bool? isDefaulted;
 
-  static Variable fromCodec(Map<String, dynamic> map) {
-    Variable variable = Variable();
+  static DVCVariable fromCodec(Map<String, dynamic> map) {
+    DVCVariable variable = DVCVariable();
     String mapType = map['type'].toString().toLowerCase();
 
     variable.id = map['id'];

@@ -66,14 +66,14 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         val callbackId = call.argument("callbackId") as String?
         val callback = object: DVCCallback<Map<String, Variable<Any>>> {
           override fun onSuccess(result: Map<String, Variable<Any>>) {
-            val args = mutableMapOf<String, Any>()
+            val args = mutableMapOf<String, Any?>()
             args["error"] = null
             args["callbackId"] = callbackId
-            args["variables"] = userVariablesToMap(result)
+            args["variables"] = variablesToMap(result)
             callFlutter("userIdentified", args)
           }
           override fun onError(t: Throwable) {
-            val args = mutableMapOf<String, Any>()
+            val args = mutableMapOf<String, Any?>()
             args["error"] = t
             args["callbackId"] = callbackId
             callFlutter("userIdentified", args)
@@ -86,14 +86,14 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         val callbackId = call.argument("callbackId") as String?
         val callback = object: DVCCallback<Map<String, Variable<Any>>> {
           override fun onSuccess(result: Map<String, Variable<Any>>) {
-            val args = mutableMapOf<String, Any>()
+            val args = mutableMapOf<String, Any?>()
             args["error"] = null
             args["callbackId"] = callbackId
-            args["variables"] = userVariablesToMap(result)
+            args["variables"] = variablesToMap(result)
             callFlutter("userReset", args)
           }
           override fun onError(t: Throwable) {
-            val args = mutableMapOf<String, Any>()
+            val args = mutableMapOf<String, Any?>()
             args["error"] = t
             args["callbackId"] = callbackId
             callFlutter("userReset", args)
@@ -110,6 +110,14 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
           res.success(response)
         }
         res.success(null)
+      }
+      "allFeatures" -> {
+        val features = featuresToMap(client.allFeatures())
+        res.success(features)
+      }
+      "allVariables" -> {
+        val variables = variablesToMap(client.allVariables())
+        res.success(variables)
       }
       "getPlatformVersion" -> {
         res.success("Android ${android.os.Build.VERSION.RELEASE}")
@@ -173,22 +181,46 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     return builder.build()
   }
 
-  private fun userVariablesToMap(variables: Map<String, Variable<Any>>): Map<String, Map<String, Any>> {
-    val map = mutableMapOf<String, Map<String, Any>>()
+  private fun featuresToMap(features: Map<String, Feature>?): Map<String, Map<String, Any?>> {
+    val map = mutableMapOf<String, Map<String, Any?>>()
 
-    variables.forEach { (key, variable) ->
+    features?.forEach { (key, feature) ->
+      map[key] = featureToMap(feature)
+    }
+
+    return map
+  }
+
+  private fun featureToMap(feature: Feature): Map<String, Any?> {
+    val featureAsMap = mutableMapOf<String, Any?>()
+    featureAsMap["id"] = feature.id
+    featureAsMap["key"] = feature.key
+    featureAsMap["type"] = feature.type.toString()
+    featureAsMap["variation"] = feature.variation
+    featureAsMap["evalReason"] = feature.evalReason
+    featureAsMap["variationName"] = feature.variationName
+    featureAsMap["variationKey"] = feature.variationKey
+
+    return featureAsMap
+  }
+
+  private fun variablesToMap(variables: Map<String, Variable<Any>>?): Map<String, Map<String, Any?>> {
+    val map = mutableMapOf<String, Map<String, Any?>>()
+
+    variables?.forEach { (key, variable) ->
       map[key] = variableToMap(variable)
     }
 
     return map
   }
 
-  private fun variableToMap(variable: Variable<Any>): Map<String, Any> {
-    val variableAsMap = mutableMapOf<String, Any>()
-    variableAsMap["id"] = variable.id ?: ""
+  private fun variableToMap(variable: Variable<Any>): Map<String, Any?> {
+    val variableAsMap = mutableMapOf<String, Any?>()
+    variableAsMap["id"] = variable.id
     variableAsMap["key"] = variable.key
     variableAsMap["type"] = variable.type.toString()
     variableAsMap["value"] = variable.value
+    variableAsMap["evalReason"] = variable.evalReason
 
     return variableAsMap
   }
