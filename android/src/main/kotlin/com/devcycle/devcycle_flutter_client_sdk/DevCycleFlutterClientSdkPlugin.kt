@@ -92,6 +92,15 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
 
         client.resetUser(callback)
       }
+      "variable" -> {
+        if (::client.isInitialized) {
+          val response = HashMap<String, Any>()
+          val variable = client.variable(call.argument("key")!!, call.argument("defaultValue")!!)
+          response[variable.key] = variable
+          res.success(response)
+        }
+        res.success(null)
+      }
       "getPlatformVersion" -> {
         res.success("Android ${android.os.Build.VERSION.RELEASE}")
       }
