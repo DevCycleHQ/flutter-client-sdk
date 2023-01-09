@@ -14,7 +14,7 @@ class DVCEvent {
     final Map<String, dynamic> result = <String, dynamic>{};
     result['type'] = type;
     result['target'] = target;
-    result['value'] = value;
+    result['value'] = value.toString();
     result['metaData'] = metaData;
     return result;
   }

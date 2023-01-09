@@ -13,6 +13,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import java.math.BigDecimal
 
 /** DevCycleFlutterClientSdkPlugin */
 class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
@@ -118,6 +119,24 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
       "allVariables" -> {
         val variables = variablesToMap(client.allVariables())
         res.success(variables)
+      }
+      "track" -> {
+        if (::client.isInitialized) {
+          val valueStr = call.argument("value") as String?
+          val value_double = valueStr?.toDouble();
+          var value: java.math.BigDecimal = java.math.BigDecimal(0);
+          if(value_double != null) {
+            value = BigDecimal.valueOf(value_double)
+          }
+
+          var event = DVCEvent.builder()
+            .withType(call.argument("type")!!) //Only Required
+            .withTarget(call.argument("target"))
+            .withValue(value)
+            .withMetaData(call.argument("metaData"))
+            .build()
+          client.track(event)
+        }
       }
       "getPlatformVersion" -> {
         res.success("Android ${android.os.Build.VERSION.RELEASE}")

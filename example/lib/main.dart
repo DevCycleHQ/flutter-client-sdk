@@ -19,9 +19,9 @@ class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   String _displayValue = '';
   final _dvcClient = DVCClientBuilder()
-    .environmentKey('SDK_KEY')
-    .user(DVCUserBuilder().userId('123').build())
-    .build();
+      .environmentKey('dvc_mobile_test_key')
+      .user(DVCUserBuilder().userId('123').build())
+      .build();
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
     // We also handle the message potentially returning null.
     try {
       platformVersion =
-        await _dvcClient.getPlatformVersion() ?? 'Unknown platform version';
+          await _dvcClient.getPlatformVersion() ?? 'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -56,20 +56,31 @@ class _MyAppState extends State<MyApp> {
   }
 
   void identifyUser() {
-    _dvcClient.identifyUser(DVCUserBuilder().userId('test_user').build());
+    _dvcClient.identifyUser(DVCUserBuilder().userId('test_user_123').build());
+  }
+
+  void trackEvent() {
+    DVCEvent event = DVCEventBuilder()
+        .target('target-str')
+        .type('flutter-test')
+        .value(10.0)
+        .metaData({'custom_key': 'value'}).build();
+    _dvcClient.track(event);
   }
 
   void allFeatures() async {
     Map<String, DVCFeature> features = await _dvcClient.allFeatures();
-     setState(() {
+    setState(() {
       _displayValue = features.keys.toString();
     });
   }
 
   void allVariables() async {
     Map<String, DVCVariable> variables = await _dvcClient.allVariables();
-     setState(() {
-      _displayValue = variables.values.map((variable) => "${variable.key}: ${variable.value}").toString();
+    setState(() {
+      _displayValue = variables.values
+          .map((variable) => "${variable.key}: ${variable.value}")
+          .toString();
     });
   }
 
@@ -81,36 +92,32 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Running on: $_platformVersion\n'),
-              ElevatedButton(
-                onPressed: allFeatures,
-                child: const Text('All Features')
-              ),
-              ElevatedButton(
-                onPressed: allVariables,
-                child: const Text('All Variables')
-              ),
-              TextButton(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Running on: $_platformVersion\n'),
+            ElevatedButton(
+                onPressed: allFeatures, child: const Text('All Features')),
+            ElevatedButton(
+                onPressed: allVariables, child: const Text('All Variables')),
+            TextButton(
                 style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.blue),
                 ),
                 onPressed: identifyUser,
-                child: const Text('Identify User')
-              ),
-              TextButton(
+                child: const Text('Identify User')),
+            TextButton(
                 style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.blue),
                 ),
                 onPressed: resetUser,
-                child: const Text('Reset User')
-              ),
-              Text(_displayValue)
-            ],
-          )
-        ),
+                child: const Text('Reset User')),
+            ElevatedButton(onPressed: trackEvent, child: const Text('Track')),
+            Text(_displayValue)
+          ],
+        )),
       ),
     );
   }

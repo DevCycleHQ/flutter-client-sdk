@@ -43,8 +43,11 @@ class MethodChannelDevCycleFlutterClientSdk
 
   @override
   Future<DVCVariable?> variable(String key, dynamic defaultValue) async {
-    Map<String, dynamic> result = await methodChannel.invokeMethod('variable', {"key": key, "defaultValue": defaultValue}) ?? {};
-    DVCVariable? variable = result.isNotEmpty ? DVCVariable.fromCodec(result) : null;
+    Map<String, dynamic> result = await methodChannel.invokeMethod(
+            'variable', {"key": key, "defaultValue": defaultValue}) ??
+        {};
+    DVCVariable? variable =
+        result.isNotEmpty ? DVCVariable.fromCodec(result) : null;
     return variable;
   }
 
@@ -75,6 +78,6 @@ class MethodChannelDevCycleFlutterClientSdk
 
   void track(DVCEvent event) {
     Map<String, dynamic> codecEvent = event.toCodec();
-    methodChannel.invokeMethod('track', {"event": codecEvent});
+    methodChannel.invokeMethod('track', codecEvent);
   }
 }
