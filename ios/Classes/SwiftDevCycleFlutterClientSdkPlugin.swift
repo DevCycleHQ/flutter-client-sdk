@@ -46,10 +46,10 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
     case "variable":
-      if let dvcClient = self.dvcClient {
-        let key = args?["key"] as? String
-        let defaultValue = args?["defaultValue"] as? String
-        let variable = self.dvcClient.variable(key: key ?? "", defaultValue: defaultValue ?? "")
+      let key = args?["key"] as? String
+      let defaultValue = args?["defaultValue"] as? String
+      if let dvcClient = self.dvcClient, let varKey = key, let varDefaultValue = defaultValue {
+        let variable = self.dvcClient.variable(key: varKey, defaultValue: defaultValue)
         result(variable)
       } else {
         result(nil)
