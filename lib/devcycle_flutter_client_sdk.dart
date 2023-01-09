@@ -5,6 +5,7 @@ import 'devcycle_flutter_client_sdk_platform_interface.dart';
 import 'dvc_user.dart';
 import 'dvc_options.dart';
 import 'variable.dart';
+import 'feature.dart';
 
 export 'dvc_user.dart';
 export 'dvc_event.dart';
@@ -76,6 +77,16 @@ class DVCClient {
     } else {
       DevCycleFlutterClientSdkPlatform.instance.resetUser();
     }
+  }
+
+  Future<Map<String, Feature>> allFeatures() async {
+    final features = await DevCycleFlutterClientSdkPlatform.instance.allFeatures();
+    return features;
+  }
+
+  Future<Map<String, Variable>> allVariables() async {
+    final variables = await DevCycleFlutterClientSdkPlatform.instance.allVariables();
+    return variables;
   }
 }
 

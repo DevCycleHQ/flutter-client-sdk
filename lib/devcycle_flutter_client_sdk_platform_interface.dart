@@ -2,8 +2,8 @@ import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'devcycle_flutter_client_sdk_method_channel.dart';
-import 'dvc_user.dart';
-import 'dvc_options.dart';
+import 'feature.dart';
+import 'variable.dart';
 
 abstract class DevCycleFlutterClientSdkPlatform extends PlatformInterface {
   /// Constructs a DevCycleFlutterClientSdkPlatform.
@@ -41,5 +41,13 @@ abstract class DevCycleFlutterClientSdkPlatform extends PlatformInterface {
 
   void resetUser([String? callbackId]) {
     throw UnimplementedError('resetUser() has not been implemented.');
+  }
+
+  Future<Map<String, Feature>> allFeatures() {
+    throw UnimplementedError('allFeatures() has not been implemented.');
+  }
+
+  Future<Map<String, Variable>> allVariables() {
+    throw UnimplementedError('allVariables() has not been implemented.');
   }
 }
