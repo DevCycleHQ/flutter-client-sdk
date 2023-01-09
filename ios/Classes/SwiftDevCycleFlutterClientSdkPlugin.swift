@@ -18,62 +18,65 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    let args = call.arguments as? [String: Any]
-    let envKey = args?["environmentKey"] as? String
     var user: DVCUser?
+    let args = call.arguments as? [String: Any]
+    let _callbackId = args?["callbackId"] as? String
+
     if let userArg = args?["user"] as? [String: Any] {
       user = getUserFromDict(dict: userArg)
     }
     
-    let options = args?["options"] as? [String: Any]
-    
     switch call.method {
     case "initialize":
+      let envKey = args?["environmentKey"] as? String
+      let options = args?["options"] as? [String: Any]
       if let dvcUser = user, let dvcKey = envKey {
         self.dvcClient = try? DVCClient.builder()
           .environmentKey(dvcKey)
           .user(dvcUser)
           .options(getOptionsFromDict(dict: options ?? [:] ))
           .build(onInitialized: { error in
+            var callbackArgs: [String:Any] = [
+              "callbackId": _callbackId
+            ]
             if (error != nil) {
-              self.channel.invokeMethod("clientInitialized", arguments: error)
+              callbackArgs["error"] = error
+              self.channel.invokeMethod("clientInitialized", arguments: callbackArgs)
             } else {
-              self.channel.invokeMethod("clientInitialized", arguments: nil)
+              self.channel.invokeMethod("clientInitialized", arguments: callbackArgs)
             }
         })
       }
       result(nil)
     case "identifyUser":
-        if let dvcUser = user, let _callbackId = args?["callbackId"] as? String {
-            try? self.dvcClient?.identifyUser(user: dvcUser, callback: { error, variables in
-                var callbackArgs: [String:Any] = [
-                    "callbackId": _callbackId
-                ]
-                if (error != nil) {
-                  callbackArgs["error"] = error
-                  self.channel.invokeMethod("userIdentified", arguments: callbackArgs)
-                } else {
-                  callbackArgs["variables"] = self.userVariablesToMap(variables: variables ?? [:])
-                  self.channel.invokeMethod("userIdentified", arguments: callbackArgs)
-                }
-            })
-        }
+      if let dvcUser = user {
+        try? self.dvcClient?.identifyUser(user: dvcUser, callback: { error, variables in
+          var callbackArgs: [String:Any] = [
+            "callbackId": _callbackId
+          ]
+          if (error != nil) {
+            callbackArgs["error"] = error
+            self.channel.invokeMethod("userIdentified", arguments: callbackArgs)
+          } else {
+            callbackArgs["variables"] = self.userVariablesToMap(variables: variables ?? [:])
+            self.channel.invokeMethod("userIdentified", arguments: callbackArgs)
+          }
+        })
+      }
       result(nil)
     case "resetUser":
-        if let _callbackId = args?["callbackId"] as? String {
-            try? self.dvcClient?.resetUser(callback: { error, variables in
-                var callbackArgs: [String:Any] = [
-                    "callbackId": _callbackId
-                ]
-                if (error != nil) {
-                  callbackArgs["error"] = error
-                  self.channel.invokeMethod("userReset", arguments: callbackArgs)
-                } else {
-                  callbackArgs["variables"] = self.userVariablesToMap(variables: variables ?? [:])
-                  self.channel.invokeMethod("userReset", arguments: callbackArgs)
-                }
-            })
+      try? self.dvcClient?.resetUser(callback: { error, variables in
+        var callbackArgs: [String:Any] = [
+          "callbackId": _callbackId
+        ]
+        if (error != nil) {
+          callbackArgs["error"] = error
+          self.channel.invokeMethod("userReset", arguments: callbackArgs)
+        } else {
+          callbackArgs["variables"] = self.userVariablesToMap(variables: variables ?? [:])
+          self.channel.invokeMethod("userReset", arguments: callbackArgs)
         }
+      })
       result(nil)
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
