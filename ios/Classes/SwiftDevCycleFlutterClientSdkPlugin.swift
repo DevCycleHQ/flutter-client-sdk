@@ -82,10 +82,14 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
       result("iOS " + UIDevice.current.systemVersion)
     case "variable":
       if let dvcClient = self.dvcClient, let varKey = args?["key"] as? String, let varDefaultValue = args?["defaultValue"] as? String {
-        let variable = self.dvcClient.variable(key: varKey, defaultValue: varDefaultValue)
+        let variable = dvcClient.variable(key: varKey, defaultValue: varDefaultValue)
         result(variable)
       } else {
         result(nil)
+      }
+    case "track":
+      if let event = args?["event"] as? [String: Any], let dvcEvent = getEventFromDict(dict: event) {
+        self.dvcClient?.track(dvcEvent)
       }
     default:
       result(FlutterMethodNotImplemented)
@@ -152,6 +156,33 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
 
     let options = optionsBuilder.build()
     return options
+  }
+  
+  private func getEventFromDict(dict: [String: Any?]) -> DVCEvent? {
+    let eventBuilder = DVCEvent.builder()
+    
+    if let type = dict["type"] as? String {
+      eventBuilder.type(type)
+    }
+    
+    if let target = dict["target"] as? String {
+      eventBuilder.target(target)
+    }
+    
+    if let clientDate = dict["clientDate"] as? Date {
+      eventBuilder.clientDate(clientDate)
+    }
+    
+    if let value = dict["value"] as? Int {
+      eventBuilder.value(value)
+    }
+    
+    if let metaData = dict["metaData"] as? [String: Any] {
+      eventBuilder.metaData(metaData)
+    }
+    
+    let event = try? eventBuilder.build()
+    return event
   }
 
   private func userVariablesToMap(variables: [String: Any]) -> [String: Any] {
