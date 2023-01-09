@@ -5,7 +5,7 @@ enum FeatureType {
   ops
 }
 
-class Feature {
+class DVCFeature {
   /// unique database id
   String? id;
 
@@ -27,8 +27,8 @@ class Feature {
   /// Variation key
   String? variationKey;
 
-  static Feature fromCodec(Map<String, dynamic> map) {
-    Feature feature = Feature();
+  static DVCFeature fromCodec(Map<String, dynamic> map) {
+    DVCFeature feature = DVCFeature();
 
     feature.id = map['id'];
     feature.key = map['key'];

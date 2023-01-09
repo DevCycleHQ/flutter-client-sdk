@@ -17,6 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
+  String _displayValue = '';
   final _dvcClient = DVCClientBuilder()
     .environmentKey('SDK_KEY')
     .user(DVCUserBuilder().userId('123').build())
@@ -58,6 +59,20 @@ class _MyAppState extends State<MyApp> {
     _dvcClient.identifyUser(DVCUserBuilder().userId('test_user').build());
   }
 
+  void allFeatures() async {
+    Map<String, DVCFeature> features = await _dvcClient.allFeatures();
+     setState(() {
+      _displayValue = features.keys.toString();
+    });
+  }
+
+  void allVariables() async {
+    Map<String, DVCVariable> variables = await _dvcClient.allVariables();
+     setState(() {
+      _displayValue = variables.values.map((variable) => "${variable.key}: ${variable.value}").toString();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -70,6 +85,14 @@ class _MyAppState extends State<MyApp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Running on: $_platformVersion\n'),
+              ElevatedButton(
+                onPressed: allFeatures,
+                child: const Text('All Features')
+              ),
+              ElevatedButton(
+                onPressed: allVariables,
+                child: const Text('All Variables')
+              ),
               TextButton(
                 style: ButtonStyle(
                   foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
@@ -83,7 +106,8 @@ class _MyAppState extends State<MyApp> {
                 ),
                 onPressed: resetUser,
                 child: const Text('Reset User')
-              )
+              ),
+              Text(_displayValue)
             ],
           )
         ),

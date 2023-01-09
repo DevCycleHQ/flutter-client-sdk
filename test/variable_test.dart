@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:devcycle_flutter_client_sdk/variable.dart';
+import 'package:devcycle_flutter_client_sdk/dvc_variable.dart';
 
 void main() {
   test('builds string variable object from a map', () {
@@ -10,7 +10,7 @@ void main() {
       "value": "hello world",
       "isDefaulted": false
     };
-    Variable variable = Variable.fromCodec(codecVariable);
+    DVCVariable variable = DVCVariable.fromCodec(codecVariable);
     expect(variable.id, equals('variable1'));
     expect(variable.key, equals('variable-one'));
     expect(variable.type.toString(), equals('VariableType.string'));
@@ -25,7 +25,7 @@ void main() {
       "type": "Boolean",
       "value": true
     };
-    Variable variable = Variable.fromCodec(codecVariable);
+    DVCVariable variable = DVCVariable.fromCodec(codecVariable);
     expect(variable.id, equals('variable1'));
     expect(variable.key, equals('variable-one'));
     expect(variable.type.toString(), equals('VariableType.boolean'));
@@ -39,7 +39,7 @@ void main() {
       "type": "Number",
       "value": 100
     };
-    Variable variable = Variable.fromCodec(codecVariable);
+    DVCVariable variable = DVCVariable.fromCodec(codecVariable);
     expect(variable.id, equals('variable1'));
     expect(variable.key, equals('variable-one'));
     expect(variable.type.toString(), equals('VariableType.number'));
@@ -53,7 +53,7 @@ void main() {
       "type": "JSON",
       "value": { "hello": "world" }
     };
-    Variable variable = Variable.fromCodec(codecVariable);
+    DVCVariable variable = DVCVariable.fromCodec(codecVariable);
     expect(variable.id, equals('variable1'));
     expect(variable.key, equals('variable-one'));
     expect(variable.type.toString(), equals('VariableType.json'));

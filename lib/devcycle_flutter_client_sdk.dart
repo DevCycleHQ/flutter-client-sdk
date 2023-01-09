@@ -5,16 +5,18 @@ import 'package:uuid/uuid.dart';
 import 'devcycle_flutter_client_sdk_platform_interface.dart';
 import 'dvc_user.dart';
 import 'dvc_options.dart';
-import 'variable.dart';
-import 'feature.dart';
+import 'dvc_variable.dart';
+import 'dvc_feature.dart';
 
 export 'dvc_user.dart';
 export 'dvc_event.dart';
 export 'dvc_options.dart';
+export 'dvc_feature.dart';
+export 'dvc_variable.dart';
 
 typedef ClientInitializedCallback = void Function(Error? error);
-typedef VariableUpdateCallback = void Function(Variable variable);
-typedef UserUpdateCallback = void Function(Map<String, Variable> variables);
+typedef VariableUpdateCallback = void Function(DVCVariable variable);
+typedef UserUpdateCallback = void Function(Map<String, DVCVariable> variables);
 
 class DVCClient {
   static const _methodChannel = MethodChannel('devcycle_flutter_client_sdk');
@@ -46,7 +48,7 @@ class DVCClient {
         }
         break;
       case 'variableUpdated':
-        Variable variable = Variable.fromCodec(call.arguments);
+        DVCVariable variable = DVCVariable.fromCodec(call.arguments);
         List<VariableUpdateCallback> callbacks =
             _variableUpdateCallbacks[variable.key] ?? [];
         for (final callback in callbacks) {
@@ -67,11 +69,11 @@ class DVCClient {
           return;
         }
 
-        Map<String, Variable> parsedVariables = Map();
+        Map<String, DVCVariable> parsedVariables = Map();
         Map<String, Map<String, dynamic>> variables =
             call.arguments['variables'];
         for (final entry in variables.entries) {
-          parsedVariables[entry.key] = Variable.fromCodec(entry.value);
+          parsedVariables[entry.key] = DVCVariable.fromCodec(entry.value);
         }
         callback(parsedVariables);
         _identifyCallbacks.remove(call.arguments['callbackId']);
@@ -89,11 +91,11 @@ class DVCClient {
           _resetCallbacks.remove(call.arguments['callbackId']);
           return;
         }
-        Map<String, Variable> parsedVariables = Map();
+        Map<String, DVCVariable> parsedVariables = Map();
         Map<String, Map<String, dynamic>> variables =
             call.arguments['variables'];
         for (final entry in variables.entries) {
-          parsedVariables[entry.key] = Variable.fromCodec(entry.value);
+          parsedVariables[entry.key] = DVCVariable.fromCodec(entry.value);
         }
         callback(parsedVariables);
         _resetCallbacks.remove(call.arguments['callbackId']);
@@ -125,19 +127,17 @@ class DVCClient {
     }
   }
 
-  Future<Variable?> variable(String key, dynamic defaultValue) {
+  Future<DVCVariable?> variable(String key, dynamic defaultValue) {
     return DevCycleFlutterClientSdkPlatform.instance.variable(key, defaultValue);
   }
 
-  Future<Map<String, Feature>> allFeatures() async {
-    final features =
-        await DevCycleFlutterClientSdkPlatform.instance.allFeatures();
+  Future<Map<String, DVCFeature>> allFeatures() async {
+    final features = await DevCycleFlutterClientSdkPlatform.instance.allFeatures();
     return features;
   }
 
-  Future<Map<String, Variable>> allVariables() async {
-    final variables =
-        await DevCycleFlutterClientSdkPlatform.instance.allVariables();
+  Future<Map<String, DVCVariable>> allVariables() async {
+    final variables = await DevCycleFlutterClientSdkPlatform.instance.allVariables();
     return variables;
   }
 

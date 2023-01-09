@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:devcycle_flutter_client_sdk/feature.dart';
+import 'package:devcycle_flutter_client_sdk/dvc_feature.dart';
 
 void main() {
   test('builds feature object from a map', () {
@@ -11,7 +11,7 @@ void main() {
       "variationName": "Variation One",
       "variationKey": "var-one"
     };
-    Feature feature = Feature.fromCodec(codecFeature);
+    DVCFeature feature = DVCFeature.fromCodec(codecFeature);
     expect(feature.id, equals('feature1'));
     expect(feature.key, equals('feature-one'));
     expect(feature.type.toString(), equals('FeatureType.release'));

@@ -1,11 +1,8 @@
 import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk.dart';
-import 'package:devcycle_flutter_client_sdk/variable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'devcycle_flutter_client_sdk_platform_interface.dart';
-import 'feature.dart';
-import 'variable.dart';
 
 /// An implementation of [DevCycleFlutterClientSdkPlatform] that uses method channels.
 class MethodChannelDevCycleFlutterClientSdk
@@ -45,29 +42,34 @@ class MethodChannelDevCycleFlutterClientSdk
   }
 
   @override
-  Future<Variable?> variable(String key, dynamic defaultValue) async {
+  Future<DVCVariable?> variable(String key, dynamic defaultValue) async {
     Map<String, dynamic> result = await methodChannel.invokeMethod('variable', {"key": key, "defaultValue": defaultValue}) ?? {};
-    Variable? variable = result.isNotEmpty ? Variable.fromCodec(result) : null;
+    DVCVariable? variable = result.isNotEmpty ? DVCVariable.fromCodec(result) : null;
     return variable;
   }
 
-  @override
-  Future<Map<String, Feature>> allFeatures() async {
-    Map<String, Map<String, dynamic>> result =
-        await methodChannel.invokeMethod('allFeatures') ?? {};
-    Map<String, Feature> features = {};
+  Future<Map<String, DVCFeature>> allFeatures() async {
+    final result = await methodChannel.invokeMethod('allFeatures') ?? {};
+    final map = Map<String, dynamic>.from(result);
+    Map<String, DVCFeature> features = {};
 
-    result.forEach((key, value) => features[key] = Feature.fromCodec(value));
+    map.forEach((key, value) {
+      final codec = Map<String, dynamic>.from(value);
+      features[key] = DVCFeature.fromCodec(codec);
+    });
     return features;
   }
 
   @override
-  Future<Map<String, Variable>> allVariables() async {
-    Map<String, Map<String, dynamic>> result =
-        await methodChannel.invokeMethod('allVariables') ?? {};
-    Map<String, Variable> variables = {};
+  Future<Map<String, DVCVariable>> allVariables() async {
+    final result = await methodChannel.invokeMethod('allVariables') ?? {};
+    final map = Map<String, dynamic>.from(result);
+    Map<String, DVCVariable> variables = {};
 
-    result.forEach((key, value) => variables[key] = Variable.fromCodec(value));
+    map.forEach((key, value) {
+      final codec = Map<String, dynamic>.from(value);
+      variables[key] = DVCVariable.fromCodec(codec);
+    });
     return variables;
   }
 
