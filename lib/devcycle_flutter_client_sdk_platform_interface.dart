@@ -50,4 +50,8 @@ abstract class DevCycleFlutterClientSdkPlatform extends PlatformInterface {
   Future<Map<String, Variable>> allVariables() {
     throw UnimplementedError('allVariables() has not been implemented.');
   }
+
+  void track(DVCEvent event) {
+    throw UnimplementedError('track() has not been implemented.');
+  }
 }

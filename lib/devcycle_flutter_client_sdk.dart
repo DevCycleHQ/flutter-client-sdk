@@ -1,3 +1,4 @@
+import 'package:devcycle_flutter_client_sdk/dvc_event.dart';
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 
@@ -125,13 +126,19 @@ class DVCClient {
   }
 
   Future<Map<String, Feature>> allFeatures() async {
-    final features = await DevCycleFlutterClientSdkPlatform.instance.allFeatures();
+    final features =
+        await DevCycleFlutterClientSdkPlatform.instance.allFeatures();
     return features;
   }
 
   Future<Map<String, Variable>> allVariables() async {
-    final variables = await DevCycleFlutterClientSdkPlatform.instance.allVariables();
+    final variables =
+        await DevCycleFlutterClientSdkPlatform.instance.allVariables();
     return variables;
+  }
+
+  void track(DVCEvent event) {
+    DevCycleFlutterClientSdkPlatform.instance.track(event);
   }
 }
 
