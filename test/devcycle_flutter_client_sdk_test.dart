@@ -127,10 +127,8 @@ void main() {
   group('allFeatures', () {
     test('fetch all features', () {
       DVCUser user = DVCUserBuilder().userId('user1').build();
-      DVCClient devcycleFlutterClientSdkPlugin = DVCClientBuilder()
-        .user(user)
-        .environmentKey('123')
-        .build();
+      DVCClient devcycleFlutterClientSdkPlugin =
+          DVCClientBuilder().user(user).environmentKey('123').build();
       devcycleFlutterClientSdkPlugin.allFeatures();
       expect(methodCall?.method, 'allFeatures');
     });
@@ -139,12 +137,38 @@ void main() {
   group('allVariables', () {
     test('fetch all variables', () {
       DVCUser user = DVCUserBuilder().userId('user1').build();
-      DVCClient devcycleFlutterClientSdkPlugin = DVCClientBuilder()
-        .user(user)
-        .environmentKey('123')
-        .build();
+      DVCClient devcycleFlutterClientSdkPlugin =
+          DVCClientBuilder().user(user).environmentKey('123').build();
       devcycleFlutterClientSdkPlugin.allVariables();
       expect(methodCall?.method, 'allVariables');
+    });
+  });
+  group('track', () {
+    test('track event with no properties', () {
+      DVCUser user = DVCUserBuilder().userId('user1').build();
+      DVCClient devcycleFlutterClientSdkPlugin =
+          DVCClientBuilder().environmentKey('SDK_KEY').user(user).build();
+      DVCEvent event =
+          DVCEventBuilder().type('my event type').target('my target').build();
+
+      devcycleFlutterClientSdkPlugin.track(event);
+      expect(methodCall?.method, 'track');
+      expect(methodCall?.arguments, {'event': event.toCodec()});
+    });
+
+    test('track event with properties', () {
+      DVCUser user = DVCUserBuilder().userId('user1').build();
+      DVCClient devcycleFlutterClientSdkPlugin =
+          DVCClientBuilder().environmentKey('SDK_KEY').user(user).build();
+      DVCEvent event = DVCEventBuilder()
+          .type('my event type')
+          .target('my target')
+          .value(1)
+          .metaData({"hello": "world"}).build();
+
+      devcycleFlutterClientSdkPlugin.track(event);
+      expect(methodCall?.method, 'track');
+      expect(methodCall?.arguments, {'event': event.toCodec()});
     });
   });
 }

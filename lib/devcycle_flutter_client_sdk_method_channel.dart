@@ -45,7 +45,8 @@ class MethodChannelDevCycleFlutterClientSdk
 
   @override
   Future<Map<String, Feature>> allFeatures() async {
-    Map<String, Map<String, dynamic>> result = await methodChannel.invokeMethod('allFeatures') ?? {};
+    Map<String, Map<String, dynamic>> result =
+        await methodChannel.invokeMethod('allFeatures') ?? {};
     Map<String, Feature> features = {};
 
     result.forEach((key, value) => features[key] = Feature.fromCodec(value));
@@ -54,10 +55,16 @@ class MethodChannelDevCycleFlutterClientSdk
 
   @override
   Future<Map<String, Variable>> allVariables() async {
-    Map<String, Map<String, dynamic>> result = await methodChannel.invokeMethod('allVariables') ?? {};
+    Map<String, Map<String, dynamic>> result =
+        await methodChannel.invokeMethod('allVariables') ?? {};
     Map<String, Variable> variables = {};
 
     result.forEach((key, value) => variables[key] = Variable.fromCodec(value));
     return variables;
+  }
+
+  void track(DVCEvent event) {
+    Map<String, dynamic> codecEvent = event.toCodec();
+    methodChannel.invokeMethod('track', {"event": codecEvent});
   }
 }
