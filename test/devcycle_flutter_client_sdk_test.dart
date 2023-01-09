@@ -131,7 +131,8 @@ void main() {
           DVCClientBuilder().environmentKey('SDK_KEY').user(user).build();
       devcycleFlutterClientSdkPlugin.variable('test-key', 'default-value');
       expect(methodCall?.method, 'variable');
-      expect(methodCall?.arguments, {'key': 'test-key', 'defaultValue': 'default-value'});
+      expect(methodCall?.arguments,
+          {'key': 'test-key', 'defaultValue': 'default-value'});
     });
   });
 
@@ -164,7 +165,7 @@ void main() {
 
       devcycleFlutterClientSdkPlugin.track(event);
       expect(methodCall?.method, 'track');
-      expect(methodCall?.arguments, {'event': event.toCodec()});
+      expect(methodCall?.arguments, event.toCodec());
     });
 
     test('track event with properties', () {
@@ -179,7 +180,7 @@ void main() {
 
       devcycleFlutterClientSdkPlugin.track(event);
       expect(methodCall?.method, 'track');
-      expect(methodCall?.arguments, {'event': event.toCodec()});
+      expect(methodCall?.arguments, event.toCodec());
     });
   });
 }
