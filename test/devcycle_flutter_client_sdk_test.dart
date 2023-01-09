@@ -123,4 +123,28 @@ void main() {
       expect(methodCall?.arguments, {'callbackId': null});
     });
   });
+
+  group('allFeatures', () {
+    test('fetch all features', () {
+      DVCUser user = DVCUserBuilder().userId('user1').build();
+      DVCClient devcycleFlutterClientSdkPlugin = DVCClientBuilder()
+        .user(user)
+        .environmentKey('123')
+        .build();
+      devcycleFlutterClientSdkPlugin.allFeatures();
+      expect(methodCall?.method, 'allFeatures');
+    });
+  });
+
+  group('allVariables', () {
+    test('fetch all variables', () {
+      DVCUser user = DVCUserBuilder().userId('user1').build();
+      DVCClient devcycleFlutterClientSdkPlugin = DVCClientBuilder()
+        .user(user)
+        .environmentKey('123')
+        .build();
+      devcycleFlutterClientSdkPlugin.allVariables();
+      expect(methodCall?.method, 'allVariables');
+    });
+  });
 }

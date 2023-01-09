@@ -1,10 +1,10 @@
 import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk.dart';
+import 'package:devcycle_flutter_client_sdk/variable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'devcycle_flutter_client_sdk_platform_interface.dart';
-import 'dvc_user.dart';
-import 'dvc_options.dart';
+import 'feature.dart';
 
 /// An implementation of [DevCycleFlutterClientSdkPlatform] that uses method channels.
 class MethodChannelDevCycleFlutterClientSdk
@@ -41,5 +41,23 @@ class MethodChannelDevCycleFlutterClientSdk
   @override
   void resetUser([String? callbackId]) {
     methodChannel.invokeMethod('resetUser', {"callbackId": callbackId});
+  }
+
+  @override
+  Future<Map<String, Feature>> allFeatures() async {
+    Map<String, Map<String, dynamic>> result = await methodChannel.invokeMethod('allFeatures') ?? {};
+    Map<String, Feature> features = {};
+
+    result.forEach((key, value) => features[key] = Feature.fromCodec(value));
+    return features;
+  }
+
+  @override
+  Future<Map<String, Variable>> allVariables() async {
+    Map<String, Map<String, dynamic>> result = await methodChannel.invokeMethod('allVariables') ?? {};
+    Map<String, Variable> variables = {};
+
+    result.forEach((key, value) => variables[key] = Variable.fromCodec(value));
+    return variables;
   }
 }
