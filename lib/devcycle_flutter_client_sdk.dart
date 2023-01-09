@@ -15,7 +15,6 @@ export 'dvc_feature.dart';
 export 'dvc_variable.dart';
 
 typedef ClientInitializedCallback = void Function(Error? error);
-typedef VariableUpdateCallback = void Function(DVCVariable variable);
 typedef UserUpdateCallback = void Function(Map<String, DVCVariable> variables);
 
 class DVCClient {
@@ -25,8 +24,8 @@ class DVCClient {
 
   /// Callback triggered on client initialization
   ClientInitializedCallback? _clientInitializedCallback;
-  //. Map of variable keys to a list of variable update callbacks
-  Map<String, List<VariableUpdateCallback>> _variableUpdateCallbacks = Map();
+  // Map of variable keys to a list of variable objects, used to update variable values
+  Map<String, List<DVCVariable>> _variableInstances = Map();
   // Map of callback IDs to user update callbacks. The ID is generated when identify is called
   Map<String, UserUpdateCallback> _identifyCallbacks = Map();
   // Map of callback IDs to user update callbacks. The ID is generated when reset is called
@@ -40,6 +39,13 @@ class DVCClient {
         .initialize(environmentKey, user, options);
   }
 
+  _trackVariable(DVCVariable? variable) {
+    if (variable?.key == null) return;
+    String key = variable?.key as String;
+    _variableInstances[key] = _variableInstances[key] ?? [];
+    _variableInstances[key]?.add(variable!);
+  }
+
   Future<void> _handleCallbacks(MethodCall call) async {
     switch (call.method) {
       case 'clientInitialized':
@@ -49,10 +55,13 @@ class DVCClient {
         break;
       case 'variableUpdated':
         DVCVariable variable = DVCVariable.fromCodec(call.arguments);
-        List<VariableUpdateCallback> callbacks =
-            _variableUpdateCallbacks[variable.key] ?? [];
-        for (final callback in callbacks) {
-          callback(variable);
+        List<DVCVariable> variableInstances = _variableInstances[variable.key] ?? [];
+        for (final v in variableInstances) {
+          if (v.callback != null) {
+            v.value = variable.value;
+            v.isDefaulted = variable.value;
+            v.callback!(variable);
+          }
         }
         break;
       case 'userIdentified':
@@ -127,8 +136,10 @@ class DVCClient {
     }
   }
 
-  Future<DVCVariable?> variable(String key, dynamic defaultValue) {
-    return DevCycleFlutterClientSdkPlatform.instance.variable(key, defaultValue);
+  Future<DVCVariable?> variable(String key, dynamic defaultValue) async {
+    final variable = await DevCycleFlutterClientSdkPlatform.instance.variable(key, defaultValue);
+    _trackVariable(variable);
+    return variable;
   }
 
   Future<Map<String, DVCFeature>> allFeatures() async {
@@ -138,6 +149,7 @@ class DVCClient {
 
   Future<Map<String, DVCVariable>> allVariables() async {
     final variables = await DevCycleFlutterClientSdkPlatform.instance.allVariables();
+    variables.values.forEach(_trackVariable);
     return variables;
   }
 

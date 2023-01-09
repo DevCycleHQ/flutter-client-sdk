@@ -5,6 +5,8 @@ enum VariableType {
   json
 }
 
+typedef VariableUpdateCallback = void Function(DVCVariable variable);
+
 class DVCVariable<T> {
   /// unique database id
   String? id;
@@ -19,6 +21,8 @@ class DVCVariable<T> {
   T? value;
   
   bool? isDefaulted;
+
+  VariableUpdateCallback? callback;
 
   static DVCVariable fromCodec(Map<String, dynamic> map) {
     DVCVariable variable = DVCVariable();
@@ -39,7 +43,7 @@ class DVCVariable<T> {
   ///
   /// [callback] called with the updated variable
   ///
-  onUpdate() {
-
+  onUpdate(VariableUpdateCallback onUpdateCallback) {
+    callback = onUpdateCallback;
   }
 }
