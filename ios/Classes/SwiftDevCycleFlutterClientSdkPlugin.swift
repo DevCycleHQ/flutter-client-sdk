@@ -177,8 +177,8 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
       eventBuilder.clientDate(clientDate)
     }
     
-    if let value = dict["value"] as? Int {
-      eventBuilder.value(value)
+    if let value = dict["value"] as? String, let doubleValue = Double(value) {
+      eventBuilder.value(doubleValue)
     }
     
     if let metaData = dict["metaData"] as? [String: Any] {
