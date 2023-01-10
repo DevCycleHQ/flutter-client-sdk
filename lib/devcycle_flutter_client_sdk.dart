@@ -16,6 +16,7 @@ export 'dvc_variable.dart';
 
 typedef ClientInitializedCallback = void Function(Error? error);
 typedef UserUpdateCallback = void Function(Map<String, DVCVariable> variables);
+typedef EventUpdateCallback = void Function([Error? error]);
 
 class DVCClient {
   static const _methodChannel = MethodChannel('devcycle_flutter_client_sdk');
@@ -30,6 +31,8 @@ class DVCClient {
   Map<String, UserUpdateCallback> _identifyCallbacks = Map();
   // Map of callback IDs to user update callbacks. The ID is generated when reset is called
   Map<String, UserUpdateCallback> _resetCallbacks = Map();
+  // Map of callback IDs to user update callbacks. The ID is generated when flushEvents is called
+  Map<String, EventUpdateCallback> _eventCallbacks = Map();
 
   DVCClient._builder(DVCClientBuilder builder);
 
@@ -55,7 +58,8 @@ class DVCClient {
         break;
       case 'variableUpdated':
         DVCVariable variable = DVCVariable.fromCodec(call.arguments);
-        List<DVCVariable> variableInstances = _variableInstances[variable.key] ?? [];
+        List<DVCVariable> variableInstances =
+            _variableInstances[variable.key] ?? [];
         for (final v in variableInstances) {
           if (v.callback != null) {
             v.value = variable.value;
@@ -109,6 +113,22 @@ class DVCClient {
         callback(parsedVariables);
         _resetCallbacks.remove(call.arguments['callbackId']);
         break;
+      case 'eventsFlushed':
+        final error = call.arguments['error'];
+        EventUpdateCallback? callback =
+            _eventCallbacks[call.arguments['callbackId']];
+        if (callback == null) {
+          return;
+        }
+        if (error != null) {
+          print(error);
+          callback(error);
+          _eventCallbacks.remove(call.arguments['callbackId']);
+          return;
+        }
+        callback();
+        _eventCallbacks.remove(call.arguments['callbackId']);
+        break;
     }
   }
 
@@ -137,24 +157,37 @@ class DVCClient {
   }
 
   Future<DVCVariable?> variable(String key, dynamic defaultValue) async {
-    final variable = await DevCycleFlutterClientSdkPlatform.instance.variable(key, defaultValue);
+    final variable = await DevCycleFlutterClientSdkPlatform.instance
+        .variable(key, defaultValue);
     _trackVariable(variable);
     return variable;
   }
 
   Future<Map<String, DVCFeature>> allFeatures() async {
-    final features = await DevCycleFlutterClientSdkPlatform.instance.allFeatures();
+    final features =
+        await DevCycleFlutterClientSdkPlatform.instance.allFeatures();
     return features;
   }
 
   Future<Map<String, DVCVariable>> allVariables() async {
-    final variables = await DevCycleFlutterClientSdkPlatform.instance.allVariables();
+    final variables =
+        await DevCycleFlutterClientSdkPlatform.instance.allVariables();
     variables.values.forEach(_trackVariable);
     return variables;
   }
 
   void track(DVCEvent event) {
     DevCycleFlutterClientSdkPlatform.instance.track(event);
+  }
+
+  void flushEvents([EventUpdateCallback? callback]) {
+    if (callback != null) {
+      String callbackId = _uuid.v4();
+      _eventCallbacks[callbackId] = callback;
+      DevCycleFlutterClientSdkPlatform.instance.flushEvents(callbackId);
+    } else {
+      DevCycleFlutterClientSdkPlatform.instance.flushEvents();
+    }
   }
 }
 

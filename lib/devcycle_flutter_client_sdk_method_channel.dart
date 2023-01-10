@@ -81,4 +81,9 @@ class MethodChannelDevCycleFlutterClientSdk
     Map<String, dynamic> codecEvent = event.toCodec();
     methodChannel.invokeMethod('track', {"event": codecEvent});
   }
+
+  @override
+  void flushEvents([String? callbackId]) {
+    methodChannel.invokeMethod('flushEvents', {"callbackId": callbackId});
+  }
 }

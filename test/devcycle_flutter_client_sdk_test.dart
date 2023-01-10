@@ -183,4 +183,14 @@ void main() {
       expect(methodCall?.arguments, {'event': event.toCodec()});
     });
   });
+
+  group('flushEvents', () {
+    test('flush events', () {
+      DVCUser user = DVCUserBuilder().userId('user1').build();
+      DVCClient devcycleFlutterClientSdkPlugin =
+          DVCClientBuilder().environmentKey('SDK_KEY').user(user).build();
+      devcycleFlutterClientSdkPlugin.flushEvents();
+      expect(methodCall?.method, 'flushEvents');
+    });
+  });
 }
