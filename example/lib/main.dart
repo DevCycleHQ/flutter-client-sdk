@@ -18,6 +18,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   String _displayValue = '';
+  String _variableValue = '';
   final _dvcClient = DVCClientBuilder()
       .environmentKey('dvc_mobile_test_key')
       .user(DVCUserBuilder().userId('123').build())
@@ -27,6 +28,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initPlatformState();
+    initVariable();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -51,6 +53,18 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void> initVariable() async {
+    final variable = await _dvcClient.variable('my-variable', 'Default Value');
+    setState(() {
+      _variableValue = variable?.value;
+    });
+    variable?.onUpdate((updatedVariable) {
+      setState(() {
+        _variableValue = updatedVariable.value;
+      });
+    });
+  }
+
   void resetUser() {
     _dvcClient.resetUser();
   }
@@ -68,14 +82,14 @@ class _MyAppState extends State<MyApp> {
     _dvcClient.track(event);
   }
 
-  void allFeatures() async {
+  void showAllFeatures() async {
     Map<String, DVCFeature> features = await _dvcClient.allFeatures();
     setState(() {
       _displayValue = features.keys.toString();
     });
   }
 
-  void allVariables() async {
+  void showAllVariables() async {
     Map<String, DVCVariable> variables = await _dvcClient.allVariables();
     setState(() {
       _displayValue = variables.values
@@ -92,15 +106,16 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Running on: $_platformVersion\n'),
-            ElevatedButton(
-                onPressed: allFeatures, child: const Text('All Features')),
-            ElevatedButton(
-                onPressed: allVariables, child: const Text('All Variables')),
-            TextButton(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Value: $_variableValue"),
+              Text('Running on: $_platformVersion\n'),
+              ElevatedButton(
+                onPressed: showAllFeatures, child: const Text('All Features')),
+              ElevatedButton(
+                onPressed: showAllVariables, child: const Text('All Variables')),
+              TextButton(
                 style: ButtonStyle(
                   foregroundColor:
                       MaterialStateProperty.all<Color>(Colors.blue),

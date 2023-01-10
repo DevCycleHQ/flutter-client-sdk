@@ -24,6 +24,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
   private lateinit var context: Context
   private lateinit var client: DVCClient
+  private var variableUpdates = mutableMapOf<String, Variable<Any>>()
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     context = flutterPluginBinding.applicationContext
@@ -61,6 +62,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
             callFlutter("clientInitialized", t.message)
           }
         })
+        res.success(null)
       }
       "identifyUser" -> {
         val user = getUserFromMap(call.argument("user")!!)
@@ -104,13 +106,15 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         client.resetUser(callback)
       }
       "variable" -> {
-        if (::client.isInitialized) {
-          val response = HashMap<String, Any>()
-          val variable = client.variable(call.argument("key")!!, call.argument("defaultValue")!!)
-          response[variable.key] = variable
-          res.success(response)
+        val variable = client.variable(call.argument("key")!!, call.argument("defaultValue")!!)
+        if (variable.key !in variableUpdates) {
+          variable.onUpdate { result: Variable<Any> ->
+            val updatedVariable = variableToMap(result)
+            callFlutter("variableUpdated", updatedVariable)
+          }
+          variableUpdates[variable.key] = variable
         }
-        res.success(null)
+        res.success(variableToMap(variable))
       }
       "allFeatures" -> {
         val features = featuresToMap(client.allFeatures())
@@ -253,6 +257,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     variableAsMap["type"] = variable.type.toString()
     variableAsMap["value"] = variable.value
     variableAsMap["evalReason"] = variable.evalReason
+    variableAsMap["isDefaulted"] = variable.isDefaulted
 
     return variableAsMap
   }
