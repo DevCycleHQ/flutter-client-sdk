@@ -95,6 +95,9 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
       if let event = args?["event"] as? [String: Any], let dvcEvent = getEventFromDict(dict: event) {
         self.dvcClient?.track(dvcEvent)
       }
+    case "flushEvents":
+      self.dvcClient?.flushEvents()
+      result(nil)
     default:
       result(FlutterMethodNotImplemented)
     }

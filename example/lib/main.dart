@@ -89,6 +89,10 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void flushEvents() {
+    _dvcClient.flushEvents();
+  }
+
   void showAllVariables() async {
     Map<String, DVCVariable> variables = await _dvcClient.allVariables();
     setState(() {
@@ -106,16 +110,17 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Value: $_variableValue"),
-              Text('Running on: $_platformVersion\n'),
-              ElevatedButton(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Value: $_variableValue"),
+            Text('Running on: $_platformVersion\n'),
+            ElevatedButton(
                 onPressed: showAllFeatures, child: const Text('All Features')),
-              ElevatedButton(
-                onPressed: showAllVariables, child: const Text('All Variables')),
-              TextButton(
+            ElevatedButton(
+                onPressed: showAllVariables,
+                child: const Text('All Variables')),
+            TextButton(
                 style: ButtonStyle(
                   foregroundColor:
                       MaterialStateProperty.all<Color>(Colors.blue),
@@ -130,6 +135,8 @@ class _MyAppState extends State<MyApp> {
                 onPressed: resetUser,
                 child: const Text('Reset User')),
             ElevatedButton(onPressed: trackEvent, child: const Text('Track')),
+            ElevatedButton(
+                onPressed: flushEvents, child: const Text('FlushEvents')),
             Text(_displayValue)
           ],
         )),
