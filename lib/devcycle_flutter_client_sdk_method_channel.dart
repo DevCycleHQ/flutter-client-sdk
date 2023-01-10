@@ -76,8 +76,9 @@ class MethodChannelDevCycleFlutterClientSdk
     return variables;
   }
 
+  @override
   void track(DVCEvent event) {
     Map<String, dynamic> codecEvent = event.toCodec();
-    methodChannel.invokeMethod('track', codecEvent);
+    methodChannel.invokeMethod('track', {"event": codecEvent});
   }
 }

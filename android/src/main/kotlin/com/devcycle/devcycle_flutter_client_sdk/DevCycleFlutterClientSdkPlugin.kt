@@ -121,20 +121,8 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         res.success(variables)
       }
       "track" -> {
+        val event = getEventFromMap(call.argument("event")!!)
         if (::client.isInitialized) {
-          val valueStr = call.argument("value") as String?
-          val value_double = valueStr?.toDouble();
-          var value: java.math.BigDecimal = java.math.BigDecimal(0);
-          if(value_double != null) {
-            value = BigDecimal.valueOf(value_double)
-          }
-
-          var event = DVCEvent.builder()
-            .withType(call.argument("type")!!) //Only Required
-            .withTarget(call.argument("target"))
-            .withValue(value)
-            .withMetaData(call.argument("metaData"))
-            .build()
           client.track(event)
         }
       }
@@ -179,6 +167,31 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
 
     return userBuilder.build()
   }
+
+  private fun getEventFromMap(map: Map<String, Any>): DVCEvent {
+    val eventBuilder = DVCEvent.builder()
+
+    val type = map["type"] as? String
+    if (type is String) eventBuilder.withType(type)
+
+    val target = map["target"] as? String
+    if (target is String) eventBuilder.withTarget(target)
+
+    val valueStr = map["value"] as String?
+    val value_double = valueStr?.toDouble();
+    var value: java.math.BigDecimal = java.math.BigDecimal(0);
+    if(value_double != null) {
+      value = BigDecimal.valueOf(value_double)
+      eventBuilder.withValue(value)
+    }
+
+    if (map["metaData"] != null) {
+      eventBuilder.withMetaData(map["metaData"] as Map<String, Any>)
+    }
+
+    return eventBuilder.build()
+  }
+
 
   private fun getOptionsFromMap(map: Map<String, Any>?): DVCOptions {
     val builder = DVCOptions.builder()
