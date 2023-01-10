@@ -97,7 +97,19 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
       }
     case "flushEvents":
       self.dvcClient?.flushEvents()
+      try? self.dvcClient?.flushEvents(callback: { error, variables in
+        var callbackArgs: [String:Any] = [
+          "callbackId": _callbackId
+        ]
+        if (error != nil) {
+          callbackArgs["error"] = error
+          self.channel.invokeMethod("eventsFlushed", arguments: callbackArgs)
+        } else {
+          self.channel.invokeMethod("eventsFlushed", arguments: callbackArgs)
+        }
+      })
       result(nil)
+
     default:
       result(FlutterMethodNotImplemented)
     }
