@@ -56,4 +56,8 @@ abstract class DevCycleFlutterClientSdkPlatform extends PlatformInterface {
   void track(DVCEvent event) {
     throw UnimplementedError('track() has not been implemented.');
   }
+
+  void flushEvents([String? callbackId]) {
+    throw UnimplementedError('flushEvents() has not been implemented.');
+  }
 }
