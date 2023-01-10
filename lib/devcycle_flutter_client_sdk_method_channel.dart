@@ -19,10 +19,10 @@ class MethodChannelDevCycleFlutterClientSdk
   }
 
   @override
-  void initialize(String environmentKey, DVCUser user, DVCOptions? options) {
+  Future<void> initialize(String environmentKey, DVCUser user, DVCOptions? options) async {
     Map<String, dynamic> codecUser = user.toCodec();
     Map<String, dynamic>? codecOptions = options?.toCodec();
-    methodChannel.invokeMethod('initialize', {
+    await methodChannel.invokeMethod('initialize', {
       "environmentKey": environmentKey,
       "user": codecUser,
       "options": codecOptions
@@ -43,14 +43,16 @@ class MethodChannelDevCycleFlutterClientSdk
 
   @override
   Future<DVCVariable?> variable(String key, dynamic defaultValue) async {
-    Map<String, dynamic> result = await methodChannel.invokeMethod(
-            'variable', {"key": key, "defaultValue": defaultValue}) ??
-        {};
-    DVCVariable? variable =
-        result.isNotEmpty ? DVCVariable.fromCodec(result) : null;
+    final result = await methodChannel.invokeMethod(
+      'variable',
+      {"key": key, "defaultValue": defaultValue}
+    ) ?? {};
+    final map = Map<String, dynamic>.from(result);
+    DVCVariable? variable = map.isNotEmpty ? DVCVariable.fromCodec(map) : null;
     return variable;
   }
 
+  @override
   Future<Map<String, DVCFeature>> allFeatures() async {
     final result = await methodChannel.invokeMethod('allFeatures') ?? {};
     final map = Map<String, dynamic>.from(result);

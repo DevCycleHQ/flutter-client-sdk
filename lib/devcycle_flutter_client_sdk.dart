@@ -23,6 +23,8 @@ class DVCClient {
 
   static const _uuid = Uuid();
 
+  Future<void>? _clientReady;
+
   /// Callback triggered on client initialization
   ClientInitializedCallback? _clientInitializedCallback;
   // Map of variable keys to a list of variable objects, used to update variable values
@@ -38,7 +40,7 @@ class DVCClient {
 
   _init(String environmentKey, DVCUser user, DVCOptions? options) {
     _methodChannel.setMethodCallHandler(_handleCallbacks);
-    DevCycleFlutterClientSdkPlatform.instance
+    _clientReady = DevCycleFlutterClientSdkPlatform.instance
         .initialize(environmentKey, user, options);
   }
 
@@ -57,13 +59,13 @@ class DVCClient {
         }
         break;
       case 'variableUpdated':
-        DVCVariable variable = DVCVariable.fromCodec(call.arguments);
-        List<DVCVariable> variableInstances =
-            _variableInstances[variable.key] ?? [];
+        final codecVariable = Map<String, dynamic>.from(call.arguments);
+        DVCVariable variable = DVCVariable.fromCodec(codecVariable);
+        List<DVCVariable> variableInstances = _variableInstances[variable.key] ?? [];
         for (final v in variableInstances) {
           if (v.callback != null) {
             v.value = variable.value;
-            v.isDefaulted = variable.value;
+            v.isDefaulted = variable.isDefaulted;
             v.callback!(variable);
           }
         }
@@ -132,11 +134,13 @@ class DVCClient {
     }
   }
 
-  Future<String?> getPlatformVersion() {
+  Future<String?> getPlatformVersion() async {
+    await _clientReady;
     return DevCycleFlutterClientSdkPlatform.instance.getPlatformVersion();
   }
 
-  void identifyUser(DVCUser user, [UserUpdateCallback? callback]) {
+  Future<void> identifyUser(DVCUser user, [UserUpdateCallback? callback]) async {
+    await _clientReady;
     if (callback != null) {
       String callbackId = _uuid.v4();
       _identifyCallbacks[callbackId] = callback;
@@ -146,7 +150,8 @@ class DVCClient {
     }
   }
 
-  void resetUser([UserUpdateCallback? callback]) {
+  Future<void> resetUser([UserUpdateCallback? callback]) async {
+    await _clientReady;
     if (callback != null) {
       String callbackId = _uuid.v4();
       _resetCallbacks[callbackId] = callback;
@@ -157,6 +162,7 @@ class DVCClient {
   }
 
   Future<DVCVariable?> variable(String key, dynamic defaultValue) async {
+    await _clientReady;
     final variable = await DevCycleFlutterClientSdkPlatform.instance
         .variable(key, defaultValue);
     _trackVariable(variable);
@@ -164,23 +170,27 @@ class DVCClient {
   }
 
   Future<Map<String, DVCFeature>> allFeatures() async {
+    await _clientReady;
     final features =
         await DevCycleFlutterClientSdkPlatform.instance.allFeatures();
     return features;
   }
 
   Future<Map<String, DVCVariable>> allVariables() async {
+    await _clientReady;
     final variables =
         await DevCycleFlutterClientSdkPlatform.instance.allVariables();
     variables.values.forEach(_trackVariable);
     return variables;
   }
 
-  void track(DVCEvent event) {
+  Future<void> track(DVCEvent event) async {
+    await _clientReady;
     DevCycleFlutterClientSdkPlatform.instance.track(event);
   }
 
-  void flushEvents([EventUpdateCallback? callback]) {
+  Future<void> flushEvents([EventUpdateCallback? callback]) async {
+    await _clientReady;
     if (callback != null) {
       String callbackId = _uuid.v4();
       _eventCallbacks[callbackId] = callback;
