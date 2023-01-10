@@ -165,7 +165,7 @@ void main() {
 
       devcycleFlutterClientSdkPlugin.track(event);
       expect(methodCall?.method, 'track');
-      expect(methodCall?.arguments, event.toCodec());
+      expect(methodCall?.arguments, {'event': event.toCodec()});
     });
 
     test('track event with properties', () {
@@ -180,7 +180,7 @@ void main() {
 
       devcycleFlutterClientSdkPlugin.track(event);
       expect(methodCall?.method, 'track');
-      expect(methodCall?.arguments, event.toCodec());
+      expect(methodCall?.arguments, {'event': event.toCodec()});
     });
   });
 }
