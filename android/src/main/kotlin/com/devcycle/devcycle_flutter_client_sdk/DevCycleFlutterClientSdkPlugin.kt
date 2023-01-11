@@ -202,12 +202,14 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     val target = map["target"] as? String
     if (target is String) eventBuilder.withTarget(target)
 
-    val valueStr = map["value"] as String?
-    val value_double = valueStr?.toDouble();
-    var value: java.math.BigDecimal = java.math.BigDecimal(0);
-    if(value_double != null) {
-      value = BigDecimal.valueOf(value_double)
-      eventBuilder.withValue(value)
+    val valueStr = map["value"] as? String
+    if(valueStr != null && !(valueStr.equals("null"))) {
+      try {
+        val value = BigDecimal(valueStr)
+        eventBuilder.withValue(value)
+      } catch (e: NumberFormatException) {
+        throw e
+      }
     }
 
     if (map["metaData"] != null) {
