@@ -96,7 +96,6 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         self.dvcClient?.track(dvcEvent)
       }
     case "flushEvents":
-      self.dvcClient?.flushEvents()
       try? self.dvcClient?.flushEvents(callback: { error, variables in
         var callbackArgs: [String:Any] = [
           "callbackId": _callbackId
