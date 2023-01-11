@@ -103,10 +103,9 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         ]
         if (error != nil) {
           callbackArgs["error"] = error
-          self.channel.invokeMethod("eventsFlushed", arguments: callbackArgs)
-        } else {
-          self.channel.invokeMethod("eventsFlushed", arguments: callbackArgs)
-        }
+        } 
+        self.channel.invokeMethod("eventsFlushed", arguments: callbackArgs)
+        
       })
       result(nil)
 
