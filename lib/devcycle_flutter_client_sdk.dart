@@ -134,6 +134,10 @@ class DVCClient {
     }
   }
 
+  void onInitialized(ClientInitializedCallback callback) {
+    _clientInitializedCallback = callback;
+  }
+
   Future<String?> getPlatformVersion() async {
     await _clientReady;
     return DevCycleFlutterClientSdkPlatform.instance.getPlatformVersion();
