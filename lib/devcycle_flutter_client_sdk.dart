@@ -59,14 +59,13 @@ class DVCClient {
         }
         break;
       case 'variableUpdated':
-        final codecVariable = Map<String, dynamic>.from(call.arguments);
-        DVCVariable variable = DVCVariable.fromCodec(codecVariable);
-        List<DVCVariable> variableInstances = _variableInstances[variable.key] ?? [];
+        final key = call.arguments['key'];
+        final updatedValue = call.arguments['value'];
+        List<DVCVariable> variableInstances = _variableInstances[key] ?? [];
         for (final v in variableInstances) {
           if (v.callback != null) {
-            v.value = variable.value;
-            v.isDefaulted = variable.isDefaulted;
-            v.callback!(variable);
+            v.value = updatedValue;
+            v.callback!(updatedValue);
           }
         }
         break;

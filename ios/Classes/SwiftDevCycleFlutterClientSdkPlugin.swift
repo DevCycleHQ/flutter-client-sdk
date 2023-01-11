@@ -6,6 +6,7 @@ import DevCycle
 public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
   private var dvcClient: DVCClient?
   private let channel: FlutterMethodChannel
+  private var variableUpdates: [String: DVCVariable<Any>] = [:]
     
   private init(channel: FlutterMethodChannel) {
     self.channel = channel
@@ -87,6 +88,16 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     case "variable":
       if let dvcClient = self.dvcClient, let varKey = args?["key"] as? String, let varDefaultValue = args?["defaultValue"] as? Any {
         let variable = dvcClient.variable(key: varKey, defaultValue: varDefaultValue)
+        if !self.variableUpdates.contains(where: { $0.key == variable.key }) {
+          variable.onUpdate(handler: { newValue in
+            var callbackArgs: [String:Any] = [
+              "key": variable.key,
+              "value": newValue
+            ]
+            self.channel.invokeMethod("variableUpdated", arguments: callbackArgs)
+          })
+          self.variableUpdates[variable.key] = variable
+        }
         let codecVariable = dvcVariableToMap(variable: variable)
         result(codecVariable)
       } else {

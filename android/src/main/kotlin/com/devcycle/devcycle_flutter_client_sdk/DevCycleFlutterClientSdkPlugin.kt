@@ -109,8 +109,11 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         val variable = client.variable(call.argument("key")!!, call.argument("defaultValue")!!)
         if (variable.key !in variableUpdates) {
           variable.onUpdate { result: Variable<Any> ->
-            val updatedVariable = variableToMap(result)
-            callFlutter("variableUpdated", updatedVariable)
+            val args = mapOf<String, Any?>(
+              "key" to result.key,
+              "value" to result.value
+            )
+            callFlutter("variableUpdated", args)
           }
           variableUpdates[variable.key] = variable
         }

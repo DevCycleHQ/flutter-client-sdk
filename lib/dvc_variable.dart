@@ -5,8 +5,6 @@ enum VariableType {
   json
 }
 
-typedef VariableUpdateCallback = void Function(DVCVariable variable);
-
 class DVCVariable<T> {
   /// unique database id
   String? id;
@@ -19,10 +17,8 @@ class DVCVariable<T> {
 
   /// Variable value can be a string, number, boolean, or JSON
   T? value;
-  
-  bool? isDefaulted;
 
-  VariableUpdateCallback? callback;
+  void Function(T value)? callback;
 
   static DVCVariable fromCodec(Map<String, dynamic> map) {
     DVCVariable variable = DVCVariable();
@@ -32,7 +28,6 @@ class DVCVariable<T> {
     variable.key = map['key'];
     variable.type = VariableType.values.firstWhere((e) => e.toString() == "VariableType.$mapType");
     variable.value = map['value'];
-    variable.isDefaulted = map['isDefaulted'];
 
     return variable;
   }
@@ -43,7 +38,7 @@ class DVCVariable<T> {
   ///
   /// [callback] called with the updated variable
   ///
-  onUpdate(VariableUpdateCallback onUpdateCallback) {
+  onUpdate(void Function(T value) onUpdateCallback) {
     callback = onUpdateCallback;
   }
 }

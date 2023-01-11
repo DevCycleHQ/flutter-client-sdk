@@ -58,9 +58,9 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _variableValue = variable?.value;
     });
-    variable?.onUpdate((updatedVariable) {
+    variable?.onUpdate((updatedValue) {
       setState(() {
-        _variableValue = updatedVariable.value;
+        _variableValue = updatedValue;
       });
     });
   }

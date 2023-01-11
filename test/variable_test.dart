@@ -15,7 +15,6 @@ void main() {
     expect(variable.key, equals('variable-one'));
     expect(variable.type.toString(), equals('VariableType.string'));
     expect(variable.value, equals('hello world'));
-    expect(variable.isDefaulted, equals(isFalse));
   });
 
   test('builds boolean variable object from a map', () {
