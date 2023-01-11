@@ -85,9 +85,10 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
     case "variable":
-      if let dvcClient = self.dvcClient, let varKey = args?["key"] as? String, let varDefaultValue = args?["defaultValue"] as? String {
+      if let dvcClient = self.dvcClient, let varKey = args?["key"] as? String, let varDefaultValue = args?["defaultValue"] as? Any {
         let variable = dvcClient.variable(key: varKey, defaultValue: varDefaultValue)
-        result(variable)
+        let codecVariable = dvcVariableToMap(variable: variable)
+        result(codecVariable)
       } else {
         result(nil)
       }
@@ -217,6 +218,16 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     map["type"] = variable.type
     map["value"] = variable.value
     map["evalReason"] = variable.evalReason
+    return map
+  }
+    
+  private func dvcVariableToMap(variable: DVCVariable<Any>) -> [String: Any] {
+    var map: [String: Any] = [:]
+    map["key"] = variable.key
+    map["type"] = variable.type
+    map["value"] = variable.value
+    map["evalReason"] = variable.evalReason
+    map["isDefaulted"] = variable.isDefaulted
     return map
   }
 
