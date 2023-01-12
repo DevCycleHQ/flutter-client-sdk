@@ -1,3 +1,4 @@
-## 0.0.1
+# Change log
 
-* TODO: Describe initial release.
+## [1.0.0] - {date}
+This is the first public release of the DevCycle Flutter Client SDK. 
