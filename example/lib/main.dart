@@ -19,6 +19,7 @@ class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   String _displayValue = '';
   String _variableValue = '';
+  bool _booleanValue = false;
   final _dvcClient = DVCClientBuilder()
       .environmentKey('dvc_mobile_test_key')
       .user(DVCUserBuilder().userId('123').build())
@@ -64,20 +65,36 @@ class _MyAppState extends State<MyApp> {
         _variableValue = updatedValue;
       });
     });
+
+    final booleanVariable =
+        await _dvcClient.variable('boolean-variable', false);
+    setState(() {
+      _booleanValue = booleanVariable?.value;
+    });
+    booleanVariable?.onUpdate((updatedValue) {
+      setState(() {
+        _booleanValue = updatedValue;
+      });
+    });
   }
 
   void resetUser() {
     _dvcClient.resetUser();
+    setState(() {
+      _displayValue = 'User reset!';
+    });
   }
 
   void identifyUser() {
-    _dvcClient.identifyUser(
-        DVCUserBuilder().userId('test_user_123').build(),
-        ((err, variables) => {
+    DVCUser testUser = DVCUserBuilder().userId('test_user_123').build();
+    _dvcClient.identifyUser(testUser,         ((err, variables) => {
               print(variables.values
                   .map((variable) => "${variable.key}: ${variable.value}")
                   .toString())
             }));
+    setState(() {
+      _displayValue = 'Identified user: \n${testUser.toString()}';
+    });
   }
 
   void trackEvent() {
@@ -87,25 +104,30 @@ class _MyAppState extends State<MyApp> {
         .value(10.0)
         .metaData({'custom_key': 'value'}).build();
     _dvcClient.track(event);
+    setState(() {
+      _displayValue = 'Tracked event: \n${event.toString()}';
+    });
   }
 
   void showAllFeatures() async {
     Map<String, DVCFeature> features = await _dvcClient.allFeatures();
     setState(() {
-      _displayValue = features.keys.toString();
+      _displayValue = 'All features: \n${features.keys.toString()}';
     });
   }
 
   void flushEvents() {
     _dvcClient.flushEvents(([error]) => print(error));
+    setState(() {
+      _displayValue = 'Flushed events';
+    });
   }
 
   void showAllVariables() async {
     Map<String, DVCVariable> variables = await _dvcClient.allVariables();
     setState(() {
-      _displayValue = variables.values
-          .map((variable) => "${variable.key}: ${variable.value}")
-          .toString();
+      _displayValue =
+          'All variables: \n${variables.values.map((variable) => "${variable.key}: ${variable.value}").toString()}';
     });
   }
 
@@ -122,26 +144,30 @@ class _MyAppState extends State<MyApp> {
           children: [
             Text("Value: $_variableValue"),
             Text('Running on: $_platformVersion\n'),
+            Icon(
+              Icons.star,
+              color: _booleanValue ? Colors.blue[500] : Colors.red[500],
+            ),
+            _booleanValue
+                ? const Icon(
+                    Icons.sentiment_very_satisfied,
+                    color: Colors.grey,
+                  )
+                : const Icon(
+                    Icons.sentiment_very_dissatisfied,
+                    color: Colors.grey,
+                  ),
             ElevatedButton(
                 onPressed: showAllFeatures, child: const Text('All Features')),
             ElevatedButton(
                 onPressed: showAllVariables,
                 child: const Text('All Variables')),
-            TextButton(
-                style: ButtonStyle(
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.blue),
-                ),
-                onPressed: identifyUser,
-                child: const Text('Identify User')),
-            TextButton(
-                style: ButtonStyle(
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.blue),
-                ),
-                onPressed: resetUser,
-                child: const Text('Reset User')),
-            ElevatedButton(onPressed: trackEvent, child: const Text('Track')),
+            ElevatedButton(
+                onPressed: identifyUser, child: const Text('Identify User')),
+            ElevatedButton(
+                onPressed: resetUser, child: const Text('Reset User')),
+            ElevatedButton(
+                onPressed: trackEvent, child: const Text('Track Event')),
             ElevatedButton(
                 onPressed: flushEvents, child: const Text('FlushEvents')),
             Text(_displayValue)
