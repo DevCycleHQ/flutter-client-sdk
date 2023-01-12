@@ -41,7 +41,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
               "callbackId": _callbackId
             ]
             if (error != nil) {
-              callbackArgs["error"] = error
+              callbackArgs["error"] = "\(String(describing: error))"
               self.channel.invokeMethod("clientInitialized", arguments: callbackArgs)
             } else {
               self.channel.invokeMethod("clientInitialized", arguments: callbackArgs)
@@ -56,7 +56,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
             "callbackId": _callbackId
           ]
           if (error != nil) {
-            callbackArgs["error"] = error
+            callbackArgs["error"] = "\(String(describing: error))"
             self.channel.invokeMethod("userIdentified", arguments: callbackArgs)
           } else {
             callbackArgs["variables"] = self.variablesToMap(variables: variables ?? [:])
@@ -71,7 +71,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
           "callbackId": _callbackId
         ]
         if (error != nil) {
-          callbackArgs["error"] = error
+          callbackArgs["error"] = "\(String(describing: error))"
           self.channel.invokeMethod("userReset", arguments: callbackArgs)
         } else {
           callbackArgs["variables"] = self.variablesToMap(variables: variables ?? [:])
@@ -113,7 +113,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
           "callbackId": _callbackId
         ]
         if (error != nil) {
-          callbackArgs["error"] = error
+          callbackArgs["error"] = "\(String(describing: error))"
         } 
         self.channel.invokeMethod("eventsFlushed", arguments: callbackArgs)
         
