@@ -9,12 +9,14 @@ void main() {
       .enableEdgeDB(false)
       .configCacheTTL(999)
       .disableConfigCache(false)
+      .logLevel(LogLevel.debug)
       .build();
     expect(options.flushEventsIntervalMs, equals(100));
     expect(options.disableEventLogging, isTrue);
     expect(options.enableEdgeDB, isFalse);
     expect(options.configCacheTTL, equals(999));
     expect(options.disableConfigCache, isFalse);
+    expect(options.logLevel, equals(LogLevel.debug));
   });
 
   test('creates map from options object with all properties', () {
@@ -24,6 +26,7 @@ void main() {
       .enableEdgeDB(false)
       .configCacheTTL(999)
       .disableConfigCache(false)
+      .logLevel(LogLevel.error)
       .build();
     Map<String, dynamic> codecOptions = options.toCodec();
     expect(codecOptions['flushEventsIntervalMs'], equals(100));
@@ -31,6 +34,7 @@ void main() {
     expect(codecOptions['enableEdgeDB'], isFalse);
     expect(codecOptions['configCacheTTL'], equals(999));
     expect(codecOptions['disableConfigCache'], isFalse);
+    expect(codecOptions['logLevel'], equals('error'));
   });
 
   test('creates map from options object with only one property', () {
