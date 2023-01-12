@@ -22,9 +22,7 @@ class _MyAppState extends State<MyApp> {
   final _dvcClient = DVCClientBuilder()
       .environmentKey('dvc_mobile_test_key')
       .user(DVCUserBuilder().userId('123').build())
-      .options(
-        DVCOptionsBuilder().logLevel(LogLevel.debug).build()
-      )
+      .options(DVCOptionsBuilder().logLevel(LogLevel.debug).build())
       .build();
 
   @override
@@ -73,7 +71,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   void identifyUser() {
-    _dvcClient.identifyUser(DVCUserBuilder().userId('test_user_123').build());
+    _dvcClient.identifyUser(
+        DVCUserBuilder().userId('test_user_123').build(),
+        ((err, variables) => {
+              print(variables.values
+                  .map((variable) => "${variable.key}: ${variable.value}")
+                  .toString())
+            }));
   }
 
   void trackEvent() {
@@ -93,7 +97,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void flushEvents() {
-    _dvcClient.flushEvents();
+    _dvcClient.flushEvents(([error]) => print(error));
   }
 
   void showAllVariables() async {
