@@ -21,6 +21,11 @@ class DVCEvent {
     result['metaData'] = metaData;
     return result;
   }
+
+  @override
+  String toString() {
+    return 'DVCEvent{type: $type, target: $target, value: $value, date: $date, metaData: $metaData}';
+  }
 }
 
 /// A builder for constructing [DVCEvent] objects.

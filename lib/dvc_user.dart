@@ -27,6 +27,11 @@ class DVCUser {
     if (privateCustomData != null) result['privateCustomData'] = privateCustomData;
     return result;
   }
+
+  @override
+  String toString() {
+    return 'DVCUser{userId: $userId, isAnonymous: $isAnonymous, email: $email, name: $name, country: $country, customData: $customData, privateCustomData: $privateCustomData}';
+  }
 }
 
 /// A builder for constructing [DVCUser] objects.
