@@ -108,7 +108,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         self.dvcClient?.track(dvcEvent)
       }
     case "flushEvents":
-      try? self.dvcClient?.flushEvents(callback: { error, variables in
+      try? self.dvcClient?.flushEvents(callback: { error in
         var callbackArgs: [String:Any] = [
           "callbackId": _callbackId
         ]
@@ -119,7 +119,6 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         
       })
       result(nil)
-
     default:
       result(FlutterMethodNotImplemented)
     }
