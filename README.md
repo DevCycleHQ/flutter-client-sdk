@@ -9,8 +9,8 @@ This version of the DevCycle Flutter Client SDK supports a minimum of Flutter 2,
 
 Other Flutter platforms are not currently supported by this SDK.
 
-
 ## Installation
+
 ### Pub
 
 The SDK can be installed into your Flutter project by adding the following to your pubspec.yaml:
@@ -18,7 +18,9 @@ The SDK can be installed into your Flutter project by adding the following to yo
 ```dart
 devcycle_flutter_client_sdk: ^1.0.0
 ```
+
 Then, run `flutter pub get`.
+
 ## Usage
 
 To find usage documentation, check out our [docs](https://docs.devcycle.com/docs/sdk/client-side-sdks/flutter).
