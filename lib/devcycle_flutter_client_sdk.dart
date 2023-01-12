@@ -133,8 +133,9 @@ class DVCClient {
     }
   }
 
-  void onInitialized(ClientInitializedCallback callback) {
+  DVCClient onInitialized(ClientInitializedCallback callback) {
     _clientInitializedCallback = callback;
+    return this;
   }
 
   Future<String?> getPlatformVersion() async {
