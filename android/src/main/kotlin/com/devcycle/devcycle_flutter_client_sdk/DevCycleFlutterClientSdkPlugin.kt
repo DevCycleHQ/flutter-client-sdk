@@ -6,6 +6,7 @@ import android.os.Looper
 import androidx.annotation.NonNull
 import com.devcycle.sdk.android.api.*
 import com.devcycle.sdk.android.model.*
+import com.devcycle.sdk.android.util.LogLevel
 
 import kotlin.collections.*
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -45,13 +46,19 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull res: Result) {
     when (call.method) {
       "initialize" -> {
-        client = DVCClient
+        val codecOptions: Map<String, Any>? = call.argument("options")
+        val logLevel = getLogLevelFromMap(codecOptions)
+        val clientBuilder = DVCClient
           .builder()
           .withContext(context)
           .withEnvironmentKey(call.argument("environmentKey")!!)
           .withUser(getUserFromMap(call.argument("user")!!))
-          .withOptions(getOptionsFromMap(call.argument("options")))
-          .build()
+          .withOptions(getOptionsFromMap(codecOptions))
+        if (logLevel is LogLevel) {
+          clientBuilder.withLogLevel(logLevel)
+        }
+
+        client = clientBuilder.build()
 
         client.onInitialized(object : DVCCallback<String> {
           override fun onSuccess(result: String) {
@@ -241,6 +248,22 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     }
 
     return builder.build()
+  }
+
+  private fun getLogLevelFromMap(map: Map<String, Any>?): LogLevel? {
+    val logLevelString = map?.get("logLevel") as String?
+    val logLevelMap = mapOf(
+      "debug" to LogLevel.DEBUG,
+      "info" to LogLevel.INFO,
+      "warn" to LogLevel.WARN,
+      "error" to LogLevel.ERROR
+    )
+
+    if (logLevelString in logLevelMap) {
+      return logLevelMap[logLevelString]
+    }
+
+    return null
   }
 
   private fun featuresToMap(features: Map<String, Feature>?): Map<String, Map<String, Any?>> {

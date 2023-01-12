@@ -1,16 +1,24 @@
+enum LogLevel {
+  debug,
+  info,
+  warn,
+  error
+}
 class DVCOptions {
   final int? flushEventsIntervalMs;
   final bool? disableEventLogging;
   final bool? enableEdgeDB;
   final int? configCacheTTL;
   final bool? disableConfigCache;
+  final LogLevel? logLevel;
 
   DVCOptions._builder(DVCOptionsBuilder builder) :
     flushEventsIntervalMs = builder._flushEventsIntervalMs,
     disableEventLogging = builder._disableEventLogging,
     enableEdgeDB = builder._enableEdgeDB,
     configCacheTTL = builder._configCacheTTL,
-    disableConfigCache = builder._disableConfigCache;
+    disableConfigCache = builder._disableConfigCache,
+    logLevel = builder._logLevel;
 
   Map<String, dynamic> toCodec() {
     final Map<String, dynamic> result = <String, dynamic>{};
@@ -19,6 +27,7 @@ class DVCOptions {
     if (enableEdgeDB != null) result['enableEdgeDB'] = enableEdgeDB;
     if (configCacheTTL != null) result['configCacheTTL'] = configCacheTTL;
     if (disableConfigCache != null) result['disableConfigCache'] = disableConfigCache;
+    if (logLevel != null) result['logLevel'] = logLevel?.name;
     return result;
   }
 }
@@ -30,6 +39,7 @@ class DVCOptionsBuilder {
   bool? _enableEdgeDB;
   int? _configCacheTTL;
   bool? _disableConfigCache;
+  LogLevel? _logLevel;
 
   DVCOptionsBuilder flushEventsIntervalMs(int flushEventsIntervalMs) {
       this._flushEventsIntervalMs = flushEventsIntervalMs;
@@ -54,6 +64,11 @@ class DVCOptionsBuilder {
   DVCOptionsBuilder disableConfigCache(bool disableConfigCache) {
       this._disableConfigCache = disableConfigCache;
       return this;
+  }
+
+  DVCOptionsBuilder logLevel(LogLevel logLevel) {
+    this._logLevel = logLevel;
+    return this;
   }
 
   /// Constructs a [DVCOptions] instance from the values currently in the builder.

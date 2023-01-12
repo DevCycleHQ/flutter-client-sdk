@@ -181,6 +181,17 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     if let disableConfigCache = dict["disableConfigCache"] as? Bool {
       optionsBuilder.disableConfigCache(disableConfigCache)
     }
+    
+    let logLevelMap = [
+      "debug": LogLevel.debug,
+      "info": LogLevel.info,
+      "warn": LogLevel.warn,
+      "error": LogLevel.error
+    ]
+    
+    if let codecLogLevel = dict["logLevel"] as? String, let logLevel = logLevelMap[codecLogLevel] {
+      optionsBuilder.logLevel(logLevel)
+    }
 
     let options = optionsBuilder.build()
     return options
