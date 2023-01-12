@@ -208,8 +208,10 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
       eventBuilder.target(target)
     }
     
-    if let clientDate = dict["clientDate"] as? Date {
-      eventBuilder.clientDate(clientDate)
+    let dateFormatter = ISO8601DateFormatter()
+    dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+    if let dateString = dict["date"] as? String, let date = dateFormatter.date(from: dateString) {
+      eventBuilder.clientDate(date)
     }
     
     if let value = dict["value"] as? String, let doubleValue = Double(value) {

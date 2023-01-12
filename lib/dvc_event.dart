@@ -2,12 +2,14 @@ class DVCEvent {
   final String? type;
   final String? target;
   final double? value;
+  final DateTime? date;
   final Map<String, dynamic>? metaData;
 
   DVCEvent._builder(DVCEventBuilder builder) :
     type = builder._type,
     target = builder._target,
     value = builder._value,
+    date = builder._date,
     metaData = builder._metaData;
 
   Map<String, dynamic> toCodec() {
@@ -15,6 +17,7 @@ class DVCEvent {
     result['type'] = type;
     result['target'] = target;
     result['value'] = value.toString();
+    result['date'] = date?.toIso8601String();
     result['metaData'] = metaData;
     return result;
   }
@@ -25,6 +28,7 @@ class DVCEventBuilder {
   String? _type;
   String? _target;
   double? _value;
+  DateTime? _date;
   Map<String, dynamic>? _metaData;
 
   /// Custom event type
@@ -42,6 +46,11 @@ class DVCEventBuilder {
   /// Sets the user's email attribute.
   DVCEventBuilder value(double value) {
     this._value = value;
+    return this;
+  }
+
+  DVCEventBuilder date(DateTime date) {
+    this._date = date;
     return this;
   }
 
