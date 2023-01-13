@@ -17,7 +17,7 @@ export 'dvc_feature.dart';
 export 'dvc_variable.dart';
 
 typedef ErrorCallback = void Function([Error? error]);
-typedef VariableCallback = void Function(
+typedef VariablesCallback = void Function(
     Error? error, Map<String, DVCVariable> variables);
 
 class DVCClient {
@@ -32,9 +32,9 @@ class DVCClient {
   // Map of variable keys to a list of variable objects, used to update variable values
   Map<String, List<DVCVariable>> _variableInstances = Map();
   // Map of callback IDs to user update callbacks. The ID is generated when identify is called
-  Map<String, VariableCallback> _identifyCallbacks = Map();
+  Map<String, VariablesCallback> _identifyCallbacks = Map();
   // Map of callback IDs to user update callbacks. The ID is generated when reset is called
-  Map<String, VariableCallback> _resetCallbacks = Map();
+  Map<String, VariablesCallback> _resetCallbacks = Map();
   // Map of callback IDs to user update callbacks. The ID is generated when flushEvents is called
   Map<String, ErrorCallback> _eventCallbacks = Map();
 
@@ -72,7 +72,7 @@ class DVCClient {
         }
         break;
       case 'userIdentified':
-        VariableCallback? callback =
+        VariablesCallback? callback =
             _identifyCallbacks[call.arguments['callbackId']];
         final error = call.arguments['error'];
         if (callback == null) {
@@ -96,7 +96,7 @@ class DVCClient {
         break;
       case 'userReset':
         final error = call.arguments['error'];
-        VariableCallback? callback =
+        VariablesCallback? callback =
             _resetCallbacks[call.arguments['callbackId']];
         if (callback == null) {
           return;
@@ -144,7 +144,7 @@ class DVCClient {
     return DevCycleFlutterClientSdkPlatform.instance.getPlatformVersion();
   }
 
-  Future<void> identifyUser(DVCUser user, [VariableCallback? callback]) async {
+  Future<void> identifyUser(DVCUser user, [VariablesCallback? callback]) async {
     await _clientReady;
     if (callback != null) {
       String callbackId = _uuid.v4();
@@ -155,7 +155,7 @@ class DVCClient {
     }
   }
 
-  Future<void> resetUser([VariableCallback? callback]) async {
+  Future<void> resetUser([VariablesCallback? callback]) async {
     await _clientReady;
     if (callback != null) {
       String callbackId = _uuid.v4();
