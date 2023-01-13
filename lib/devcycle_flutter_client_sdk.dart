@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:devcycle_flutter_client_sdk/dvc_event.dart';
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
+import 'package:logger/logger.dart';
 
 import 'devcycle_flutter_client_sdk_platform_interface.dart';
 import 'dvc_user.dart';
@@ -24,19 +25,20 @@ class DVCClient {
   static const _methodChannel = MethodChannel('devcycle_flutter_client_sdk');
 
   static const _uuid = Uuid();
+  static final _logger = Logger();
 
   Future<void>? _clientReady;
 
   /// Callback triggered on client initialization
   ErrorCallback? _clientInitializedCallback;
   // Map of variable keys to a list of variable objects, used to update variable values
-  Map<String, List<DVCVariable>> _variableInstances = Map();
+  final Map<String, List<DVCVariable>> _variableInstances = {};
   // Map of callback IDs to user update callbacks. The ID is generated when identify is called
-  Map<String, VariablesCallback> _identifyCallbacks = Map();
+  final Map<String, VariablesCallback> _identifyCallbacks = {};
   // Map of callback IDs to user update callbacks. The ID is generated when reset is called
-  Map<String, VariablesCallback> _resetCallbacks = Map();
+  final Map<String, VariablesCallback> _resetCallbacks = {};
   // Map of callback IDs to user update callbacks. The ID is generated when flushEvents is called
-  Map<String, ErrorCallback> _eventCallbacks = Map();
+  final Map<String, ErrorCallback> _eventCallbacks = {};
 
   DVCClient._builder(DVCClientBuilder builder);
 
@@ -54,10 +56,15 @@ class DVCClient {
   }
 
   Future<void> _handleCallbacks(MethodCall call) async {
+    final error = call.arguments['error'];
+    if (error != null) {
+      _logger.e(error);
+    }
+
     switch (call.method) {
       case 'clientInitialized':
         if (_clientInitializedCallback != null) {
-          _clientInitializedCallback!(call.arguments);
+          _clientInitializedCallback!(error);
         }
         break;
       case 'variableUpdated':
@@ -74,18 +81,16 @@ class DVCClient {
       case 'userIdentified':
         VariablesCallback? callback =
             _identifyCallbacks[call.arguments['callbackId']];
-        final error = call.arguments['error'];
         if (callback == null) {
           return;
         }
         if (error != null) {
-          print(error);
           callback(error, {});
           _identifyCallbacks.remove(call.arguments['callbackId']);
           return;
         }
 
-        Map<String, DVCVariable> parsedVariables = Map();
+        Map<String, DVCVariable> parsedVariables = {};
         Map<String, Map<String, dynamic>> variables =
             call.arguments['variables'];
         for (final entry in variables.entries) {
@@ -95,14 +100,12 @@ class DVCClient {
         _identifyCallbacks.remove(call.arguments['callbackId']);
         break;
       case 'userReset':
-        final error = call.arguments['error'];
         VariablesCallback? callback =
             _resetCallbacks[call.arguments['callbackId']];
         if (callback == null) {
           return;
         }
         if (error != null) {
-          print(error);
           callback(error, {});
           _resetCallbacks.remove(call.arguments['callbackId']);
           return;
@@ -117,13 +120,11 @@ class DVCClient {
         _resetCallbacks.remove(call.arguments['callbackId']);
         break;
       case 'eventsFlushed':
-        final error = call.arguments['error'];
         ErrorCallback? callback = _eventCallbacks[call.arguments['callbackId']];
         if (callback == null) {
           return;
         }
         if (error != null) {
-          print(error);
           callback(error);
           _eventCallbacks.remove(call.arguments['callbackId']);
           return;
