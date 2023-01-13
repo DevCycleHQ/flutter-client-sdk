@@ -97,6 +97,14 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void identifyAnonUser() {
+    DVCUser anonUser = DVCUserBuilder().isAnonymous(true).build();
+    _dvcClient.identifyUser(anonUser);
+    setState(() {
+      _displayValue = 'Identified user: \n${anonUser.toString()}';
+    });
+  }
+
   void trackEvent() {
     DVCEvent event = DVCEventBuilder()
         .target('target-str')
@@ -164,6 +172,8 @@ class _MyAppState extends State<MyApp> {
                 child: const Text('All Variables')),
             ElevatedButton(
                 onPressed: identifyUser, child: const Text('Identify User')),
+            ElevatedButton(
+                onPressed: identifyAnonUser, child: const Text('Identify Anonymous User')),
             ElevatedButton(
                 onPressed: resetUser, child: const Text('Reset User')),
             ElevatedButton(
