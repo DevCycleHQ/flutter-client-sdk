@@ -11,6 +11,7 @@ environment:
   flutter: ">=2.5.0"
 
 dependencies:
+  collection: ^1.16.0
   flutter:
     sdk: flutter
   logger: ^1.1.0

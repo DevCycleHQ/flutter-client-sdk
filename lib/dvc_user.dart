@@ -46,41 +46,41 @@ class DVCUserBuilder {
 
   /// Sets whether the user is anonymous.
   DVCUserBuilder userId(String userId) {
-    this._userId = userId;
+    _userId = userId;
     return this;
   }
 
   /// Sets whether the user is anonymous.
   DVCUserBuilder isAnonymous(bool isAnonymous) {
-    this._isAnonymous = isAnonymous;
+    _isAnonymous = isAnonymous;
     return this;
   }
 
   /// Sets the user's email attribute.
   DVCUserBuilder email(String email) {
-    this._email = email;
+    _email = email;
     return this;
   }
 
   /// Sets the user's name attribute.
   DVCUserBuilder name(String name) {
-    this._name = name;
+    _name = name;
     return this;
   }
 
   /// Sets the user's country.
   DVCUserBuilder country(String country) {
-    this._country = country;
+    _country = country;
     return this;
   }
 
   DVCUserBuilder customData( Map<String, dynamic> customData) {
-    this._customData = customData;
+    _customData = customData;
     return this;
   }
 
   DVCUserBuilder privateCustomData( Map<String, dynamic> privateCustomData) {
-    this._privateCustomData = privateCustomData;
+    _privateCustomData = privateCustomData;
     return this;
   }
 
