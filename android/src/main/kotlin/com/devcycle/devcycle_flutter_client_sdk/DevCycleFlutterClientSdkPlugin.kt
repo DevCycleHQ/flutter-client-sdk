@@ -15,6 +15,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import java.math.BigDecimal
+import java.text.SimpleDateFormat
 
 /** DevCycleFlutterClientSdkPlugin */
 class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
@@ -196,7 +197,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     if (target is String) eventBuilder.withTarget(target)
 
     val valueStr = map["value"] as? String
-    if(valueStr != null && !(valueStr.equals("null"))) {
+    if (valueStr != null && valueStr != "null") {
       try {
         val value = BigDecimal(valueStr)
         eventBuilder.withValue(value)
@@ -204,6 +205,14 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         throw e
       }
     }
+
+    val dateStr = map["date"] as? String
+    if (dateStr is String) {
+      val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+      val date = format.parse(dateStr)
+      eventBuilder.withDate(date)
+    }
+
 
     if (map["metaData"] != null) {
       eventBuilder.withMetaData(map["metaData"] as Map<String, Any>)
