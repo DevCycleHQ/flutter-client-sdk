@@ -9,9 +9,9 @@ on:
 
 jobs:
   build:
+    name: Release Flutter SDK
     runs-on: ubuntu-latest
-
-    steps:
+      steps:
       - uses: actions/checkout@v1
       - name: Install Flutter
         uses: subosito/flutter-action@v1
