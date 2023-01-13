@@ -44,6 +44,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull res: Result) {
+    val args = mutableMapOf<String, Any?>()
     when (call.method) {
       "initialize" -> {
         val codecOptions: Map<String, Any>? = call.argument("options")
@@ -62,10 +63,11 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
 
         client.onInitialized(object : DVCCallback<String> {
           override fun onSuccess(result: String) {
-            callFlutter("clientInitialized", null)
+            callFlutter("clientInitialized", args)
           }
 
           override fun onError(t: Throwable) {
+            args["error"] = t.message
             callFlutter("clientInitialized", t.message)
           }
         })
@@ -73,19 +75,14 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
       }
       "identifyUser" -> {
         val user = getUserFromMap(call.argument("user")!!)
-        val callbackId = call.argument("callbackId") as String?
+        args["callbackId"] = call.argument("callbackId") as String?
         val callback = object: DVCCallback<Map<String, Variable<Any>>> {
           override fun onSuccess(result: Map<String, Variable<Any>>) {
-            val args = mutableMapOf<String, Any?>()
-            args["error"] = null
-            args["callbackId"] = callbackId
             args["variables"] = variablesToMap(result)
             callFlutter("userIdentified", args)
           }
           override fun onError(t: Throwable) {
-            val args = mutableMapOf<String, Any?>()
-            args["error"] = t
-            args["callbackId"] = callbackId
+            args["error"] = t.message
             callFlutter("userIdentified", args)
           }
         }
@@ -93,19 +90,14 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         client.identifyUser(user, callback)
       }
       "resetUser" -> {
-        val callbackId = call.argument("callbackId") as String?
+        args["callbackId"] = call.argument("callbackId") as String?
         val callback = object: DVCCallback<Map<String, Variable<Any>>> {
           override fun onSuccess(result: Map<String, Variable<Any>>) {
-            val args = mutableMapOf<String, Any?>()
-            args["error"] = null
-            args["callbackId"] = callbackId
             args["variables"] = variablesToMap(result)
             callFlutter("userReset", args)
           }
           override fun onError(t: Throwable) {
-            val args = mutableMapOf<String, Any?>()
-            args["error"] = t
-            args["callbackId"] = callbackId
+            args["error"] = t.message
             callFlutter("userReset", args)
           }
         }
@@ -116,10 +108,8 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         val variable = client.variable(call.argument("key")!!, call.argument("defaultValue")!!)
         if (variable.key !in variableUpdates) {
           variable.onUpdate { result: Variable<Any> ->
-            val args = mapOf<String, Any?>(
-              "key" to result.key,
-              "value" to result.value
-            )
+            args["key"] = result.key
+            args["value"] = result.value
             callFlutter("variableUpdated", args)
           }
           variableUpdates[variable.key] = variable
@@ -136,30 +126,23 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
       }
       "track" -> {
         val event = getEventFromMap(call.argument("event")!!)
-        if (::client.isInitialized) {
-          client.track(event)
-        }
+        client.track(event)
       }
       "flushEvents" -> {
-        val callbackId = call.argument("callbackId") as String?
+        args["callbackId"] = call.argument("callbackId") as String?
         val callback = object: DVCCallback<String> {
           override fun onSuccess(result: String) {
-            val args = mutableMapOf<String, Any?>()
-            args["error"] = null
-            args["callbackId"] = callbackId
             args["result"] = result
             callFlutter("eventsFlushed", args)
           }
 
           override fun onError(t: Throwable) {
-            val args = mutableMapOf<String, Any?>()
-            args["error"] = t
-            args["callbackId"] = callbackId
+            args["error"] = t.message
             callFlutter("flushEvents", args)
           }
         }
 
-          client.flushEvents(callback)
+        client.flushEvents(callback)
       }
       "getPlatformVersion" -> {
         res.success("Android ${android.os.Build.VERSION.RELEASE}")

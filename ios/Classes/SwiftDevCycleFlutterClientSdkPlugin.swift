@@ -21,7 +21,8 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     var user: DVCUser?
     let args = call.arguments as? [String: Any]
-    let _callbackId = args?["callbackId"] as? String
+    let callbackId = args?["callbackId"] as? String
+    var callbackArgs: [String:Any] = [:]
 
     if let userArg = args?["user"] as? [String: Any] {
       user = getUserFromDict(dict: userArg)
@@ -37,46 +38,35 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
           .user(dvcUser)
           .options(getOptionsFromDict(dict: options ?? [:] ))
           .build(onInitialized: { error in
-            var callbackArgs: [String:Any] = [
-              "callbackId": _callbackId
-            ]
             if (error != nil) {
               callbackArgs["error"] = "\(String(describing: error))"
-              self.channel.invokeMethod("clientInitialized", arguments: callbackArgs)
-            } else {
-              self.channel.invokeMethod("clientInitialized", arguments: callbackArgs)
             }
+            self.channel.invokeMethod("clientInitialized", arguments: callbackArgs)
         })
       }
       result(nil)
     case "identifyUser":
       if let dvcUser = user {
         try? self.dvcClient?.identifyUser(user: dvcUser, callback: { error, variables in
-          var callbackArgs: [String:Any] = [
-            "callbackId": _callbackId
-          ]
+          callbackArgs["callbackId"] = callbackId
           if (error != nil) {
             callbackArgs["error"] = "\(String(describing: error))"
-            self.channel.invokeMethod("userIdentified", arguments: callbackArgs)
           } else {
             callbackArgs["variables"] = self.variablesToMap(variables: variables ?? [:])
-            self.channel.invokeMethod("userIdentified", arguments: callbackArgs)
           }
+          self.channel.invokeMethod("userIdentified", arguments: callbackArgs)
         })
       }
       result(nil)
     case "resetUser":
       try? self.dvcClient?.resetUser(callback: { error, variables in
-        var callbackArgs: [String:Any] = [
-          "callbackId": _callbackId
-        ]
+        callbackArgs["callbackId"] = callbackId
         if (error != nil) {
           callbackArgs["error"] = "\(String(describing: error))"
-          self.channel.invokeMethod("userReset", arguments: callbackArgs)
         } else {
           callbackArgs["variables"] = self.variablesToMap(variables: variables ?? [:])
-          self.channel.invokeMethod("userReset", arguments: callbackArgs)
         }
+        self.channel.invokeMethod("userReset", arguments: callbackArgs)
       })
       result(nil)
     case "allFeatures":
@@ -90,10 +80,8 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         let variable = dvcClient.variable(key: varKey, defaultValue: varDefaultValue)
         if !self.variableUpdates.contains(where: { $0.key == variable.key }) {
           variable.onUpdate(handler: { newValue in
-            var callbackArgs: [String:Any] = [
-              "key": variable.key,
-              "value": newValue
-            ]
+            callbackArgs["key"] = variable.key
+            callbackArgs["value"] = variable.value
             self.channel.invokeMethod("variableUpdated", arguments: callbackArgs)
           })
           self.variableUpdates[variable.key] = variable
@@ -108,10 +96,8 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         self.dvcClient?.track(dvcEvent)
       }
     case "flushEvents":
-      try? self.dvcClient?.flushEvents(callback: { error in
-        var callbackArgs: [String:Any] = [
-          "callbackId": _callbackId
-        ]
+      self.dvcClient?.flushEvents(callback: { error in
+        callbackArgs["callbackId"] = callbackId
         if (error != nil) {
           callbackArgs["error"] = "\(String(describing: error))"
         } 
