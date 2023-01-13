@@ -11,27 +11,27 @@ jobs:
   build:
     name: Release Flutter SDK
     runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v1
-        - name: Install Flutter
-          uses: subosito/flutter-action@v1
-          with:
-            flutter-version: '3.x'
-            channel: 'stable'
-        - name: Install dependencies
-          run: flutter pub get
-        - name: Analyze
-          run: flutter analyze
-        - name: Run tests
-          run: flutter test
-        - name: Setup Pub Credentials
-          shell: bash
-          env:
-            DART_PUBLISH_ACCESS_TOKEN: ${{ secrets.DART_PUBLISH_ACCESS_TOKEN }}
-            DART_PUBLISH_REFRESH_TOKEN: ${{ secrets.DART_PUBLISH_REFRESH_TOKEN }}
-          run: |
-            sh ./pub_login.sh
-        - name: Check Publish Warnings
-          run: flutter pub publish --dry-run
-        - name: Publish Package
-          run: flutter pub publish
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '3.x'
+          channel: 'stable'
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Analyze
+        run: flutter analyze
+      - name: Run tests
+        run: flutter test
+      - name: Setup Pub Credentials
+        shell: bash
+        env:
+          DART_PUBLISH_ACCESS_TOKEN: ${{ secrets.DART_PUBLISH_ACCESS_TOKEN }}
+          DART_PUBLISH_REFRESH_TOKEN: ${{ secrets.DART_PUBLISH_REFRESH_TOKEN }}
+        run: |
+          sh ./pub_login.sh
+      - name: Check Publish Warnings
+        run: flutter pub publish --dry-run
+      - name: Publish Package
+        run: flutter pub publish
