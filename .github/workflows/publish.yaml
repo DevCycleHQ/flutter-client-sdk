@@ -7,6 +7,7 @@ on:
 
 jobs:
   build:
+    name: Release Flutter SDK
     runs-on: ubuntu-latest
 
     container:
