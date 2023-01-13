@@ -1,4 +1,4 @@
 # Change log
 
-## [1.0.0] - {date}
-This is the first public release of the DevCycle Flutter Client SDK. 
+## [0.0.1] - {2023-01-13}
+Initial Publish
