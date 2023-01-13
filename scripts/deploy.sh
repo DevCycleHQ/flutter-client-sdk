@@ -18,4 +18,4 @@ fi
 curl -X POST \
     -d api_key=$DEVCYCLE_PROD_SLEUTH_API_TOKEN \
     -d environment=production \
-    -d sha=$SHA https://app.sleuth.io/api/1/deployments/taplytics/ios-client-sdk/register_deploy
+    -d sha=$SHA https://app.sleuth.io/api/1/deployments/taplytics/flutter-client-sdk/register_deploy
