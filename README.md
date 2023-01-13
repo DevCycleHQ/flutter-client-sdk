@@ -11,14 +11,17 @@ Other Flutter platforms are not currently supported by this SDK.
 
 ## Installation
 
-### Pub
+### Flutter CLI
 
-The SDK can be installed into your Flutter project by adding the following to your pubspec.yaml:
+The SDK can be installed into your Flutter project by running `flutter pub add devcycle_flutter_client_sdk`.
+
+### Pub Spec
+
+The SDK can be installed into your Flutter project by adding the following to your `pubspec.yaml`:
 
 ```dart
 devcycle_flutter_client_sdk: ^1.0.0
 ```
-
 Then, run `flutter pub get`.
 
 ## Usage
