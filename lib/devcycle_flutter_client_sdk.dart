@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:devcycle_flutter_client_sdk/dvc_event.dart';
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
@@ -213,17 +211,17 @@ class DVCClientBuilder {
   DVCOptions? _options;
 
   DVCClientBuilder environmentKey(String environmentKey) {
-    this._environmentKey = environmentKey;
+    _environmentKey = environmentKey;
     return this;
   }
 
   DVCClientBuilder user(DVCUser user) {
-    this._user = user;
+    _user = user;
     return this;
   }
 
   DVCClientBuilder options(DVCOptions options) {
-    this._options = options;
+    _options = options;
     return this;
   }
 
