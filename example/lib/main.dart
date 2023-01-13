@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
@@ -16,6 +17,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final _logger = Logger();
   String _platformVersion = 'Unknown';
   String _displayValue = '';
   String _variableValue = '';
@@ -87,11 +89,11 @@ class _MyAppState extends State<MyApp> {
 
   void identifyUser() {
     DVCUser testUser = DVCUserBuilder().userId('test_user_123').build();
-    _dvcClient.identifyUser(testUser,         ((err, variables) => {
-              print(variables.values
-                  .map((variable) => "${variable.key}: ${variable.value}")
-                  .toString())
-            }));
+    _dvcClient.identifyUser(testUser, ((err, variables) => {
+      _logger.d(variables.values
+          .map((variable) => "${variable.key}: ${variable.value}")
+          .toString())
+    }));
     setState(() {
       _displayValue = 'Identified user: \n${testUser.toString()}';
     });
@@ -125,7 +127,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void flushEvents() {
-    _dvcClient.flushEvents(([error]) => print(error));
+    _dvcClient.flushEvents(([error]) => _logger.e(error));
     setState(() {
       _displayValue = 'Flushed events';
     });

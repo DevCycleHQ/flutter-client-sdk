@@ -38,29 +38,29 @@ class DVCEventBuilder {
 
   /// Custom event type
   DVCEventBuilder type(String type) {
-    this._type = type;
+    _type = type;
     return this;
   }
 
   /// Custom event target / subject of event. Contextual to event type
   DVCEventBuilder target(String target) {
-    this._target = target;
+    _target = target;
     return this;
   }
 
   /// Sets the user's email attribute.
   DVCEventBuilder value(double value) {
-    this._value = value;
+    _value = value;
     return this;
   }
 
   DVCEventBuilder date(DateTime date) {
-    this._date = date;
+    _date = date;
     return this;
   }
 
   DVCEventBuilder metaData(Map<String, dynamic> metaData) {
-    this._metaData = metaData;
+    _metaData = metaData;
     return this;
   }
 

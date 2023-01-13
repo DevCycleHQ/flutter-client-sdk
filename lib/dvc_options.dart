@@ -42,32 +42,32 @@ class DVCOptionsBuilder {
   LogLevel? _logLevel;
 
   DVCOptionsBuilder flushEventsIntervalMs(int flushEventsIntervalMs) {
-      this._flushEventsIntervalMs = flushEventsIntervalMs;
-      return this;
+    _flushEventsIntervalMs = flushEventsIntervalMs;
+    return this;
   }
 
   DVCOptionsBuilder disableEventLogging(bool disableEventLogging) {
-      this._disableEventLogging = disableEventLogging;
-      return this;
+    _disableEventLogging = disableEventLogging;
+    return this;
   }
 
   DVCOptionsBuilder enableEdgeDB(bool enableEdgeDB) {
-      this._enableEdgeDB = enableEdgeDB;
-      return this;
+    _enableEdgeDB = enableEdgeDB;
+    return this;
   }
 
   DVCOptionsBuilder configCacheTTL(int configCacheTTL) {
-      this._configCacheTTL = configCacheTTL;
-      return this;
+    _configCacheTTL = configCacheTTL;
+    return this;
   }
 
   DVCOptionsBuilder disableConfigCache(bool disableConfigCache) {
-      this._disableConfigCache = disableConfigCache;
-      return this;
+    _disableConfigCache = disableConfigCache;
+    return this;
   }
 
   DVCOptionsBuilder logLevel(LogLevel logLevel) {
-    this._logLevel = logLevel;
+    _logLevel = logLevel;
     return this;
   }
 
