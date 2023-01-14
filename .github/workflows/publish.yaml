@@ -30,7 +30,7 @@ jobs:
           DART_PUBLISH_ACCESS_TOKEN: ${{ secrets.DART_PUBLISH_ACCESS_TOKEN }}
           DART_PUBLISH_REFRESH_TOKEN: ${{ secrets.DART_PUBLISH_REFRESH_TOKEN }}
         run: |
-          sh ./pub_login.sh
+          sh ./scripts/pub_login.sh
       - name: Check Publish Warnings
         run: flutter pub publish --dry-run
       - name: Publish Package
