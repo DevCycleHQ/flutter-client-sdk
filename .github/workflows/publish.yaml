@@ -24,6 +24,8 @@ jobs:
         run: flutter analyze
       - name: Run tests
         run: flutter test
+      - name: Create credentials directory
+        run: mkdir ~/.pub-cache
       - name: Setup Pub Credentials
         shell: bash
         env:
