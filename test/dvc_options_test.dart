@@ -4,13 +4,13 @@ import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk.dart';
 void main() {
   test('builds options object with all params', () {
     DVCOptions options = DVCOptionsBuilder()
-      .flushEventsIntervalMs(100)
-      .disableEventLogging(true)
-      .enableEdgeDB(false)
-      .configCacheTTL(999)
-      .disableConfigCache(false)
-      .logLevel(LogLevel.debug)
-      .build();
+        .flushEventsIntervalMs(100)
+        .disableEventLogging(true)
+        .enableEdgeDB(false)
+        .configCacheTTL(999)
+        .disableConfigCache(false)
+        .logLevel(LogLevel.debug)
+        .build();
     expect(options.flushEventsIntervalMs, equals(100));
     expect(options.disableEventLogging, isTrue);
     expect(options.enableEdgeDB, isFalse);
@@ -21,13 +21,13 @@ void main() {
 
   test('creates map from options object with all properties', () {
     DVCOptions options = DVCOptionsBuilder()
-      .flushEventsIntervalMs(100)
-      .disableEventLogging(true)
-      .enableEdgeDB(false)
-      .configCacheTTL(999)
-      .disableConfigCache(false)
-      .logLevel(LogLevel.error)
-      .build();
+        .flushEventsIntervalMs(100)
+        .disableEventLogging(true)
+        .enableEdgeDB(false)
+        .configCacheTTL(999)
+        .disableConfigCache(false)
+        .logLevel(LogLevel.error)
+        .build();
     Map<String, dynamic> codecOptions = options.toCodec();
     expect(codecOptions['flushEventsIntervalMs'], equals(100));
     expect(codecOptions['disableEventLogging'], isTrue);
@@ -38,10 +38,8 @@ void main() {
   });
 
   test('creates map from options object with only one property', () {
-    DVCOptions options = DVCOptionsBuilder()
-      .flushEventsIntervalMs(100)
-      .build();
+    DVCOptions options = DVCOptionsBuilder().flushEventsIntervalMs(100).build();
     Map<String, dynamic> codecOptions = options.toCodec();
-    expect(codecOptions, { "flushEventsIntervalMs": 100 });
+    expect(codecOptions, {"flushEventsIntervalMs": 100});
   });
 }

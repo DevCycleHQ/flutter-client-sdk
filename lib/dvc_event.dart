@@ -5,12 +5,12 @@ class DVCEvent {
   final DateTime? date;
   final Map<String, dynamic>? metaData;
 
-  DVCEvent._builder(DVCEventBuilder builder) :
-    type = builder._type,
-    target = builder._target,
-    value = builder._value,
-    date = builder._date,
-    metaData = builder._metaData;
+  DVCEvent._builder(DVCEventBuilder builder)
+      : type = builder._type,
+        target = builder._target,
+        value = builder._value,
+        date = builder._date,
+        metaData = builder._metaData;
 
   Map<String, dynamic> toCodec() {
     final Map<String, dynamic> result = <String, dynamic>{};

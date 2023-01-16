@@ -4,12 +4,12 @@ import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk.dart';
 void main() {
   test('builds correct user object', () {
     DVCUser user = DVCUserBuilder()
-      .userId('user1')
-      .isAnonymous(false)
-      .email('test@example.com')
-      .name('a b')
-      .country('de')
-      .build();
+        .userId('user1')
+        .isAnonymous(false)
+        .email('test@example.com')
+        .name('a b')
+        .country('de')
+        .build();
     expect(user.userId, equals('user1'));
     expect(user.isAnonymous, isFalse);
     expect(user.email, equals('test@example.com'));
@@ -19,12 +19,12 @@ void main() {
 
   test('creates map from user object', () {
     DVCUser user = DVCUserBuilder()
-      .userId('user1')
-      .isAnonymous(false)
-      .email('test@example.com')
-      .name('a b')
-      .country('de')
-      .build();
+        .userId('user1')
+        .isAnonymous(false)
+        .email('test@example.com')
+        .name('a b')
+        .country('de')
+        .build();
     Map<String, dynamic> codecUser = user.toCodec();
     expect(codecUser['userId'], equals('user1'));
     expect(codecUser['isAnonymous'], isFalse);
@@ -32,5 +32,4 @@ void main() {
     expect(codecUser['name'], equals('a b'));
     expect(codecUser['country'], equals('de'));
   });
-
 }

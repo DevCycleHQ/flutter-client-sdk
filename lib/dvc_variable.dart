@@ -1,11 +1,6 @@
 import 'package:collection/collection.dart';
 
-enum VariableType {
-  string,
-  boolean,
-  number,
-  json
-}
+enum VariableType { string, boolean, number, json }
 
 class DVCVariable<T> {
   /// unique database id
@@ -28,7 +23,8 @@ class DVCVariable<T> {
 
     variable.id = map['id'];
     variable.key = map['key'];
-    variable.type = VariableType.values.firstWhereOrNull((e) => e.toString() == "VariableType.$mapType");
+    variable.type = VariableType.values
+        .firstWhereOrNull((e) => e.toString() == "VariableType.$mapType");
     variable.value = map['value'];
 
     return variable;
