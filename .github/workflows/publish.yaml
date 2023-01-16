@@ -28,7 +28,7 @@ jobs:
         run: mkdir ~/.config/dart
       - name: Setup Pub Credentials
         run: |
-          echo  ${{ secrets.DART_PUB_CREDENTIALS_JSON }} > ~/.config/dart/pub-credentials.json
+          echo  '${{ secrets.DART_PUB_CREDENTIALS_JSON }}' > ~/.config/dart/pub-credentials.json
       - name: Check Publish Warnings
         run: flutter pub publish --dry-run
       - name: Publish Package
