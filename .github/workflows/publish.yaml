@@ -25,14 +25,10 @@ jobs:
       - name: Run tests
         run: flutter test
       - name: Create credentials directory
-        run: mkdir ~/.pub-cache
+        run: mkdir ~/.config/dart
       - name: Setup Pub Credentials
-        shell: bash
-        env:
-          DART_PUBLISH_ACCESS_TOKEN: ${{ secrets.DART_PUBLISH_ACCESS_TOKEN }}
-          DART_PUBLISH_REFRESH_TOKEN: ${{ secrets.DART_PUBLISH_REFRESH_TOKEN }}
         run: |
-          sh ./scripts/pub_login.sh
+          echo  ${{ secrets.DART_PUB_CREDENTIALS_JSON }} > ~/.config/dart/pub-credentials.json
       - name: Check Publish Warnings
         run: flutter pub publish --dry-run
       - name: Publish Package
