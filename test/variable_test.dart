@@ -50,12 +50,12 @@ void main() {
       "id": "variable1",
       "key": "variable-one",
       "type": "JSON",
-      "value": { "hello": "world" }
+      "value": {"hello": "world"}
     };
     DVCVariable variable = DVCVariable.fromCodec(codecVariable);
     expect(variable.id, equals('variable1'));
     expect(variable.key, equals('variable-one'));
     expect(variable.type.toString(), equals('VariableType.json'));
-    expect(variable.value, equals({ "hello": "world" }));
+    expect(variable.value, equals({"hello": "world"}));
   });
 }

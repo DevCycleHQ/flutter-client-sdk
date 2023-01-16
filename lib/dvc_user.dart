@@ -7,14 +7,14 @@ class DVCUser {
   final Map<String, dynamic>? customData;
   final Map<String, dynamic>? privateCustomData;
 
-  DVCUser._builder(DVCUserBuilder builder) :
-    userId = builder._userId,
-    isAnonymous = builder._isAnonymous,
-    email = builder._email,
-    name = builder._name,
-    country = builder._country,
-    customData = builder._customData,
-    privateCustomData = builder._privateCustomData;
+  DVCUser._builder(DVCUserBuilder builder)
+      : userId = builder._userId,
+        isAnonymous = builder._isAnonymous,
+        email = builder._email,
+        name = builder._name,
+        country = builder._country,
+        customData = builder._customData,
+        privateCustomData = builder._privateCustomData;
 
   Map<String, dynamic> toCodec() {
     final Map<String, dynamic> result = {};
@@ -24,7 +24,9 @@ class DVCUser {
     if (name != null) result['name'] = name;
     if (country != null) result['country'] = country;
     if (customData != null) result['customData'] = customData;
-    if (privateCustomData != null) result['privateCustomData'] = privateCustomData;
+    if (privateCustomData != null) {
+      result['privateCustomData'] = privateCustomData;
+    }
     return result;
   }
 
@@ -74,12 +76,12 @@ class DVCUserBuilder {
     return this;
   }
 
-  DVCUserBuilder customData( Map<String, dynamic> customData) {
+  DVCUserBuilder customData(Map<String, dynamic> customData) {
     _customData = customData;
     return this;
   }
 
-  DVCUserBuilder privateCustomData( Map<String, dynamic> privateCustomData) {
+  DVCUserBuilder privateCustomData(Map<String, dynamic> privateCustomData) {
     _privateCustomData = privateCustomData;
     return this;
   }

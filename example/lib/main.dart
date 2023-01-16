@@ -89,11 +89,13 @@ class _MyAppState extends State<MyApp> {
 
   void identifyUser() {
     DVCUser testUser = DVCUserBuilder().userId('test_user_123').build();
-    _dvcClient.identifyUser(testUser, ((err, variables) => {
-      _logger.d(variables.values
-          .map((variable) => "${variable.key}: ${variable.value}")
-          .toString())
-    }));
+    _dvcClient.identifyUser(
+        testUser,
+        ((err, variables) => {
+              _logger.d(variables.values
+                  .map((variable) => "${variable.key}: ${variable.value}")
+                  .toString())
+            }));
     setState(() {
       _displayValue = 'Identified user: \n${testUser.toString()}';
     });
@@ -175,7 +177,8 @@ class _MyAppState extends State<MyApp> {
             ElevatedButton(
                 onPressed: identifyUser, child: const Text('Identify User')),
             ElevatedButton(
-                onPressed: identifyAnonUser, child: const Text('Identify Anonymous User')),
+                onPressed: identifyAnonUser,
+                child: const Text('Identify Anonymous User')),
             ElevatedButton(
                 onPressed: resetUser, child: const Text('Reset User')),
             ElevatedButton(

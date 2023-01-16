@@ -1,11 +1,6 @@
 import 'package:collection/collection.dart';
 
-enum FeatureType {
-  release,
-  experiment,
-  permission,
-  ops
-}
+enum FeatureType { release, experiment, permission, ops }
 
 class DVCFeature {
   /// unique database id
@@ -34,7 +29,8 @@ class DVCFeature {
 
     feature.id = map['id'];
     feature.key = map['key'];
-    feature.type = FeatureType.values.firstWhereOrNull((e) => e.toString() == "FeatureType.${map['type']}");
+    feature.type = FeatureType.values
+        .firstWhereOrNull((e) => e.toString() == "FeatureType.${map['type']}");
     feature.variation = map['variation'];
     feature.evalReason = map['evalReason'];
     feature.variationName = map['variationName'];

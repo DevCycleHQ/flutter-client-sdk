@@ -1,9 +1,5 @@
-enum LogLevel {
-  debug,
-  info,
-  warn,
-  error
-}
+enum LogLevel { debug, info, warn, error }
+
 class DVCOptions {
   final int? flushEventsIntervalMs;
   final bool? disableEventLogging;
@@ -12,21 +8,27 @@ class DVCOptions {
   final bool? disableConfigCache;
   final LogLevel? logLevel;
 
-  DVCOptions._builder(DVCOptionsBuilder builder) :
-    flushEventsIntervalMs = builder._flushEventsIntervalMs,
-    disableEventLogging = builder._disableEventLogging,
-    enableEdgeDB = builder._enableEdgeDB,
-    configCacheTTL = builder._configCacheTTL,
-    disableConfigCache = builder._disableConfigCache,
-    logLevel = builder._logLevel;
+  DVCOptions._builder(DVCOptionsBuilder builder)
+      : flushEventsIntervalMs = builder._flushEventsIntervalMs,
+        disableEventLogging = builder._disableEventLogging,
+        enableEdgeDB = builder._enableEdgeDB,
+        configCacheTTL = builder._configCacheTTL,
+        disableConfigCache = builder._disableConfigCache,
+        logLevel = builder._logLevel;
 
   Map<String, dynamic> toCodec() {
     final Map<String, dynamic> result = <String, dynamic>{};
-    if (flushEventsIntervalMs != null) result['flushEventsIntervalMs'] = flushEventsIntervalMs;
-    if (disableEventLogging != null) result['disableEventLogging'] = disableEventLogging;
+    if (flushEventsIntervalMs != null) {
+      result['flushEventsIntervalMs'] = flushEventsIntervalMs;
+    }
+    if (disableEventLogging != null) {
+      result['disableEventLogging'] = disableEventLogging;
+    }
     if (enableEdgeDB != null) result['enableEdgeDB'] = enableEdgeDB;
     if (configCacheTTL != null) result['configCacheTTL'] = configCacheTTL;
-    if (disableConfigCache != null) result['disableConfigCache'] = disableConfigCache;
+    if (disableConfigCache != null) {
+      result['disableConfigCache'] = disableConfigCache;
+    }
     if (logLevel != null) result['logLevel'] = logLevel?.name;
     return result;
   }
