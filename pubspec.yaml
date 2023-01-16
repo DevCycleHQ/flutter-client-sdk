@@ -1,6 +1,6 @@
 name: devcycle_flutter_client_sdk
-description: DevCycle Flutter SDK
-version: 0.0.1
+description: DevCycle Flutter Client SDK
+version: 0.0.2
 homepage: https://www.devcycle.com
 repository: https://github.com/DevCycleHQ/flutter-client-sdk
 documentation: https://docs.devcycle.com/docs/sdk/client-side-sdks/flutter
