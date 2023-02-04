@@ -1,5 +1,8 @@
 # Change log
 
+## [1.0.2] - 2023-02-3
+bump iOS version to 1.9.0
+
 ## [1.0.1] - 2023-02-1
 bump Android version to 1.2.4
 
