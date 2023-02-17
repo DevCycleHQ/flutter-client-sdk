@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   String _variableValue = '';
   bool _booleanValue = false;
   final _dvcClient = DVCClientBuilder()
-      .environmentKey('dvc_mobile_test_key')
+      .sdkKey('YOUR_DVC_MOBILE_SDK_KEY')
       .user(DVCUserBuilder().userId('123').build())
       .options(DVCOptionsBuilder().logLevel(LogLevel.debug).build())
       .build();
