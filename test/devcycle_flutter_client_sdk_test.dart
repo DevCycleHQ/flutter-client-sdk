@@ -44,6 +44,7 @@ void main() {
 
     test('initializes with environmentKey', () async {
       DVCUser user = DVCUserBuilder().userId('user1').build();
+      // ignore: deprecated_member_use_from_same_package
       DVCClientBuilder().user(user).environmentKey('123').build();
       expect(methodCall?.method, 'initialize');
       expect(methodCall?.arguments, {
