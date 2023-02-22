@@ -1,5 +1,10 @@
 # Change log
 
+## [1.1.0] - 2023-02-22
+rename `environmentKey` to `sdkKey` for consistency across SDKs
+bump iOS version to 1.9.1
+bump Android version to 1.4.0
+
 ## [1.0.2] - 2023-02-3
 bump iOS version to 1.9.0
 
