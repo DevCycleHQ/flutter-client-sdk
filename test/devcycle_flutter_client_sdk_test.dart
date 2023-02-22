@@ -36,7 +36,7 @@ void main() {
       DVCClientBuilder().user(user).sdkKey('123').build();
       expect(methodCall?.method, 'initialize');
       expect(methodCall?.arguments, {
-        "environmentKey": "123",
+        "sdkKey": "123",
         "user": {"userId": "user1"},
         "options": null
       });
@@ -47,7 +47,7 @@ void main() {
       DVCClientBuilder().user(user).environmentKey('123').build();
       expect(methodCall?.method, 'initialize');
       expect(methodCall?.arguments, {
-        "environmentKey": "123",
+        "sdkKey": "123",
         "user": {"userId": "user1"},
         "options": null
       });
