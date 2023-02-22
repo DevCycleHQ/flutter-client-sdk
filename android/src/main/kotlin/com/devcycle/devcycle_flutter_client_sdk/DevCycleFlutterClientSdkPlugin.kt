@@ -53,7 +53,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         val clientBuilder = DVCClient
           .builder()
           .withContext(context)
-          .withEnvironmentKey(call.argument("environmentKey")!!)
+          .withSDKKey(call.argument("sdkKey")!!)
           .withUser(getUserFromMap(call.argument("user")!!))
           .withOptions(getOptionsFromMap(codecOptions))
         if (logLevel is LogLevel) {

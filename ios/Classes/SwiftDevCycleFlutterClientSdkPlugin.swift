@@ -30,11 +30,11 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     
     switch call.method {
     case "initialize":
-      let envKey = args?["environmentKey"] as? String
+      let sdkKey = args?["sdkKey"] as? String
       let options = args?["options"] as? [String: Any]
-      if let dvcUser = user, let dvcKey = envKey {
+      if let dvcUser = user, let dvcKey = sdkKey {
         self.dvcClient = try? DVCClient.builder()
-          .environmentKey(dvcKey)
+          .sdkKey(dvcKey)
           .user(dvcUser)
           .options(getOptionsFromDict(dict: options ?? [:] ))
           .build(onInitialized: { error in

@@ -33,10 +33,21 @@ void main() {
   group('initialize', () {
     test('initializes with only required params', () async {
       DVCUser user = DVCUserBuilder().userId('user1').build();
+      DVCClientBuilder().user(user).sdkKey('123').build();
+      expect(methodCall?.method, 'initialize');
+      expect(methodCall?.arguments, {
+        "sdkKey": "123",
+        "user": {"userId": "user1"},
+        "options": null
+      });
+    });
+
+    test('initializes with environmentKey', () async {
+      DVCUser user = DVCUserBuilder().userId('user1').build();
       DVCClientBuilder().user(user).environmentKey('123').build();
       expect(methodCall?.method, 'initialize');
       expect(methodCall?.arguments, {
-        "environmentKey": "123",
+        "sdkKey": "123",
         "user": {"userId": "user1"},
         "options": null
       });
@@ -48,12 +59,12 @@ void main() {
           DVCOptionsBuilder().configCacheTTL(100).enableEdgeDB(true).build();
       DVCClientBuilder()
           .user(user)
-          .environmentKey('123')
+          .sdkKey('123')
           .options(options)
           .build();
       expect(methodCall?.method, 'initialize');
       expect(methodCall?.arguments, {
-        "environmentKey": "123",
+        "sdkKey": "123",
         "user": {"userId": "user1"},
         "options": {"configCacheTTL": 100, "enableEdgeDB": true}
       });
@@ -67,7 +78,7 @@ void main() {
     });
 
     test('fails to initialize without a user', () async {
-      DVCClientBuilder clientBuilder = DVCClientBuilder().environmentKey('123');
+      DVCClientBuilder clientBuilder = DVCClientBuilder().sdkKey('123');
 
       expect(clientBuilder.build, throwsException);
     });
@@ -91,7 +102,7 @@ void main() {
           .build();
 
       DVCClient devcycleFlutterClientSdkPlugin =
-          DVCClientBuilder().environmentKey('SDK_KEY').user(user1).build();
+          DVCClientBuilder().sdkKey('SDK_KEY').user(user1).build();
       await devcycleFlutterClientSdkPlugin.identifyUser(user2);
       expect(methodCall?.method, 'identifyUser');
       expect(methodCall?.arguments, {
@@ -117,7 +128,7 @@ void main() {
           .country('de')
           .build();
       DVCClient devcycleFlutterClientSdkPlugin =
-          DVCClientBuilder().environmentKey('SDK_KEY').user(user).build();
+          DVCClientBuilder().sdkKey('SDK_KEY').user(user).build();
       await devcycleFlutterClientSdkPlugin.resetUser();
       expect(methodCall?.method, 'resetUser');
       expect(methodCall?.arguments, {'callbackId': null});
@@ -128,7 +139,7 @@ void main() {
     test('get variable', () async {
       DVCUser user = DVCUserBuilder().userId('user1').build();
       DVCClient devcycleFlutterClientSdkPlugin =
-          DVCClientBuilder().environmentKey('SDK_KEY').user(user).build();
+          DVCClientBuilder().sdkKey('SDK_KEY').user(user).build();
       await devcycleFlutterClientSdkPlugin.variable(
           'test-key', 'default-value');
       expect(methodCall?.method, 'variable');
@@ -141,7 +152,7 @@ void main() {
     test('fetch all features', () async {
       DVCUser user = DVCUserBuilder().userId('user1').build();
       DVCClient devcycleFlutterClientSdkPlugin =
-          DVCClientBuilder().user(user).environmentKey('123').build();
+          DVCClientBuilder().user(user).sdkKey('123').build();
       await devcycleFlutterClientSdkPlugin.allFeatures();
       expect(methodCall?.method, 'allFeatures');
     });
@@ -151,7 +162,7 @@ void main() {
     test('fetch all variables', () async {
       DVCUser user = DVCUserBuilder().userId('user1').build();
       DVCClient devcycleFlutterClientSdkPlugin =
-          DVCClientBuilder().user(user).environmentKey('123').build();
+          DVCClientBuilder().user(user).sdkKey('123').build();
       await devcycleFlutterClientSdkPlugin.allVariables();
       expect(methodCall?.method, 'allVariables');
     });
@@ -160,7 +171,7 @@ void main() {
     test('track event with no properties', () async {
       DVCUser user = DVCUserBuilder().userId('user1').build();
       DVCClient devcycleFlutterClientSdkPlugin =
-          DVCClientBuilder().environmentKey('SDK_KEY').user(user).build();
+          DVCClientBuilder().sdkKey('SDK_KEY').user(user).build();
       DVCEvent event =
           DVCEventBuilder().type('my event type').target('my target').build();
 
@@ -172,7 +183,7 @@ void main() {
     test('track event with properties', () async {
       DVCUser user = DVCUserBuilder().userId('user1').build();
       DVCClient devcycleFlutterClientSdkPlugin =
-          DVCClientBuilder().environmentKey('SDK_KEY').user(user).build();
+          DVCClientBuilder().sdkKey('SDK_KEY').user(user).build();
       DVCEvent event = DVCEventBuilder()
           .type('my event type')
           .target('my target')
@@ -189,7 +200,7 @@ void main() {
     test('flush events', () async {
       DVCUser user = DVCUserBuilder().userId('user1').build();
       DVCClient devcycleFlutterClientSdkPlugin =
-          DVCClientBuilder().environmentKey('SDK_KEY').user(user).build();
+          DVCClientBuilder().sdkKey('SDK_KEY').user(user).build();
       await devcycleFlutterClientSdkPlugin.flushEvents();
       expect(methodCall?.method, 'flushEvents');
     });

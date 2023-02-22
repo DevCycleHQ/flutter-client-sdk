@@ -40,10 +40,10 @@ class DVCClient {
 
   DVCClient._builder(DVCClientBuilder builder);
 
-  _init(String environmentKey, DVCUser user, DVCOptions? options) {
+  _init(String sdkKey, DVCUser user, DVCOptions? options) {
     _methodChannel.setMethodCallHandler(_handleCallbacks);
     _clientReady = DevCycleFlutterClientSdkPlatform.instance
-        .initialize(environmentKey, user, options);
+        .initialize(sdkKey, user, options);
   }
 
   _trackVariable(DVCVariable? variable) {
@@ -206,12 +206,18 @@ class DVCClient {
 }
 
 class DVCClientBuilder {
-  String? _environmentKey;
+  String? _sdkKey;
   DVCUser? _user;
   DVCOptions? _options;
 
+  DVCClientBuilder sdkKey(String sdkKey) {
+    _sdkKey = sdkKey;
+    return this;
+  }
+
+  @Deprecated("Use sdkKey() method")
   DVCClientBuilder environmentKey(String environmentKey) {
-    _environmentKey = environmentKey;
+    _sdkKey = environmentKey;
     return this;
   }
 
@@ -226,10 +232,10 @@ class DVCClientBuilder {
   }
 
   DVCClient build() {
-    if (_environmentKey == null) throw Exception("SDK key must be set");
+    if (_sdkKey == null) throw Exception("SDK key must be set");
     if (_user == null) throw Exception("User must be set");
     DVCClient client = DVCClient._builder(this);
-    client._init(_environmentKey!, _user!, _options);
+    client._init(_sdkKey!, _user!, _options);
     return client;
   }
 }

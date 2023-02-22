@@ -30,7 +30,10 @@ abstract class DevCycleFlutterClientSdkPlatform extends PlatformInterface {
   }
 
   Future<void> initialize(
-      String environmentKey, DVCUser user, DVCOptions? options) {
+      String sdkKey,
+      DVCUser user,
+      DVCOptions? options
+  ) {
     throw UnimplementedError('initialize() has not been implemented.');
   }
 

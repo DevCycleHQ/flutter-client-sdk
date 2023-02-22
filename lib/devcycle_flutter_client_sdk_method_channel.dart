@@ -20,11 +20,14 @@ class MethodChannelDevCycleFlutterClientSdk
 
   @override
   Future<void> initialize(
-      String environmentKey, DVCUser user, DVCOptions? options) async {
+      String sdkKey,
+      DVCUser user,
+      DVCOptions? options
+  ) async {
     Map<String, dynamic> codecUser = user.toCodec();
     Map<String, dynamic>? codecOptions = options?.toCodec();
     await methodChannel.invokeMethod('initialize', {
-      "environmentKey": environmentKey,
+      "sdkKey": sdkKey,
       "user": codecUser,
       "options": codecOptions
     });
