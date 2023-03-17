@@ -1,7 +1,10 @@
 # Change log
 
+## [1.1.2] - 2023-03-17
+- bump iOS version to 1.10.0
+
 ## [1.1.1] - 2023-02-22
-- ignore deprecated usage in test"
+- ignore deprecated usage in test
 
 ## [1.1.0] - 2023-02-22
 - rename `environmentKey` to `sdkKey` for consistency across SDKs
