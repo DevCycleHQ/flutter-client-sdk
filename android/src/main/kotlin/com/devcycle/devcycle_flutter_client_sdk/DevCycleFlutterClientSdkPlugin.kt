@@ -14,6 +14,8 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import org.json.JSONArray
+import org.json.JSONObject
 import java.math.BigDecimal
 import java.text.SimpleDateFormat
 
@@ -26,7 +28,12 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
   private lateinit var context: Context
   private lateinit var client: DVCClient
-  private var variableUpdates = mutableMapOf<String, Variable<Any>>()
+  private var stringVariableUpdates = mutableMapOf<String, Variable<String>>()
+  private var numberVariableUpdates = mutableMapOf<String, Variable<Number>>()
+  private var booleanVariableUpdates = mutableMapOf<String, Variable<Boolean>>()
+  private var JSONArrayVariableUpdates = mutableMapOf<String, Variable<JSONArray>>()
+  private var JSONObjectVariableUpdates = mutableMapOf<String, Variable<JSONObject>>()
+
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     context = flutterPluginBinding.applicationContext
@@ -77,8 +84,8 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
       "identifyUser" -> {
         val user = getUserFromMap(call.argument("user")!!)
         args["callbackId"] = call.argument("callbackId") as String?
-        val callback = object: DVCCallback<Map<String, Variable<Any>>> {
-          override fun onSuccess(result: Map<String, Variable<Any>>) {
+        val callback = object: DVCCallback<Map<String, BaseConfigVariable>> {
+          override fun onSuccess(result: Map<String, BaseConfigVariable>) {
             args["variables"] = variablesToMap(result)
             callFlutter("userIdentified", args)
           }
@@ -92,8 +99,8 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
       }
       "resetUser" -> {
         args["callbackId"] = call.argument("callbackId") as String?
-        val callback = object: DVCCallback<Map<String, Variable<Any>>> {
-          override fun onSuccess(result: Map<String, Variable<Any>>) {
+        val callback = object: DVCCallback<Map<String, BaseConfigVariable>> {
+          override fun onSuccess(result: Map<String, BaseConfigVariable>) {
             args["variables"] = variablesToMap(result)
             callFlutter("userReset", args)
           }
@@ -106,16 +113,46 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         client.resetUser(callback)
       }
       "variable" -> {
-        val variable = client.variable(call.argument("key")!!, call.argument("defaultValue")!!)
-        if (variable.key !in variableUpdates) {
-          variable.onUpdate { result: Variable<Any> ->
-            args["key"] = result.key
-            args["value"] = result.value
-            callFlutter("variableUpdated", args)
-          }
-          variableUpdates[variable.key] = variable
+        val typeOf= call.argument<Any>("defaultValue")!!.javaClass.name
+        val key = call.argument<Any>("key")
+
+//        println("!!!!!!LOG TYPE OF $key VARIABLE $typeOf" )
+        val variableAsMap = mutableMapOf<String, Any?>()
+        variableAsMap["id"] = "hi"
+        variableAsMap["key"] = "key"
+        variableAsMap["type"] = "string"
+        variableAsMap["value"] = "Val"
+
+        if(typeOf == "java.lang.String"){
+          val variable = client.variable(call.argument("key")!!, call.argument<String>("defaultValue")!!)
+          checkVariableUpdate(variable, stringVariableUpdates, args)
+          res.success(variableToMap(variable))
+        } else if(typeOf == "java.lang.Integer" || typeOf == "java.lang.Double"){
+          val variable = client.variable(call.argument("key")!!, call.argument<Number>("defaultValue")!!)
+          checkVariableUpdate(variable, numberVariableUpdates, args)
+          res.success(variableToMap(variable))
+        }else if(typeOf == "java.lang.Boolean"){
+          val variable = client.variable(call.argument("key")!!, call.argument<Boolean>("defaultValue")!!)
+          checkVariableUpdate(variable, booleanVariableUpdates, args)
+          res.success(variableToMap(variable))
+        }else if(typeOf == "java.util.ArrayList"){
+          val array_list = call.argument<Any>("defaultValue")!!
+          println("!!!! THIS IS THE JSON ARRAY " + array_list +" jacaClass.name " +  array_list.javaClass.name)
+//          println("!!! JOSN ARRAY $jsonArray")
+//          println("!!!! THIS IS THE ARRAY LIST $jsonArray")
+//          val variable = client.variable(call.argument("key")!!, jsonArray)
+//          checkVariableUpdate(variable, JSONArrayVariableUpdates, args)
+//          res.success(variableToMap(variable))
+          res.success(variableAsMap)
+        }else if(typeOf == "java.util.HashMap"){
+          println("!!!! THIS IS THE OBJECT $" + call.argument<Any>("defaultValue")!!)
+
+//          val variable = client.variable(call.argument("key")!!, call.argument<JSONObject>("defaultValue")!!)
+//          checkVariableUpdate(variable, JSONObjectVariableUpdates, args)
+//          res.success(variableToMap(variable))
+          res.success(variableAsMap)
+
         }
-        res.success(variableToMap(variable))
       }
       "allFeatures" -> {
         val features = featuresToMap(client.allFeatures())
@@ -281,7 +318,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     return featureAsMap
   }
 
-  private fun variablesToMap(variables: Map<String, Variable<Any>>?): Map<String, Map<String, Any?>> {
+  private fun variablesToMap(variables: Map<String, BaseConfigVariable>?): Map<String, Map<String, Any?>> {
     val map = mutableMapOf<String, Map<String, Any?>>()
 
     variables?.forEach { (key, variable) ->
@@ -291,15 +328,37 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     return map
   }
 
-  private fun variableToMap(variable: Variable<Any>): Map<String, Any?> {
+  private fun variableToMap(variable: BaseConfigVariable): Map<String, Any?> {
     val variableAsMap = mutableMapOf<String, Any?>()
     variableAsMap["id"] = variable.id
     variableAsMap["key"] = variable.key
     variableAsMap["type"] = variable.type.toString()
     variableAsMap["value"] = variable.value
     variableAsMap["evalReason"] = variable.evalReason
-    variableAsMap["isDefaulted"] = variable.isDefaulted
 
     return variableAsMap
+  }
+
+  private fun <T> variableToMap(variable: Variable<T>): Map<String, Any?> {
+    val variableAsMap = mutableMapOf<String, Any?>()
+    variableAsMap["id"] = variable.id
+    variableAsMap["key"] = variable.key
+    variableAsMap["type"] = variable.type.toString()
+    variableAsMap["value"] = variable.value
+    variableAsMap["evalReason"] = variable.evalReason
+
+    return variableAsMap
+  }
+
+  private fun <T> checkVariableUpdate(variable: Variable<T>, variableUpdateMap: MutableMap<String, Variable<T>>, args: MutableMap<String,Any?>){
+    println("!!!!! LOG checking Variable for " + variable.key)
+    if (variable.key !in variableUpdateMap) {
+      variable.onUpdate { result: Variable<T> ->
+        args["key"] = result.key
+        args["value"] = result.value
+        callFlutter("variableUpdated", args)
+      }
+      variableUpdateMap[variable.key] = (variable)
+    }
   }
 }

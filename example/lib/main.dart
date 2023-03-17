@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk.dart';
@@ -22,8 +23,24 @@ class _MyAppState extends State<MyApp> {
   String _displayValue = '';
   String _variableValue = '';
   bool _booleanValue = false;
+  num _integerValue = 0;
+  num _doubleValue = 0.0;
+  var jsonArray = '''
+  [
+    {"score": 40},
+    {"score": 80}
+  ]
+''';
+  var jsonObject = '''
+  {
+    "score1": 40,
+    "score2": 80
+  }
+''';
+
+
   final _dvcClient = DVCClientBuilder()
-      .sdkKey('YOUR_DVC_MOBILE_SDK_KEY')
+      .sdkKey('dvc_mobile_9d2f028b_fdcb_45ec_8056_279679eb3da3_fe1bff3')
       .user(DVCUserBuilder().userId('123').build())
       .options(DVCOptionsBuilder().logLevel(LogLevel.debug).build())
       .build();
@@ -58,7 +75,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initVariable() async {
-    final variable = await _dvcClient.variable('my-variable', 'Default Value');
+    final variable = await _dvcClient.variable('string-variable', 'Default Value');
     setState(() {
       _variableValue = variable?.value;
     });
@@ -78,6 +95,53 @@ class _MyAppState extends State<MyApp> {
         _booleanValue = updatedValue;
       });
     });
+
+    final integerVariable =
+    await _dvcClient.variable('integer-variable', 188);
+    setState(() {
+      _integerValue = integerVariable?.value;
+    });
+    integerVariable?.onUpdate((updatedValue) {
+      setState(() {
+        _integerValue = updatedValue;
+      });
+    });
+
+    final doubleVariable =
+    await _dvcClient.variable('decimal-variable', 1.88);
+    setState(() {
+      _doubleValue = doubleVariable?.value;
+    });
+    doubleVariable?.onUpdate((updatedValue) {
+      setState(() {
+        _doubleValue = updatedValue;
+      });
+    });
+
+    var json_array = jsonDecode(jsonArray);
+    print("json array is type ${json_array.runtimeType}");
+    final jsonArrayVariable =
+    await _dvcClient.variable('json-array-variable', json_array);
+    setState(() {
+      jsonArray = jsonArrayVariable?.value;
+    });
+    jsonArrayVariable?.onUpdate((updatedValue) {
+      setState(() {
+        jsonArray = updatedValue;
+      });
+    });
+    final jsonObjectVariable =
+    await _dvcClient.variable('json-object-variable', jsonDecode(jsonObject));
+    setState(() {
+      jsonObject = jsonObjectVariable?.value;
+    });
+    jsonObjectVariable?.onUpdate((updatedValue) {
+      setState(() {
+        jsonObject = updatedValue;
+      });
+    });
+
+
   }
 
   void resetUser() {
@@ -155,6 +219,11 @@ class _MyAppState extends State<MyApp> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("Value: $_variableValue"),
+            Text("Value: $_booleanValue"),
+            Text("Value: $_integerValue"),
+            Text("Value: $_doubleValue"),
+            Text("Value: $jsonArray"),
+            Text("Value: $jsonObject"),
             Text('Running on: $_platformVersion\n'),
             Icon(
               Icons.star,
