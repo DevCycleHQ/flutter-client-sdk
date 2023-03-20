@@ -347,7 +347,6 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun <T> checkVariableUpdate(variable: Variable<T>, variableUpdateMap: MutableMap<String, Variable<T>>, args: MutableMap<String,Any?>){
-    println("!!!!! LOG checking Variable for " + variable.key)
     if (variable.key !in variableUpdateMap) {
       variable.onUpdate { result: Variable<T> ->
         args["key"] = result.key
