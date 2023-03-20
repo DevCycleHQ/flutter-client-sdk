@@ -114,36 +114,38 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
       }
       "variable" -> {
         val key: String = call.argument("key")!!
-        val defaultValue: Any = call.argument("defaultValue")!!
 
-
-        if (defaultValue is String) {
-          val value = call.argument<String>("defaultValue")
-          val variable = client.variable(key, value!!)
-          checkVariableUpdate(variable, stringVariableUpdates, args)
-          res.success(variableToMap(variable))
-        } else if (defaultValue is Boolean) {
-          val value = call.argument<Boolean>("defaultValue")
-          val variable = client.variable(key, value!!)
-          checkVariableUpdate(variable, booleanVariableUpdates, args)
-          res.success(variableToMap(variable))
-        } else if (defaultValue is Number) {
-          val value = call.argument<Number>("defaultValue")
-          val variable = client.variable(key, value!!)
-          checkVariableUpdate(variable, numberVariableUpdates, args)
-          res.success(variableToMap(variable))
-        } else if (defaultValue is HashMap<*, *>) {
-          val value = call.argument<HashMap<*, *>>("defaultValue")
-          val variable = client.variable(key, JSONObject(value))
-          checkVariableUpdate(variable, JSONObjectVariableUpdates, args)
-          println("OBJECT: " + variableToMap(variable))
-          res.success(variableToMap(variable))
-        } else if (defaultValue is List<*>) {
-          val value = call.argument<List<*>>("defaultValue")
-          val variable = client.variable(key, JSONArray(value))
-          checkVariableUpdate(variable, JSONArrayVariableUpdates , args)
-          println("LIST: " + variableToMap(variable))
-          res.success(variableToMap(variable))
+        when (call.argument<Any>("defaultValue")) {
+          is String -> {
+            val defaultValue = call.argument<String>("defaultValue")
+            val variable = client.variable(key, defaultValue!!)
+            checkVariableUpdate(variable, stringVariableUpdates, args)
+            res.success(variableToMap(variable))
+          }
+          is Boolean -> {
+            val defaultValue = call.argument<Boolean>("defaultValue")
+            val variable = client.variable(key, defaultValue!!)
+            checkVariableUpdate(variable, booleanVariableUpdates, args)
+            res.success(variableToMap(variable))
+          }
+          is Number -> {
+            val defaultValue = call.argument<Number>("defaultValue")
+            val variable = client.variable(key, defaultValue!!)
+            checkVariableUpdate(variable, numberVariableUpdates, args)
+            res.success(variableToMap(variable))
+          }
+          is HashMap<*, *> -> {
+            val defaultValue = call.argument<HashMap<*, *>>("defaultValue")
+            val variable = client.variable(key, JSONObject(defaultValue))
+            checkVariableUpdate(variable, JSONObjectVariableUpdates, args)
+            res.success(variableToMap(variable))
+          }
+          is List<*> -> {
+            val defaultValue = call.argument<List<*>>("defaultValue")
+            val variable = client.variable(key, JSONArray(defaultValue))
+            checkVariableUpdate(variable, JSONArrayVariableUpdates , args)
+            res.success(variableToMap(variable))
+          }
         }
       }
       "allFeatures" -> {
