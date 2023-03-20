@@ -119,31 +119,31 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
           is String -> {
             val defaultValue = call.argument<String>("defaultValue")
             val variable = client.variable(key, defaultValue!!)
-            checkVariableUpdate(variable, stringVariableUpdates, args)
+            watchForVariableUpdate(variable, stringVariableUpdates)
             res.success(variableToMap(variable))
           }
           is Boolean -> {
             val defaultValue = call.argument<Boolean>("defaultValue")
             val variable = client.variable(key, defaultValue!!)
-            checkVariableUpdate(variable, booleanVariableUpdates, args)
+            watchForVariableUpdate(variable, booleanVariableUpdates)
             res.success(variableToMap(variable))
           }
           is Number -> {
             val defaultValue = call.argument<Number>("defaultValue")
             val variable = client.variable(key, defaultValue!!)
-            checkVariableUpdate(variable, numberVariableUpdates, args)
+            watchForVariableUpdate(variable, numberVariableUpdates)
             res.success(variableToMap(variable))
           }
           is HashMap<*, *> -> {
             val defaultValue = call.argument<HashMap<*, *>>("defaultValue")
             val variable = client.variable(key, JSONObject(defaultValue))
-            checkVariableUpdate(variable, JSONObjectVariableUpdates, args)
+            watchForVariableUpdate(variable, JSONObjectVariableUpdates)
             res.success(variableToMap(variable))
           }
           is List<*> -> {
             val defaultValue = call.argument<List<*>>("defaultValue")
             val variable = client.variable(key, JSONArray(defaultValue))
-            checkVariableUpdate(variable, JSONArrayVariableUpdates , args)
+            watchForVariableUpdate(variable, JSONArrayVariableUpdates)
             res.success(variableToMap(variable))
           }
         }
@@ -346,11 +346,10 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     return variableAsMap
   }
 
-  private fun <T> checkVariableUpdate(variable: Variable<T>, variableUpdateMap: MutableMap<String, Variable<T>>, args: MutableMap<String,Any?>){
+  private fun <T> watchForVariableUpdate(variable: Variable<T>, variableUpdateMap: MutableMap<String, Variable<T>>) {
     if (variable.key !in variableUpdateMap) {
       variable.onUpdate { result: Variable<T> ->
-        args["key"] = result.key
-        args["value"] = result.value
+        val args = mapOf("key" to result.key, "value" to result.value)
         callFlutter("variableUpdated", args)
       }
       variableUpdateMap[variable.key] = (variable)
