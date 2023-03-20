@@ -113,8 +113,8 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         client.resetUser(callback)
       }
       "variable" -> {
-        val typeOf= call.argument<Any>("defaultValue")!!.javaClass.name
-        val key = call.argument<Any>("key")
+        val key: String = call.argument("key")!!
+        val defaultValue: Any = call.argument("defaultValue")!!
 
 //        println("!!!!!!LOG TYPE OF $key VARIABLE $typeOf" )
         val variableAsMap = mutableMapOf<String, Any?>()
@@ -123,35 +123,33 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         variableAsMap["type"] = "string"
         variableAsMap["value"] = "Val"
 
-        if(typeOf == "java.lang.String"){
-          val variable = client.variable(call.argument("key")!!, call.argument<String>("defaultValue")!!)
+        if (defaultValue is String) {
+          val value = call.argument<String>("defaultValue")
+          val variable = client.variable(key, value!!)
           checkVariableUpdate(variable, stringVariableUpdates, args)
           res.success(variableToMap(variable))
-        } else if(typeOf == "java.lang.Integer" || typeOf == "java.lang.Double"){
-          val variable = client.variable(call.argument("key")!!, call.argument<Number>("defaultValue")!!)
-          checkVariableUpdate(variable, numberVariableUpdates, args)
-          res.success(variableToMap(variable))
-        }else if(typeOf == "java.lang.Boolean"){
-          val variable = client.variable(call.argument("key")!!, call.argument<Boolean>("defaultValue")!!)
+        } else if (defaultValue is Boolean) {
+          val value = call.argument<Boolean>("defaultValue")
+          val variable = client.variable(key, value!!)
           checkVariableUpdate(variable, booleanVariableUpdates, args)
           res.success(variableToMap(variable))
-        }else if(typeOf == "java.util.ArrayList"){
-          val array_list = call.argument<Any>("defaultValue")!!
-          println("!!!! THIS IS THE JSON ARRAY " + array_list +" jacaClass.name " +  array_list.javaClass.name)
-//          println("!!! JOSN ARRAY $jsonArray")
-//          println("!!!! THIS IS THE ARRAY LIST $jsonArray")
-//          val variable = client.variable(call.argument("key")!!, jsonArray)
-//          checkVariableUpdate(variable, JSONArrayVariableUpdates, args)
-//          res.success(variableToMap(variable))
-          res.success(variableAsMap)
-        }else if(typeOf == "java.util.HashMap"){
-          println("!!!! THIS IS THE OBJECT $" + call.argument<Any>("defaultValue")!!)
-
-//          val variable = client.variable(call.argument("key")!!, call.argument<JSONObject>("defaultValue")!!)
-//          checkVariableUpdate(variable, JSONObjectVariableUpdates, args)
-//          res.success(variableToMap(variable))
-          res.success(variableAsMap)
-
+        } else if (defaultValue is Number) {
+          val value = call.argument<Number>("defaultValue")
+          val variable = client.variable(key, value!!)
+          checkVariableUpdate(variable, numberVariableUpdates, args)
+          res.success(variableToMap(variable))
+        } else if (defaultValue is HashMap<*, *>) {
+          val value = call.argument<HashMap<*, *>>("defaultValue")
+          val variable = client.variable(key, JSONObject(value))
+          checkVariableUpdate(variable, JSONObjectVariableUpdates, args)
+          println("OBJECT: " + variableToMap(variable))
+          res.success(variableToMap(variable))
+        } else if (defaultValue is List<*>) {
+          val value = call.argument<List<*>>("defaultValue")
+          val variable = client.variable(key, JSONArray(value))
+          checkVariableUpdate(variable, JSONArrayVariableUpdates , args)
+          println("LIST: " + variableToMap(variable))
+          res.success(variableToMap(variable))
         }
       }
       "allFeatures" -> {
@@ -330,10 +328,11 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
 
   private fun variableToMap(variable: BaseConfigVariable): Map<String, Any?> {
     val variableAsMap = mutableMapOf<String, Any?>()
+    var value = variable.value
     variableAsMap["id"] = variable.id
     variableAsMap["key"] = variable.key
     variableAsMap["type"] = variable.type.toString()
-    variableAsMap["value"] = variable.value
+    variableAsMap["value"] = if (value is JSONObject) value.toMap() else value
     variableAsMap["evalReason"] = variable.evalReason
 
     return variableAsMap
@@ -341,10 +340,11 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
 
   private fun <T> variableToMap(variable: Variable<T>): Map<String, Any?> {
     val variableAsMap = mutableMapOf<String, Any?>()
+    var value = variable.value
     variableAsMap["id"] = variable.id
     variableAsMap["key"] = variable.key
     variableAsMap["type"] = variable.type.toString()
-    variableAsMap["value"] = variable.value
+    variableAsMap["value"] = if (value is JSONObject) value.toMap() else value
     variableAsMap["evalReason"] = variable.evalReason
 
     return variableAsMap
@@ -359,6 +359,20 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         callFlutter("variableUpdated", args)
       }
       variableUpdateMap[variable.key] = (variable)
+    }
+  }
+
+  private fun JSONObject.toMap(): Map<String, *> = keys().asSequence().associateWith {
+    when (val value = this[it])
+    {
+      is JSONArray ->
+      {
+        val map = (0 until value.length()).associate { Pair(it.toString(), value[it]) }
+        JSONObject(map).toMap().values.toList()
+      }
+      is JSONObject -> value.toMap()
+      JSONObject.NULL -> null
+      else            -> value
     }
   }
 }
