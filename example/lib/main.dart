@@ -38,7 +38,6 @@ class _MyAppState extends State<MyApp> {
   }
 ''';
 
-
   final _dvcClient = DVCClientBuilder()
       .sdkKey('dvc_mobile_9d2f028b_fdcb_45ec_8056_279679eb3da3_fe1bff3')
       .user(DVCUserBuilder().userId('123').build())
@@ -75,7 +74,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initVariable() async {
-    final variable = await _dvcClient.variable('string-variable', 'Default Value');
+    final variable =
+        await _dvcClient.variable('string-variable', 'Default Value');
     setState(() {
       _variableValue = variable?.value;
     });
@@ -96,8 +96,7 @@ class _MyAppState extends State<MyApp> {
       });
     });
 
-    final integerVariable =
-    await _dvcClient.variable('integer-variable', 188);
+    final integerVariable = await _dvcClient.variable('integer-variable', 188);
     setState(() {
       _integerValue = integerVariable?.value;
     });
@@ -107,8 +106,7 @@ class _MyAppState extends State<MyApp> {
       });
     });
 
-    final doubleVariable =
-    await _dvcClient.variable('decimal-variable', 1.88);
+    final doubleVariable = await _dvcClient.variable('decimal-variable', 1.88);
     setState(() {
       _doubleValue = doubleVariable?.value;
     });
@@ -121,27 +119,25 @@ class _MyAppState extends State<MyApp> {
     var json_array = jsonDecode(jsonArray);
     print("json array is type ${json_array.runtimeType}");
     final jsonArrayVariable =
-    await _dvcClient.variable('json-array-variable', json_array);
+        await _dvcClient.variable('json-array-variable', json_array);
     setState(() {
-      jsonArray = jsonArrayVariable?.value;
+      jsonArray = jsonEncode(jsonArrayVariable?.value);
     });
     jsonArrayVariable?.onUpdate((updatedValue) {
       setState(() {
         jsonArray = updatedValue;
       });
     });
-    final jsonObjectVariable =
-    await _dvcClient.variable('json-object-variable', jsonDecode(jsonObject));
+    final jsonObjectVariable = await _dvcClient.variable(
+        'json-object-variable', jsonDecode(jsonObject));
     setState(() {
-      jsonObject = jsonObjectVariable?.value;
+      jsonObject = jsonEncode(jsonObjectVariable?.value);
     });
     jsonObjectVariable?.onUpdate((updatedValue) {
       setState(() {
         jsonObject = updatedValue;
       });
     });
-
-
   }
 
   void resetUser() {

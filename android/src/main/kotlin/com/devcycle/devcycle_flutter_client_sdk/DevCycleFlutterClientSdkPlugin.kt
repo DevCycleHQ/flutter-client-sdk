@@ -116,12 +116,6 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
         val key: String = call.argument("key")!!
         val defaultValue: Any = call.argument("defaultValue")!!
 
-//        println("!!!!!!LOG TYPE OF $key VARIABLE $typeOf" )
-        val variableAsMap = mutableMapOf<String, Any?>()
-        variableAsMap["id"] = "hi"
-        variableAsMap["key"] = "key"
-        variableAsMap["type"] = "string"
-        variableAsMap["value"] = "Val"
 
         if (defaultValue is String) {
           val value = call.argument<String>("defaultValue")
