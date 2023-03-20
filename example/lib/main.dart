@@ -117,7 +117,6 @@ class _MyAppState extends State<MyApp> {
     });
 
     var json_array = jsonDecode(jsonArray);
-    print("json array is type ${json_array.runtimeType}");
     final jsonArrayVariable =
         await _dvcClient.variable('json-array-variable', json_array);
     setState(() {
