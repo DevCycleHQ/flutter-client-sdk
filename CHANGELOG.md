@@ -1,5 +1,8 @@
 # Change log
 
+## [1.2.0] - 2023-03-21
+- catchup with androids new function definitions
+
 ## [1.1.2] - 2023-03-17
 - bump iOS version to 1.10.0
 

@@ -20,7 +20,7 @@ The SDK can be installed into your Flutter project by running `flutter pub add d
 The SDK can be installed into your Flutter project by adding the following to your `pubspec.yaml`:
 
 ```dart
-devcycle_flutter_client_sdk: ^1.1.2
+devcycle_flutter_client_sdk: ^1.2.0
 ```
 Then, run `flutter pub get`.
 
