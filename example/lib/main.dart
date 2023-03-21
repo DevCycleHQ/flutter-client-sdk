@@ -25,13 +25,16 @@ class _MyAppState extends State<MyApp> {
   bool _booleanValue = false;
   num _integerValue = 0;
   num _doubleValue = 0.0;
-  var jsonArray = '''
+  var _jsonArrayValue = '';
+  var _jsonObjectValue = '';
+
+  var encodedJsonArray = '''
   [
     {"score": 40},
     {"score": 80}
   ]
 ''';
-  var jsonObject = '''
+  var encodedJsonObject = '''
   {
     "score1": 40,
     "score2": 80
@@ -116,25 +119,29 @@ class _MyAppState extends State<MyApp> {
       });
     });
 
-    var json_array = jsonDecode(jsonArray);
-    final jsonArrayVariable =
-        await _dvcClient.variable('json-array-variable', json_array);
+    final jsonArrayVariable = await _dvcClient.variable(
+      'json-array-variable',
+      jsonDecode(encodedJsonArray)
+    );
     setState(() {
-      jsonArray = jsonEncode(jsonArrayVariable?.value);
+      _jsonArrayValue = jsonEncode(jsonArrayVariable?.value);
     });
     jsonArrayVariable?.onUpdate((updatedValue) {
       setState(() {
-        jsonArray = updatedValue;
+        _jsonArrayValue = updatedValue;
       });
     });
+    
     final jsonObjectVariable = await _dvcClient.variable(
-        'json-object-variable', jsonDecode(jsonObject));
+      'json-object-variable',
+      jsonDecode(encodedJsonObject)
+    );
     setState(() {
-      jsonObject = jsonEncode(jsonObjectVariable?.value);
+      _jsonObjectValue = jsonEncode(jsonObjectVariable?.value);
     });
     jsonObjectVariable?.onUpdate((updatedValue) {
       setState(() {
-        jsonObject = updatedValue;
+        _jsonObjectValue = updatedValue;
       });
     });
   }
@@ -217,8 +224,8 @@ class _MyAppState extends State<MyApp> {
             Text("Value: $_booleanValue"),
             Text("Value: $_integerValue"),
             Text("Value: $_doubleValue"),
-            Text("Value: $jsonArray"),
-            Text("Value: $jsonObject"),
+            Text("Value: $_jsonArrayValue"),
+            Text("Value: $_jsonObjectValue"),
             Text('Running on: $_platformVersion\n'),
             Icon(
               Icons.star,
