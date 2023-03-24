@@ -5,7 +5,7 @@ The SDK is available as a package on Pub. It is also open source and can be view
 
 ## Supported Platforms
 
-This version of the DevCycle Flutter Client SDK supports a minimum of Flutter 2, iOS 12 and Android API Version 21.
+This version of the DevCycle Flutter Client SDK supports a minimum of Flutter 2.5.0, iOS 13.7 and Android API Version 26.
 
 Other Flutter platforms are not currently supported by this SDK.
 
