@@ -128,7 +128,7 @@ class _MyAppState extends State<MyApp> {
     });
     jsonArrayVariable?.onUpdate((updatedValue) {
       setState(() {
-        _jsonArrayValue = updatedValue;
+        _jsonArrayValue = jsonEncode(updatedValue);
       });
     });
     
@@ -141,7 +141,7 @@ class _MyAppState extends State<MyApp> {
     });
     jsonObjectVariable?.onUpdate((updatedValue) {
       setState(() {
-        _jsonObjectValue = updatedValue;
+        _jsonObjectValue = jsonEncode(updatedValue);
       });
     });
   }
