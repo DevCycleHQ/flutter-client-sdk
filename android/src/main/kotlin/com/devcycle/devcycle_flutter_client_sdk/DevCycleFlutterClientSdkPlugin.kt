@@ -31,8 +31,8 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
   private var stringVariableUpdates = mutableMapOf<String, Variable<String>>()
   private var numberVariableUpdates = mutableMapOf<String, Variable<Number>>()
   private var booleanVariableUpdates = mutableMapOf<String, Variable<Boolean>>()
-  private var JSONArrayVariableUpdates = mutableMapOf<String, Variable<JSONArray>>()
-  private var JSONObjectVariableUpdates = mutableMapOf<String, Variable<JSONObject>>()
+  private var jsonArrayVariableUpdates = mutableMapOf<String, Variable<JSONArray>>()
+  private var jsonObjectVariableUpdates = mutableMapOf<String, Variable<JSONObject>>()
 
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
@@ -137,13 +137,13 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
           is HashMap<*, *> -> {
             val defaultValue = call.argument<HashMap<*, *>>("defaultValue")
             val variable = client.variable(key, JSONObject(defaultValue))
-            watchForVariableUpdate(variable, JSONObjectVariableUpdates)
+            watchForVariableUpdate(variable, jsonObjectVariableUpdates)
             res.success(variableToMap(variable))
           }
           is List<*> -> {
             val defaultValue = call.argument<List<*>>("defaultValue")
             val variable = client.variable(key, JSONArray(defaultValue))
-            watchForVariableUpdate(variable, JSONArrayVariableUpdates)
+            watchForVariableUpdate(variable, jsonArrayVariableUpdates)
             res.success(variableToMap(variable))
           }
         }
@@ -328,8 +328,11 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     variableAsMap["id"] = variable.id
     variableAsMap["key"] = variable.key
     variableAsMap["type"] = variable.type.toString()
-    variableAsMap["value"] = if (value is JSONObject) value.toMap() else value
+    variableAsMap["value"] = value
     variableAsMap["evalReason"] = variable.evalReason
+
+    if (value is JSONObject) variableAsMap["value"] = value.toMap()
+    if (value is JSONArray) variableAsMap["value"] = value.toMap()
 
     return variableAsMap
   }
@@ -340,8 +343,11 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     variableAsMap["id"] = variable.id
     variableAsMap["key"] = variable.key
     variableAsMap["type"] = variable.type.toString()
-    variableAsMap["value"] = if (value is JSONObject) value.toMap() else value
+    variableAsMap["value"] = value
     variableAsMap["evalReason"] = variable.evalReason
+
+    if (value is JSONObject) variableAsMap["value"] = value.toMap()
+    if (value is JSONArray) variableAsMap["value"] = value.toMap()
 
     return variableAsMap
   }
@@ -349,21 +355,28 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
   private fun <T> watchForVariableUpdate(variable: Variable<T>, variableUpdateMap: MutableMap<String, Variable<T>>) {
     if (variable.key !in variableUpdateMap) {
       variable.onUpdate { result: Variable<T> ->
-        val args = mapOf("key" to result.key, "value" to result.value)
+        var value = result.value
+        val args = mutableMapOf(
+          "key" to result.key,
+          "value" to value
+        )
+        if (value is JSONObject) args["value"] = value.toMap()
+        if (value is JSONArray) args["value"] = value.toMap()
         callFlutter("variableUpdated", args)
       }
       variableUpdateMap[variable.key] = (variable)
     }
   }
 
+  private fun JSONArray.toMap(): List<*> {
+    val map = (0 until this.length()).associate { Pair(it.toString(), this[it]) }
+    return JSONObject(map).toMap().values.toList()
+  }
+
   private fun JSONObject.toMap(): Map<String, *> = keys().asSequence().associateWith {
     when (val value = this[it])
     {
-      is JSONArray ->
-      {
-        val map = (0 until value.length()).associate { Pair(it.toString(), value[it]) }
-        JSONObject(map).toMap().values.toList()
-      }
+      is JSONArray -> value.toMap()
       is JSONObject -> value.toMap()
       JSONObject.NULL -> null
       else            -> value
