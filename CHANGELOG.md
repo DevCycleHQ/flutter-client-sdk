@@ -1,5 +1,9 @@
 # Change log
 
+## [1.3.0] - 2023-03-24
+- update ios and android version to latest release
+- update support for flutter versions
+
 ## [1.2.0] - 2023-03-21
 - catchup with androids new function definitions
 
