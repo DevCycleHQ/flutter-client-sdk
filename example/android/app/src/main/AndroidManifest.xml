@@ -2,7 +2,7 @@
     package="com.example.devcycle_flutter_client_sdk_example">
    <application
         android:label="devcycle_flutter_client_sdk_example"
-        android:name="io.flutter.app.FlutterApplication"
+        android:name="io.flutter.embedding.android.FlutterActivity"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
