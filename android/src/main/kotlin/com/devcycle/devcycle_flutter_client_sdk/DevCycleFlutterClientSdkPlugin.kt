@@ -355,14 +355,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
   private fun <T> watchForVariableUpdate(variable: Variable<T>, variableUpdateMap: MutableMap<String, Variable<T>>) {
     if (variable.key !in variableUpdateMap) {
       variable.onUpdate { result: Variable<T> ->
-        var value = result.value
-        val args = mutableMapOf(
-          "key" to result.key,
-          "value" to value
-        )
-        if (value is JSONObject) args["value"] = value.toMap()
-        if (value is JSONArray) args["value"] = value.toMap()
-        callFlutter("variableUpdated", args)
+        callFlutter("variableUpdated", variableToMap(result))
       }
       variableUpdateMap[variable.key] = (variable)
     }
