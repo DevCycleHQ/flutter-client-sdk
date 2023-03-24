@@ -29,7 +29,7 @@ class DVCOptions {
     if (disableConfigCache != null) {
       result['disableConfigCache'] = disableConfigCache;
     }
-    if (logLevel != null) result['logLevel'] = logLevel?.name;
+    if (logLevel != null) result['logLevel'] = logLevel?.toString().split('.').last;
     return result;
   }
 }
