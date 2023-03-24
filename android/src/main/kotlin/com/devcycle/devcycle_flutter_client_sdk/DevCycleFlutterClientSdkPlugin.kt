@@ -349,8 +349,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
   private fun <T> watchForVariableUpdate(variable: Variable<T>, variableUpdateMap: MutableMap<String, Variable<T>>) {
     if (variable.key !in variableUpdateMap) {
       variable.onUpdate { result: Variable<T> ->
-        val args = mapOf("key" to result.key, "value" to result.value)
-        callFlutter("variableUpdated", args)
+        callFlutter("variableUpdated", variableToMap(result))
       }
       variableUpdateMap[variable.key] = (variable)
     }
