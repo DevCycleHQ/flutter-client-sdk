@@ -9,6 +9,7 @@ void main() {
         .enableEdgeDB(false)
         .configCacheTTL(999)
         .disableConfigCache(false)
+        .disableRealtimeUpdates(false)
         .logLevel(LogLevel.debug)
         .build();
     expect(options.flushEventsIntervalMs, equals(100));
@@ -16,6 +17,7 @@ void main() {
     expect(options.enableEdgeDB, isFalse);
     expect(options.configCacheTTL, equals(999));
     expect(options.disableConfigCache, isFalse);
+    expect(options.disableRealtimeUpdates, isFalse);
     expect(options.logLevel, equals(LogLevel.debug));
   });
 

@@ -268,8 +268,11 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
 
       val disableConfigCache = map["disableConfigCache"] as? Boolean
       if (disableConfigCache is Boolean) builder.disableConfigCache(disableConfigCache)
-    }
 
+      val disableRealtimeUpdates = map["disableRealtimeUpdates"] as? Boolean
+      if (disableRealtimeUpdates is Boolean) builder.disableRealtimeUpdates(disableRealtimeUpdates)
+
+      }
     return builder.build()
   }
 
