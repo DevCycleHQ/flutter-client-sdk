@@ -167,6 +167,10 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     if let disableConfigCache = dict["disableConfigCache"] as? Bool {
       optionsBuilder.disableConfigCache(disableConfigCache)
     }
+      
+    if let disableRealtimeUpdates = dict["disableRealtimeUpdates"] as? Bool {
+        optionsBuilder.disableRealtimeUpdates(disableRealtimeUpdates)
+    }
     
     let logLevelMap = [
       "debug": LogLevel.debug,

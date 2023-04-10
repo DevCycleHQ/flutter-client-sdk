@@ -6,6 +6,7 @@ class DVCOptions {
   final bool? enableEdgeDB;
   final int? configCacheTTL;
   final bool? disableConfigCache;
+  final bool? disableRealtimeUpdates;
   final LogLevel? logLevel;
 
   DVCOptions._builder(DVCOptionsBuilder builder)
@@ -14,6 +15,7 @@ class DVCOptions {
         enableEdgeDB = builder._enableEdgeDB,
         configCacheTTL = builder._configCacheTTL,
         disableConfigCache = builder._disableConfigCache,
+        disableRealtimeUpdates = builder._disableRealtimeUpdates,
         logLevel = builder._logLevel;
 
   Map<String, dynamic> toCodec() {
@@ -29,6 +31,9 @@ class DVCOptions {
     if (disableConfigCache != null) {
       result['disableConfigCache'] = disableConfigCache;
     }
+    if (disableRealtimeUpdates != null) {
+      result['disableRealtimeUpdates'] = disableRealtimeUpdates;
+    }
     if (logLevel != null) result['logLevel'] = logLevel?.toString().split('.').last;
     return result;
   }
@@ -41,6 +46,7 @@ class DVCOptionsBuilder {
   bool? _enableEdgeDB;
   int? _configCacheTTL;
   bool? _disableConfigCache;
+  bool? _disableRealtimeUpdates;
   LogLevel? _logLevel;
 
   DVCOptionsBuilder flushEventsIntervalMs(int flushEventsIntervalMs) {
@@ -68,6 +74,13 @@ class DVCOptionsBuilder {
     return this;
   }
 
+  DVCOptionsBuilder disableRealtimeUpdates(bool disableRealtimeUpdates) {
+    _disableRealtimeUpdates = disableRealtimeUpdates;
+    print("disabling RTU " + disableRealtimeUpdates.toString());
+    print("disabling RTU this " + _disableRealtimeUpdates.toString());
+    return this;
+  }
+
   DVCOptionsBuilder logLevel(LogLevel logLevel) {
     _logLevel = logLevel;
     return this;
@@ -75,6 +88,7 @@ class DVCOptionsBuilder {
 
   /// Constructs a [DVCOptions] instance from the values currently in the builder.
   DVCOptions build() {
+    print("builder is here "+ this._disableRealtimeUpdates.toString());
     return DVCOptions._builder(this);
   }
 }

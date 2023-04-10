@@ -1,8 +1,8 @@
 PODS:
-  - DevCycle (1.11.0):
+  - DevCycle (1.11.2):
     - LDSwiftEventSource (~> 3.0)
   - devcycle_flutter_client_sdk (0.0.1):
-    - DevCycle (= 1.11.0)
+    - DevCycle (= 1.11.2)
     - Flutter
   - Flutter (1.0.0)
   - LDSwiftEventSource (3.0.0)
@@ -23,8 +23,8 @@ EXTERNAL SOURCES:
     :path: Flutter
 
 SPEC CHECKSUMS:
-  DevCycle: 16a55e9a39439d05d6e5923d6494c911c66caab5
-  devcycle_flutter_client_sdk: 139eaec22e49aa70373793487980406e513de607
+  DevCycle: 234ddfb09825062c52fdecece710a668de1a3e37
+  devcycle_flutter_client_sdk: 1afd7b0429df1947c29f8ff632cfae80351a6d43
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   LDSwiftEventSource: 824ce51a4fa8e79498c9b67ae672bfa802bd7464
 
