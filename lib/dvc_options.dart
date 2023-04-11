@@ -76,8 +76,6 @@ class DVCOptionsBuilder {
 
   DVCOptionsBuilder disableRealtimeUpdates(bool disableRealtimeUpdates) {
     _disableRealtimeUpdates = disableRealtimeUpdates;
-    print("disabling RTU " + disableRealtimeUpdates.toString());
-    print("disabling RTU this " + _disableRealtimeUpdates.toString());
     return this;
   }
 
@@ -88,7 +86,6 @@ class DVCOptionsBuilder {
 
   /// Constructs a [DVCOptions] instance from the values currently in the builder.
   DVCOptions build() {
-    print("builder is here "+ this._disableRealtimeUpdates.toString());
     return DVCOptions._builder(this);
   }
 }
