@@ -1,5 +1,8 @@
 # Change log
 
+## [1.3.1] - 2023-04-11
+- add builder method for disabling realtime updates using `.disableRealtimeUpdates()`
+
 ## [1.3.0] - 2023-03-24
 - update ios and android version to latest release
 - update support for flutter versions
