@@ -1,5 +1,8 @@
 # Change log
 
+## [1.3.2] - 2023-05-03
+- bump Android version to 1.4.4
+
 ## [1.3.1] - 2023-04-11
 - add builder method for disabling realtime updates using `.disableRealtimeUpdates()`
 
