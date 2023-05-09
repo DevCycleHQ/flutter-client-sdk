@@ -76,7 +76,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
 
           override fun onError(t: Throwable) {
             args["error"] = t.message
-            callFlutter("clientInitialized", t.message)
+            callFlutter("clientInitialized", args)
           }
         })
         res.success(null)
