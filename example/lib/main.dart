@@ -77,71 +77,76 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initVariable() async {
-    final variable =
-        await _dvcClient.variable('string-variable', 'Default Value');
-    setState(() {
-      _variableValue = variable?.value;
-    });
-    variable?.onUpdate((updatedValue) {
+    // Wait for client to initialize before fetching variables
+    _dvcClient.onInitialized(([error]) async {
       setState(() {
-        _variableValue = updatedValue;
+        _displayValue = error ?? 'DVC Client initialized';
       });
-    });
 
-    final booleanVariable =
-        await _dvcClient.variable('boolean-variable', false);
-    setState(() {
-      _booleanValue = booleanVariable?.value;
-    });
-    booleanVariable?.onUpdate((updatedValue) {
+      final variable =
+          await _dvcClient.variable('string-variable', 'Default Value');
       setState(() {
-        _booleanValue = updatedValue;
+        _variableValue = variable?.value;
       });
-    });
+      variable?.onUpdate((updatedValue) {
+        setState(() {
+          _variableValue = updatedValue;
+        });
+      });
 
-    final integerVariable = await _dvcClient.variable('integer-variable', 188);
-    setState(() {
-      _integerValue = integerVariable?.value;
-    });
-    integerVariable?.onUpdate((updatedValue) {
+      final booleanVariable =
+          await _dvcClient.variable('boolean-variable', false);
       setState(() {
-        _integerValue = updatedValue;
+        _booleanValue = booleanVariable?.value;
       });
-    });
+      booleanVariable?.onUpdate((updatedValue) {
+        setState(() {
+          _booleanValue = updatedValue;
+        });
+      });
 
-    final doubleVariable = await _dvcClient.variable('decimal-variable', 1.88);
-    setState(() {
-      _doubleValue = doubleVariable?.value;
-    });
-    doubleVariable?.onUpdate((updatedValue) {
+      final integerVariable =
+          await _dvcClient.variable('integer-variable', 188);
       setState(() {
-        _doubleValue = updatedValue;
+        _integerValue = integerVariable?.value;
       });
-    });
+      integerVariable?.onUpdate((updatedValue) {
+        setState(() {
+          _integerValue = updatedValue;
+        });
+      });
 
-    final jsonArrayVariable = await _dvcClient.variable(
-      'json-array-variable',
-      jsonDecode(encodedJsonArray)
-    );
-    setState(() {
-      _jsonArrayValue = jsonEncode(jsonArrayVariable?.value);
-    });
-    jsonArrayVariable?.onUpdate((updatedValue) {
+      final doubleVariable =
+          await _dvcClient.variable('decimal-variable', 1.88);
       setState(() {
-        _jsonArrayValue = jsonEncode(updatedValue);
+        _doubleValue = doubleVariable?.value;
       });
-    });
-    
-    final jsonObjectVariable = await _dvcClient.variable(
-      'json-object-variable',
-      jsonDecode(encodedJsonObject)
-    );
-    setState(() {
-      _jsonObjectValue = jsonEncode(jsonObjectVariable?.value);
-    });
-    jsonObjectVariable?.onUpdate((updatedValue) {
+      doubleVariable?.onUpdate((updatedValue) {
+        setState(() {
+          _doubleValue = updatedValue;
+        });
+      });
+
+      final jsonArrayVariable = await _dvcClient.variable(
+          'json-array-variable', jsonDecode(encodedJsonArray));
       setState(() {
-        _jsonObjectValue = jsonEncode(updatedValue);
+        _jsonArrayValue = jsonEncode(jsonArrayVariable?.value);
+      });
+      jsonArrayVariable?.onUpdate((updatedValue) {
+        setState(() {
+          _jsonArrayValue = jsonEncode(updatedValue);
+        });
+      });
+
+      final jsonObjectVariable = await _dvcClient.variable(
+          'json-object-variable', jsonDecode(encodedJsonObject));
+      setState(() {
+        _jsonObjectValue = jsonEncode(jsonObjectVariable?.value);
+      });
+      jsonObjectVariable?.onUpdate((updatedValue) {
+        setState(() {
+          _jsonObjectValue = jsonEncode(updatedValue);
+        });
       });
     });
   }
@@ -155,13 +160,17 @@ class _MyAppState extends State<MyApp> {
 
   void identifyUser() {
     DVCUser testUser = DVCUserBuilder().userId('test_user_123').build();
-    _dvcClient.identifyUser(
-        testUser,
-        ((err, variables) => {
-              _logger.d(variables.values
-                  .map((variable) => "${variable.key}: ${variable.value}")
-                  .toString())
-            }));
+    _dvcClient.identifyUser(testUser, ((err, variables) {
+      if (err != null) {
+        setState(() {
+          _displayValue = err;
+        });
+      } else {
+        _logger.d(variables.values
+            .map((variable) => "${variable.key}: ${variable.value}")
+            .toString());
+      }
+    }));
     setState(() {
       _displayValue = 'Identified user: \n${testUser.toString()}';
     });
@@ -195,9 +204,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void flushEvents() {
-    _dvcClient.flushEvents(([error]) => _logger.e(error));
-    setState(() {
-      _displayValue = 'Flushed events';
+    _dvcClient.flushEvents(([error]) {
+      setState(() {
+        _displayValue = error ?? 'Flushed events';
+      });
     });
   }
 

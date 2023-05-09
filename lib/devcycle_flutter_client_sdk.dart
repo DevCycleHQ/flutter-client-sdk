@@ -15,9 +15,9 @@ export 'dvc_options.dart';
 export 'dvc_feature.dart';
 export 'dvc_variable.dart';
 
-typedef ErrorCallback = void Function([Error? error]);
+typedef ErrorCallback = void Function([String? error]);
 typedef VariablesCallback = void Function(
-    Error? error, Map<String, DVCVariable> variables);
+    String? error, Map<String, DVCVariable> variables);
 
 class DVCClient {
   static const _methodChannel = MethodChannel('devcycle_flutter_client_sdk');
@@ -54,7 +54,7 @@ class DVCClient {
   }
 
   Future<void> _handleCallbacks(MethodCall call) async {
-    final error = call.arguments['error'];
+    final error = call.arguments['error']?.toString();
     if (error != null) {
       _logger.e(error);
     }
@@ -122,12 +122,7 @@ class DVCClient {
         if (callback == null) {
           return;
         }
-        if (error != null) {
-          callback(error);
-          _eventCallbacks.remove(call.arguments['callbackId']);
-          return;
-        }
-        callback();
+        callback(error);
         _eventCallbacks.remove(call.arguments['callbackId']);
         break;
     }
