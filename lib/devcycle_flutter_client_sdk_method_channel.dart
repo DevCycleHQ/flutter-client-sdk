@@ -40,13 +40,15 @@ class MethodChannelDevCycleFlutterClientSdk
   }
 
   @override
-  Future<DVCVariable?> variable(String key, dynamic defaultValue) async {
+  Future<DVCVariable> variable(String key, dynamic defaultValue) async {
     final result = await methodChannel.invokeMethod(
-            'variable', {"key": key, "defaultValue": defaultValue}) ??
-        {};
+        'variable',
+        {"key": key, "defaultValue": defaultValue}
+    ) ?? {};
     final map = Map<String, dynamic>.from(result);
-    DVCVariable? variable = map.isNotEmpty ? DVCVariable.fromCodec(map) : null;
-    return variable;
+    return map.isNotEmpty
+        ? DVCVariable.fromCodec(map)
+        : DVCVariable.fromDefault(key, defaultValue);
   }
 
   @override

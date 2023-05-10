@@ -7,27 +7,39 @@ class DVCVariable<T> {
   String? id;
 
   /// Unique key by Project, can be used in the SDK / API to reference by &#x27;key&#x27; rather than _id.
-  String? key;
+  String key;
 
   /// Variable type
   VariableType? type;
 
   /// Variable value can be a string, number, boolean, or JSON
-  T? value;
+  T value;
 
   void Function(T value)? callback;
 
+  DVCVariable({this.id, required this.key, this.type, required this.value});
+
   static DVCVariable fromCodec(Map<String, dynamic> map) {
-    DVCVariable variable = DVCVariable();
     String mapType = map['type'].toString().toLowerCase();
 
-    variable.id = map['id'];
-    variable.key = map['key'];
-    variable.type = VariableType.values
-        .firstWhereOrNull((e) => e.toString() == "VariableType.$mapType");
-    variable.value = map['value'];
+    return DVCVariable(
+        key: map['key'],
+        value: map['value'],
+        id: map['id'],
+        type: VariableType.values
+            .firstWhereOrNull((e) => e.toString() == "VariableType.$mapType")
+    );
+  }
 
-    return variable;
+  static DVCVariable fromDefault(String key, dynamic defaultValue) {
+    String mapType = defaultValue.runtimeType.toString().toLowerCase();
+
+    return DVCVariable(
+        key: key,
+        value: defaultValue,
+        type: VariableType.values
+            .firstWhereOrNull((e) => e.toString() == "VariableType.$mapType");
+    );
   }
 
   ///

@@ -86,9 +86,9 @@ class _MyAppState extends State<MyApp> {
       final variable =
           await _dvcClient.variable('string-variable', 'Default Value');
       setState(() {
-        _variableValue = variable?.value;
+        _variableValue = variable.value;
       });
-      variable?.onUpdate((updatedValue) {
+      variable.onUpdate((updatedValue) {
         setState(() {
           _variableValue = updatedValue;
         });
@@ -97,9 +97,9 @@ class _MyAppState extends State<MyApp> {
       final booleanVariable =
           await _dvcClient.variable('boolean-variable', false);
       setState(() {
-        _booleanValue = booleanVariable?.value;
+        _booleanValue = booleanVariable.value;
       });
-      booleanVariable?.onUpdate((updatedValue) {
+      booleanVariable.onUpdate((updatedValue) {
         setState(() {
           _booleanValue = updatedValue;
         });
@@ -108,9 +108,9 @@ class _MyAppState extends State<MyApp> {
       final integerVariable =
           await _dvcClient.variable('integer-variable', 188);
       setState(() {
-        _integerValue = integerVariable?.value;
+        _integerValue = integerVariable.value;
       });
-      integerVariable?.onUpdate((updatedValue) {
+      integerVariable.onUpdate((updatedValue) {
         setState(() {
           _integerValue = updatedValue;
         });
@@ -119,9 +119,9 @@ class _MyAppState extends State<MyApp> {
       final doubleVariable =
           await _dvcClient.variable('decimal-variable', 1.88);
       setState(() {
-        _doubleValue = doubleVariable?.value;
+        _doubleValue = doubleVariable.value;
       });
-      doubleVariable?.onUpdate((updatedValue) {
+      doubleVariable.onUpdate((updatedValue) {
         setState(() {
           _doubleValue = updatedValue;
         });
@@ -130,9 +130,9 @@ class _MyAppState extends State<MyApp> {
       final jsonArrayVariable = await _dvcClient.variable(
           'json-array-variable', jsonDecode(encodedJsonArray));
       setState(() {
-        _jsonArrayValue = jsonEncode(jsonArrayVariable?.value);
+        _jsonArrayValue = jsonEncode(jsonArrayVariable.value);
       });
-      jsonArrayVariable?.onUpdate((updatedValue) {
+      jsonArrayVariable.onUpdate((updatedValue) {
         setState(() {
           _jsonArrayValue = jsonEncode(updatedValue);
         });
@@ -141,9 +141,9 @@ class _MyAppState extends State<MyApp> {
       final jsonObjectVariable = await _dvcClient.variable(
           'json-object-variable', jsonDecode(encodedJsonObject));
       setState(() {
-        _jsonObjectValue = jsonEncode(jsonObjectVariable?.value);
+        _jsonObjectValue = jsonEncode(jsonObjectVariable.value);
       });
-      jsonObjectVariable?.onUpdate((updatedValue) {
+      jsonObjectVariable.onUpdate((updatedValue) {
         setState(() {
           _jsonObjectValue = jsonEncode(updatedValue);
         });

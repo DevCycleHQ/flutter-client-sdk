@@ -41,7 +41,7 @@ abstract class DevCycleFlutterClientSdkPlatform extends PlatformInterface {
     throw UnimplementedError('resetUser() has not been implemented.');
   }
 
-  Future<DVCVariable?> variable(String key, dynamic defaultValue) {
+  Future<DVCVariable> variable(String key, dynamic defaultValue) {
     throw UnimplementedError('variable() has not been implemented.');
   }
 
