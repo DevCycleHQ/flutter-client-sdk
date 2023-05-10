@@ -160,6 +160,11 @@ class DVCClient {
     }
   }
 
+  Future<dynamic> variableValue(String key, dynamic defaultValue) async {
+    final variable = await this.variable(key, defaultValue);
+    return variable?.value;
+  }
+
   Future<DVCVariable?> variable(String key, dynamic defaultValue) async {
     await _clientReady;
     final variable = await DevCycleFlutterClientSdkPlatform.instance
