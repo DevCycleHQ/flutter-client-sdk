@@ -38,7 +38,7 @@ class DVCVariable<T> {
         key: key,
         value: defaultValue,
         type: VariableType.values
-            .firstWhereOrNull((e) => e.toString() == "VariableType.$mapType");
+            .firstWhereOrNull((e) => e.toString() == "VariableType.$mapType")
     );
   }
 

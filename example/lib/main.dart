@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
 ''';
 
   final _dvcClient = DVCClientBuilder()
-      .sdkKey('YOUR_DVC_MOBILE_SDK_KEY')
+      .sdkKey('<DVC_MOBILE_SDK_KEY>')
       .user(DVCUserBuilder().userId('123').build())
       .options(DVCOptionsBuilder().logLevel(LogLevel.debug).build())
       .build();
