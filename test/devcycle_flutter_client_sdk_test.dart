@@ -154,7 +154,7 @@ void main() {
       DVCClientBuilder().sdkKey('SDK_KEY').user(user).build();
       await devcycleFlutterClientSdkPlugin.variableValue(
           'test-key', 'default-value');
-      expect(methodCall?.method, 'variableValue');
+      expect(methodCall?.method, 'variable');
       expect(methodCall?.arguments,
           {'key': 'test-key', 'defaultValue': 'default-value'});
     });
