@@ -1,5 +1,10 @@
 # Change log
 
+## [1.4.0] - 2023-05-16
+
+- Add `variableValue()` method to `DVCClient` to get the value of a variable for a user.
+- Update `variable()` method to return non-optional value, will use default value if variable is not found.
+
 ## [1.3.3] - 2023-05-09
 
 - Fix error handling, and update callbacks to pass errors as strings
