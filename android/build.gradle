@@ -45,6 +45,6 @@ android {
     }
 
     dependencies {
-        implementation("com.devcycle:android-client-sdk:1.5.0")
+        implementation("com.devcycle:android-client-sdk:1.6.0")
     }
 }

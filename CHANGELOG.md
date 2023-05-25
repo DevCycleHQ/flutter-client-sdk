@@ -1,5 +1,9 @@
 # Change log
 
+## [1.5.0] - 2023-05-25
+
+- bump Android version to 1.6.0
+
 ## [1.4.0] - 2023-05-16
 
 - Add `variableValue()` method to `DVCClient` to get the value of a variable for a user.
