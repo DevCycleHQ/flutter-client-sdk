@@ -1,5 +1,9 @@
 # Change log
 
+## [1.5.1] - 2023-05-26
+
+- bump Android version to 1.6.1
+
 ## [1.5.0] - 2023-05-25
 
 - bump Android version to 1.6.0
