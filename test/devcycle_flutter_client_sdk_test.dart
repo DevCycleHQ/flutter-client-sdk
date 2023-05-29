@@ -16,7 +16,7 @@ void main() {
   }
 
   TestWidgetsFlutterBinding.ensureInitialized();
-  TestDefaultBinaryMessengerBinding.instance?.defaultBinaryMessenger
+  TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
       .setMockMethodCallHandler(platform.methodChannel, handler);
 
   DevCycleFlutterClientSdkPlatform.instance = platform;
