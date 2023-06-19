@@ -1,5 +1,9 @@
 # Change log
 
+## [1.6.10] - 2023-06-19
+
+- add logging disabling methods `disableCustomEventLogging()` and `disableAutomaticEventLogging()`
+
 ## [1.5.1] - 2023-05-26
 
 - bump Android version to 1.6.1
