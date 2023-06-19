@@ -5,7 +5,8 @@ void main() {
   test('builds options object with all params', () {
     DVCOptions options = DVCOptionsBuilder()
         .flushEventsIntervalMs(100)
-        .disableEventLogging(true)
+        .disableCustomEventLogging(true)
+        .disableAutomaticEventLogging(false)
         .enableEdgeDB(false)
         .configCacheTTL(999)
         .disableConfigCache(false)
@@ -13,7 +14,8 @@ void main() {
         .logLevel(LogLevel.debug)
         .build();
     expect(options.flushEventsIntervalMs, equals(100));
-    expect(options.disableEventLogging, isTrue);
+    expect(options.disableCustomEventLogging, isTrue);
+    expect(options.disableAutomaticEventLogging, isFalse);
     expect(options.enableEdgeDB, isFalse);
     expect(options.configCacheTTL, equals(999));
     expect(options.disableConfigCache, isFalse);
@@ -24,7 +26,8 @@ void main() {
   test('creates map from options object with all properties', () {
     DVCOptions options = DVCOptionsBuilder()
         .flushEventsIntervalMs(100)
-        .disableEventLogging(true)
+        .disableAutomaticEventLogging(true)
+        .disableCustomEventLogging(false)
         .enableEdgeDB(false)
         .configCacheTTL(999)
         .disableConfigCache(false)
@@ -32,7 +35,8 @@ void main() {
         .build();
     Map<String, dynamic> codecOptions = options.toCodec();
     expect(codecOptions['flushEventsIntervalMs'], equals(100));
-    expect(codecOptions['disableEventLogging'], isTrue);
+    expect(codecOptions['disableAutomaticEventLogging'], isTrue);
+    expect(codecOptions['disableCustomEventLogging'], isFalse);
     expect(codecOptions['enableEdgeDB'], isFalse);
     expect(codecOptions['configCacheTTL'], equals(999));
     expect(codecOptions['disableConfigCache'], isFalse);

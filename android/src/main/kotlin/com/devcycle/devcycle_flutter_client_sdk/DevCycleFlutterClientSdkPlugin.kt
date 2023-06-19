@@ -272,7 +272,14 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
       val disableRealtimeUpdates = map["disableRealtimeUpdates"] as? Boolean
       if (disableRealtimeUpdates is Boolean) builder.disableRealtimeUpdates(disableRealtimeUpdates)
 
-      }
+      val disableAutomaticEventLogging = map["disableAutomaticEventLogging"] as? Boolean
+      if(disableAutomaticEventLogging is Boolean) builder.disableAutomaticEventLogging(disableAutomaticEventLogging)
+
+      val disableCustomEventLogging = map["disableCustomEventLogging"] as? Boolean
+      if(disableCustomEventLogging is Boolean) builder.disableCustomEventLogging(disableCustomEventLogging)
+
+
+    }
     return builder.build()
   }
 

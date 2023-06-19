@@ -155,6 +155,14 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     if let disableEventLogging = dict["disableEventLogging"] as? Bool {
       optionsBuilder.disableEventLogging(disableEventLogging)
     }
+
+    if let disableAutomaticEventLogging = dict["disableAutomaticEventLogging"] as? Bool {
+      optionsBuilder.disableAutomaticEventLogging(disableAutomaticEventLogging)
+    }
+
+    if let disableCustomEventLogging = dict["disableCustomEventLogging"] as? Bool {
+      optionsBuilder.disableCustomEventLogging(disableCustomEventLogging)
+    }
     
     if let enableEdgeDB = dict["enableEdgeDB"] as? Bool {
       optionsBuilder.enableEdgeDB(enableEdgeDB)

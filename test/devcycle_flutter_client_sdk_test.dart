@@ -206,6 +206,21 @@ void main() {
       expect(methodCall?.method, 'track');
       expect(methodCall?.arguments, {'event': event.toCodec()});
     });
+
+    test('do not track event with disableCustomEventLogging', () async {
+      DVCUser user = DVCUserBuilder().userId('user1').build();
+      DVCClient devcycleFlutterClientSdkPlugin =
+      DVCClientBuilder().sdkKey('SDK_KEY').user(user).build();
+      DVCEvent event = DVCEventBuilder()
+          .type('my event type')
+          .target('my target')
+          .value(1)
+          .metaData({"hello": "world"}).build();
+
+      await devcycleFlutterClientSdkPlugin.track(event);
+      expect(methodCall?.method, 'track');
+      expect(methodCall?.arguments, {'event': event.toCodec()});
+    });
   });
 
   group('flushEvents', () {
