@@ -71,6 +71,7 @@ jobs:
         run: flutter pub publish --dry-run
       - name: Publish Package
         run: flutter pub publish -f
+        if: inputs.draft != true
       - uses: DevCycleHQ/release-action/create-release@main
         id: create-release
         with:
