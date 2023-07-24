@@ -1,4 +1,4 @@
-class DVCUser {
+class DevCycleUser {
   final String? userId;
   final bool? isAnonymous;
   final String? email;
@@ -7,7 +7,7 @@ class DVCUser {
   final Map<String, dynamic>? customData;
   final Map<String, dynamic>? privateCustomData;
 
-  DVCUser._builder(DVCUserBuilder builder)
+  DevCycleUser._builder(DevCycleUserBuilder builder)
       : userId = builder._userId,
         isAnonymous = builder._isAnonymous,
         email = builder._email,
@@ -36,8 +36,11 @@ class DVCUser {
   }
 }
 
-/// A builder for constructing [DVCUser] objects.
-class DVCUserBuilder {
+@Deprecated('Use DevCycleUser instead')
+typedef DVCUser = DevCycleUser;
+
+/// A builder for constructing [DevCycleUser] objects.
+class DevCycleUserBuilder {
   String? _userId;
   bool? _isAnonymous;
   String? _email;
@@ -47,47 +50,50 @@ class DVCUserBuilder {
   Map<String, dynamic>? _privateCustomData;
 
   /// Sets whether the user is anonymous.
-  DVCUserBuilder userId(String userId) {
+  DevCycleUserBuilder userId(String userId) {
     _userId = userId;
     return this;
   }
 
   /// Sets whether the user is anonymous.
-  DVCUserBuilder isAnonymous(bool isAnonymous) {
+  DevCycleUserBuilder isAnonymous(bool isAnonymous) {
     _isAnonymous = isAnonymous;
     return this;
   }
 
   /// Sets the user's email attribute.
-  DVCUserBuilder email(String email) {
+  DevCycleUserBuilder email(String email) {
     _email = email;
     return this;
   }
 
   /// Sets the user's name attribute.
-  DVCUserBuilder name(String name) {
+  DevCycleUserBuilder name(String name) {
     _name = name;
     return this;
   }
 
   /// Sets the user's country.
-  DVCUserBuilder country(String country) {
+  DevCycleUserBuilder country(String country) {
     _country = country;
     return this;
   }
 
-  DVCUserBuilder customData(Map<String, dynamic> customData) {
+  DevCycleUserBuilder customData(Map<String, dynamic> customData) {
     _customData = customData;
     return this;
   }
 
-  DVCUserBuilder privateCustomData(Map<String, dynamic> privateCustomData) {
+  DevCycleUserBuilder privateCustomData(Map<String, dynamic> privateCustomData) {
     _privateCustomData = privateCustomData;
     return this;
   }
 
-  /// Constructs a [DVCUser] instance from the values currently in the builder.
-  DVCUser build() {
-    return DVCUser._builder(this);
+  /// Constructs a [DevCycleUser] instance from the values currently in the builder.
+  DevCycleUser build() {
+    return DevCycleUser._builder(this);
   }
 }
+
+@Deprecated('Use DevCycleUserBuilder instead')
+typedef DVCUserBuilder = DevCycleUserBuilder;

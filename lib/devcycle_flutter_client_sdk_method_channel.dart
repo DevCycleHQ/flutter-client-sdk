@@ -19,16 +19,22 @@ class MethodChannelDevCycleFlutterClientSdk
   }
 
   @override
-  Future<void> initialize(
-      String sdkKey, DVCUser user, DVCOptions? options) async {
+  Future<void> initializeDevCycle(
+      String sdkKey,
+      DevCycleUser user,
+      DevCycleOptions? options
+  ) async {
     Map<String, dynamic> codecUser = user.toCodec();
     Map<String, dynamic>? codecOptions = options?.toCodec();
-    await methodChannel.invokeMethod('initialize',
-        {"sdkKey": sdkKey, "user": codecUser, "options": codecOptions});
+    await methodChannel.invokeMethod('initializeDevCycle', {
+      "sdkKey": sdkKey,
+      "user": codecUser,
+      "options": codecOptions
+    });
   }
 
   @override
-  void identifyUser(DVCUser user, [String? callbackId]) {
+  void identifyUser(DevCycleUser user, [String? callbackId]) {
     Map<String, dynamic> codecUser = user.toCodec();
     methodChannel.invokeMethod(
         'identifyUser', {"user": codecUser, "callbackId": callbackId});
@@ -78,7 +84,7 @@ class MethodChannelDevCycleFlutterClientSdk
   }
 
   @override
-  void track(DVCEvent event) {
+  void track(DevCycleEvent event) {
     Map<String, dynamic> codecEvent = event.toCodec();
     methodChannel.invokeMethod('track', {"event": codecEvent});
   }

@@ -41,9 +41,9 @@ class _MyAppState extends State<MyApp> {
   }
 ''';
 
-  final _dvcClient = DVCClientBuilder()
-      .sdkKey('<DVC_MOBILE_SDK_KEY>')
-      .user(DVCUserBuilder().userId('123').build())
+  final _dvcClient = DevCycleClientBuilder()
+      .sdkKey('<DevCycle_MOBILE_SDK_KEY>')
+      .user(DevCycleUserBuilder().userId('123').build())
       .options(DVCOptionsBuilder().logLevel(LogLevel.debug).build())
       .build();
 
@@ -80,7 +80,7 @@ class _MyAppState extends State<MyApp> {
     // Wait for client to initialize before fetching variables
     _dvcClient.onInitialized(([error]) async {
       setState(() {
-        _displayValue = error ?? 'DVC Client initialized';
+        _displayValue = error ?? 'DevCycle Client initialized';
       });
 
       final variable =
@@ -159,7 +159,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void identifyUser() {
-    DVCUser testUser = DVCUserBuilder().userId('test_user_123').build();
+    DevCycleUser testUser = DevCycleUserBuilder().userId('test_user_123').build();
     _dvcClient.identifyUser(testUser, ((err, variables) {
       if (err != null) {
         setState(() {
@@ -177,7 +177,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void identifyAnonUser() {
-    DVCUser anonUser = DVCUserBuilder().isAnonymous(true).build();
+    DevCycleUser anonUser = DevCycleUserBuilder().isAnonymous(true).build();
     _dvcClient.identifyUser(anonUser);
     setState(() {
       _displayValue = 'Identified user: \n${anonUser.toString()}';
@@ -185,7 +185,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void trackEvent() {
-    DVCEvent event = DVCEventBuilder()
+    DevCycleEvent event = DevCycleEventBuilder()
         .target('target-str')
         .type('flutter-test')
         .value(10.0)

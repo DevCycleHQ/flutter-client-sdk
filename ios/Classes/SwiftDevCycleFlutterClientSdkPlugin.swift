@@ -27,23 +27,15 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     if let userArg = args?["user"] as? [String: Any] {
       user = getUserFromDict(dict: userArg)
     }
+    let sdkKey = args?["sdkKey"] as? String
+    let options = args?["options"] as? [String: Any]
     
     switch call.method {
+    case "initializeDevCycle":
+      initDevCycle(user, sdkKey, options)
+      result(nil)
     case "initialize":
-      let sdkKey = args?["sdkKey"] as? String
-      let options = args?["options"] as? [String: Any]
-      if let dvcUser = user, let dvcKey = sdkKey {
-        self.dvcClient = try? DVCClient.builder()
-          .sdkKey(dvcKey)
-          .user(dvcUser)
-          .options(getOptionsFromDict(dict: options ?? [:] ))
-          .build(onInitialized: { error in
-            if (error != nil) {
-              callbackArgs["error"] = "\(String(describing: error))"
-            }
-            self.channel.invokeMethod("clientInitialized", arguments: callbackArgs)
-        })
-      }
+      initDevCycle(user, sdkKey, options)
       result(nil)
     case "identifyUser":
       if let dvcUser = user {
@@ -100,13 +92,27 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         callbackArgs["callbackId"] = callbackId
         if (error != nil) {
           callbackArgs["error"] = "\(String(describing: error))"
-        } 
+        }
         self.channel.invokeMethod("eventsFlushed", arguments: callbackArgs)
-        
       })
       result(nil)
     default:
       result(FlutterMethodNotImplemented)
+    }
+  }
+
+  private func initDevCycle(user?: DVCUser, sdkKey?: String, options?: [String: Any]) {
+    if let dvcUser = user, let dvcKey = sdkKey {
+      self.dvcClient = try? DVCClient.builder()
+        .sdkKey(dvcKey)
+        .user(dvcUser)
+        .options(getOptionsFromDict(dict: options ?? [:] ))
+        .build(onInitialized: { error in
+          if (error != nil) {
+            callbackArgs["error"] = "\(String(describing: error))"
+          }
+          self.channel.invokeMethod("clientInitialized", arguments: callbackArgs)
+      })
     }
   }
   

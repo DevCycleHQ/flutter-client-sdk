@@ -1,6 +1,6 @@
 enum LogLevel { debug, info, warn, error }
 
-class DVCOptions {
+class DevCycleOptions {
   final int? flushEventsIntervalMs;
   final bool? disableEventLogging;
   final bool? disableCustomEventLogging;
@@ -11,7 +11,7 @@ class DVCOptions {
   final bool? disableRealtimeUpdates;
   final LogLevel? logLevel;
 
-  DVCOptions._builder(DVCOptionsBuilder builder)
+  DevCycleOptions._builder(DevCycleOptionsBuilder builder)
       : flushEventsIntervalMs = builder._flushEventsIntervalMs,
         disableEventLogging = builder._disableEventLogging,
         disableCustomEventLogging = builder._disableCustomEventLogging,
@@ -51,8 +51,11 @@ class DVCOptions {
   }
 }
 
-/// A builder for constructing [DVCOptions] objects.
-class DVCOptionsBuilder {
+@Deprecated('Use DevCycleOptions instead')
+typedef DVCOptions = DevCycleOptions;
+
+/// A builder for constructing [DevCycleOptions] objects.
+class DevCycleOptionsBuilder {
   int? _flushEventsIntervalMs;
   bool? _disableEventLogging;
   bool? _disableCustomEventLogging;
@@ -63,56 +66,59 @@ class DVCOptionsBuilder {
   bool? _disableRealtimeUpdates;
   LogLevel? _logLevel;
 
-  DVCOptionsBuilder flushEventsIntervalMs(int flushEventsIntervalMs) {
+  DevCycleOptionsBuilder flushEventsIntervalMs(int flushEventsIntervalMs) {
     _flushEventsIntervalMs = flushEventsIntervalMs;
     return this;
   }
 
   @Deprecated(
       'Use disableCustomEventLogging and disableAutomaticEventLogging instead')
-  DVCOptionsBuilder disableEventLogging(bool disableEventLogging) {
+  DevCycleOptionsBuilder disableEventLogging(bool disableEventLogging) {
     _disableEventLogging = disableEventLogging;
     return this;
   }
 
-  DVCOptionsBuilder disableCustomEventLogging(bool disableCustomEventLogging) {
+  DevCycleOptionsBuilder disableCustomEventLogging(bool disableCustomEventLogging) {
     _disableCustomEventLogging = disableCustomEventLogging;
     return this;
   }
 
-  DVCOptionsBuilder disableAutomaticEventLogging(
+  DevCycleOptionsBuilder disableAutomaticEventLogging(
       bool disableAutomaticEventLogging) {
     _disableAutomaticEventLogging = disableAutomaticEventLogging;
     return this;
   }
 
-  DVCOptionsBuilder enableEdgeDB(bool enableEdgeDB) {
+  DevCycleOptionsBuilder enableEdgeDB(bool enableEdgeDB) {
     _enableEdgeDB = enableEdgeDB;
     return this;
   }
 
-  DVCOptionsBuilder configCacheTTL(int configCacheTTL) {
+  DevCycleOptionsBuilder configCacheTTL(int configCacheTTL) {
     _configCacheTTL = configCacheTTL;
     return this;
   }
 
-  DVCOptionsBuilder disableConfigCache(bool disableConfigCache) {
+  DevCycleOptionsBuilder disableConfigCache(bool disableConfigCache) {
     _disableConfigCache = disableConfigCache;
     return this;
   }
 
-  DVCOptionsBuilder disableRealtimeUpdates(bool disableRealtimeUpdates) {
+  DevCycleOptionsBuilder disableRealtimeUpdates(bool disableRealtimeUpdates) {
     _disableRealtimeUpdates = disableRealtimeUpdates;
     return this;
   }
 
-  DVCOptionsBuilder logLevel(LogLevel logLevel) {
+  DevCycleOptionsBuilder logLevel(LogLevel logLevel) {
     _logLevel = logLevel;
     return this;
   }
 
-  /// Constructs a [DVCOptions] instance from the values currently in the builder.
-  DVCOptions build() {
-    return DVCOptions._builder(this);
+  /// Constructs a [DevCycleOptions] instance from the values currently in the builder.
+  DevCycleOptions build() {
+    return DevCycleOptions._builder(this);
   }
 }
+
+@Deprecated('Use DevCycleOptionsBuilder instead')
+typedef DVCOptionsBuilder = DevCycleOptionsBuilder;
