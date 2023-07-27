@@ -1,6 +1,6 @@
 # Change Log
 
-## [1.7.0] - 2023-09-22
+## [1.7.0] - 2023-07-27
 
 - update Android to 2.0.0
 - update iOS to 1.14.0
