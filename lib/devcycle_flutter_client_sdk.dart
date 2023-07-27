@@ -1,17 +1,17 @@
-import 'package:devcycle_flutter_client_sdk/dvc_event.dart';
+import 'package:devcycle_flutter_client_sdk/devcycle_event.dart';
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 import 'package:logger/logger.dart';
 
 import 'devcycle_flutter_client_sdk_platform_interface.dart';
-import 'dvc_user.dart';
-import 'dvc_options.dart';
+import 'devcycle_user.dart';
+import 'devcycle_options.dart';
 import 'dvc_variable.dart';
 import 'dvc_feature.dart';
 
-export 'dvc_user.dart';
-export 'dvc_event.dart';
-export 'dvc_options.dart';
+export 'devcycle_user.dart';
+export 'devcycle_event.dart';
+export 'devcycle_options.dart';
 export 'dvc_feature.dart';
 export 'dvc_variable.dart';
 
