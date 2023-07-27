@@ -29,7 +29,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     }
     
     switch call.method {
-    case "initialize":
+    case "initializeDevCycle":
       let sdkKey = args?["sdkKey"] as? String
       let options = args?["options"] as? [String: Any]
       if let dvcUser = user, let dvcKey = sdkKey {
@@ -100,9 +100,8 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         callbackArgs["callbackId"] = callbackId
         if (error != nil) {
           callbackArgs["error"] = "\(String(describing: error))"
-        } 
+        }
         self.channel.invokeMethod("eventsFlushed", arguments: callbackArgs)
-        
       })
       result(nil)
     default:

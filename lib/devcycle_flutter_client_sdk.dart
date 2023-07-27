@@ -19,7 +19,7 @@ typedef ErrorCallback = void Function([String? error]);
 typedef VariablesCallback = void Function(
     String? error, Map<String, DVCVariable> variables);
 
-class DVCClient {
+class DevCycleClient {
   static const _methodChannel = MethodChannel('devcycle_flutter_client_sdk');
 
   static const _uuid = Uuid();
@@ -38,12 +38,12 @@ class DVCClient {
   // Map of callback IDs to user update callbacks. The ID is generated when flushEvents is called
   final Map<String, ErrorCallback> _eventCallbacks = {};
 
-  DVCClient._builder(DVCClientBuilder builder);
+  DevCycleClient._builder(DevCycleClientBuilder builder);
 
-  _init(String sdkKey, DVCUser user, DVCOptions? options) {
+  _init(String sdkKey, DevCycleUser user, DevCycleOptions? options) {
     _methodChannel.setMethodCallHandler(_handleCallbacks);
     _clientReady = DevCycleFlutterClientSdkPlatform.instance
-        .initialize(sdkKey, user, options);
+        .initializeDevCycle(sdkKey, user, options);
   }
 
   _trackVariable(DVCVariable? variable) {
@@ -128,7 +128,7 @@ class DVCClient {
     }
   }
 
-  DVCClient onInitialized(ErrorCallback callback) {
+  DevCycleClient onInitialized(ErrorCallback callback) {
     _clientInitializedCallback = callback;
     return this;
   }
@@ -138,7 +138,7 @@ class DVCClient {
     return DevCycleFlutterClientSdkPlatform.instance.getPlatformVersion();
   }
 
-  Future<void> identifyUser(DVCUser user, [VariablesCallback? callback]) async {
+  Future<void> identifyUser(DevCycleUser user, [VariablesCallback? callback]) async {
     await _clientReady;
     if (callback != null) {
       String callbackId = _uuid.v4();
@@ -188,7 +188,7 @@ class DVCClient {
     return variables;
   }
 
-  Future<void> track(DVCEvent event) async {
+  Future<void> track(DevCycleEvent event) async {
     await _clientReady;
     DevCycleFlutterClientSdkPlatform.instance.track(event);
   }
@@ -205,37 +205,43 @@ class DVCClient {
   }
 }
 
-class DVCClientBuilder {
-  String? _sdkKey;
-  DVCUser? _user;
-  DVCOptions? _options;
+@Deprecated('Use DevCycleClient instead')
+typedef DVCClient = DevCycleClient;
 
-  DVCClientBuilder sdkKey(String sdkKey) {
+class DevCycleClientBuilder {
+  String? _sdkKey;
+  DevCycleUser? _user;
+  DevCycleOptions? _options;
+
+  DevCycleClientBuilder sdkKey(String sdkKey) {
     _sdkKey = sdkKey;
     return this;
   }
 
   @Deprecated("Use sdkKey() method")
-  DVCClientBuilder environmentKey(String environmentKey) {
+  DevCycleClientBuilder environmentKey(String environmentKey) {
     _sdkKey = environmentKey;
     return this;
   }
 
-  DVCClientBuilder user(DVCUser user) {
+  DevCycleClientBuilder user(DevCycleUser user) {
     _user = user;
     return this;
   }
 
-  DVCClientBuilder options(DVCOptions options) {
+  DevCycleClientBuilder options(DevCycleOptions options) {
     _options = options;
     return this;
   }
 
-  DVCClient build() {
+  DevCycleClient build() {
     if (_sdkKey == null) throw Exception("SDK key must be set");
     if (_user == null) throw Exception("User must be set");
-    DVCClient client = DVCClient._builder(this);
+    DevCycleClient client = DevCycleClient._builder(this);
     client._init(_sdkKey!, _user!, _options);
     return client;
   }
 }
+
+@Deprecated('Use DevCycleClientBuilder instead')
+typedef DVCClientBuilder = DevCycleClientBuilder;

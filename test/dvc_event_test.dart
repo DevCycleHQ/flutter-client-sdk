@@ -3,6 +3,20 @@ import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk.dart';
 
 void main() {
   test('builds event object', () {
+    DevCycleEvent event = DevCycleEventBuilder()
+        .type('my event type')
+        .target('my target')
+        .value(1)
+        .date(DateTime.parse("2018-08-16T11:00:00.000Z"))
+        .metaData({"hello": "world"}).build();
+    expect(event.type, equals('my event type'));
+    expect(event.target, equals('my target'));
+    expect(event.value, equals(1));
+    expect(event.date, equals(DateTime.parse("2018-08-16T11:00:00.000Z")));
+    expect(event.metaData, equals({"hello": "world"}));
+  });
+
+  test('deprecated DVCEventBuilder', () {
     DVCEvent event = DVCEventBuilder()
         .type('my event type')
         .target('my target')
@@ -17,7 +31,7 @@ void main() {
   });
 
   test('creates map from event object', () {
-    DVCEvent event = DVCEventBuilder()
+    DevCycleEvent event = DevCycleEventBuilder()
         .type('my event type')
         .target('my target')
         .value(1)

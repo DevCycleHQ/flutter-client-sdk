@@ -41,10 +41,10 @@ class _MyAppState extends State<MyApp> {
   }
 ''';
 
-  final _dvcClient = DVCClientBuilder()
-      .sdkKey('<DVC_MOBILE_SDK_KEY>')
-      .user(DVCUserBuilder().userId('123').build())
-      .options(DVCOptionsBuilder().logLevel(LogLevel.debug).build())
+  final _devCycleClient = DevCycleClientBuilder()
+      .sdkKey('<DEVCYCLE_MOBILE_SDK_KEY>')
+      .user(DevCycleUserBuilder().userId('123').build())
+      .options(DevCycleOptionsBuilder().logLevel(LogLevel.debug).build())
       .build();
 
   @override
@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
     // We also handle the message potentially returning null.
     try {
       platformVersion =
-          await _dvcClient.getPlatformVersion() ?? 'Unknown platform version';
+          await _devCycleClient.getPlatformVersion() ?? 'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -78,13 +78,13 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initVariable() async {
     // Wait for client to initialize before fetching variables
-    _dvcClient.onInitialized(([error]) async {
+    _devCycleClient.onInitialized(([error]) async {
       setState(() {
-        _displayValue = error ?? 'DVC Client initialized';
+        _displayValue = error ?? 'DevCycle Client initialized';
       });
 
       final variable =
-          await _dvcClient.variable('string-variable', 'Default Value');
+          await _devCycleClient.variable('string-variable', 'Default Value');
       setState(() {
         _variableValue = variable.value;
       });
@@ -95,7 +95,7 @@ class _MyAppState extends State<MyApp> {
       });
 
       final booleanVariable =
-          await _dvcClient.variable('boolean-variable', false);
+          await _devCycleClient.variable('boolean-variable', false);
       setState(() {
         _booleanValue = booleanVariable.value;
       });
@@ -106,7 +106,7 @@ class _MyAppState extends State<MyApp> {
       });
 
       final integerVariable =
-          await _dvcClient.variable('integer-variable', 188);
+          await _devCycleClient.variable('integer-variable', 188);
       setState(() {
         _integerValue = integerVariable.value;
       });
@@ -117,7 +117,7 @@ class _MyAppState extends State<MyApp> {
       });
 
       final doubleVariable =
-          await _dvcClient.variable('decimal-variable', 1.88);
+          await _devCycleClient.variable('decimal-variable', 1.88);
       setState(() {
         _doubleValue = doubleVariable.value;
       });
@@ -127,7 +127,7 @@ class _MyAppState extends State<MyApp> {
         });
       });
 
-      final jsonArrayVariable = await _dvcClient.variable(
+      final jsonArrayVariable = await _devCycleClient.variable(
           'json-array-variable', jsonDecode(encodedJsonArray));
       setState(() {
         _jsonArrayValue = jsonEncode(jsonArrayVariable.value);
@@ -138,7 +138,7 @@ class _MyAppState extends State<MyApp> {
         });
       });
 
-      final jsonObjectVariable = await _dvcClient.variable(
+      final jsonObjectVariable = await _devCycleClient.variable(
           'json-object-variable', jsonDecode(encodedJsonObject));
       setState(() {
         _jsonObjectValue = jsonEncode(jsonObjectVariable.value);
@@ -152,15 +152,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   void resetUser() {
-    _dvcClient.resetUser();
+    _devCycleClient.resetUser();
     setState(() {
       _displayValue = 'User reset!';
     });
   }
 
   void identifyUser() {
-    DVCUser testUser = DVCUserBuilder().userId('test_user_123').build();
-    _dvcClient.identifyUser(testUser, ((err, variables) {
+    DevCycleUser testUser = DevCycleUserBuilder().userId('test_user_123').build();
+    _devCycleClient.identifyUser(testUser, ((err, variables) {
       if (err != null) {
         setState(() {
           _displayValue = err;
@@ -177,34 +177,34 @@ class _MyAppState extends State<MyApp> {
   }
 
   void identifyAnonUser() {
-    DVCUser anonUser = DVCUserBuilder().isAnonymous(true).build();
-    _dvcClient.identifyUser(anonUser);
+    DevCycleUser anonUser = DevCycleUserBuilder().isAnonymous(true).build();
+    _devCycleClient.identifyUser(anonUser);
     setState(() {
       _displayValue = 'Identified user: \n${anonUser.toString()}';
     });
   }
 
   void trackEvent() {
-    DVCEvent event = DVCEventBuilder()
+    DevCycleEvent event = DevCycleEventBuilder()
         .target('target-str')
         .type('flutter-test')
         .value(10.0)
         .metaData({'custom_key': 'value'}).build();
-    _dvcClient.track(event);
+    _devCycleClient.track(event);
     setState(() {
       _displayValue = 'Tracked event: \n${event.toString()}';
     });
   }
 
   void showAllFeatures() async {
-    Map<String, DVCFeature> features = await _dvcClient.allFeatures();
+    Map<String, DVCFeature> features = await _devCycleClient.allFeatures();
     setState(() {
       _displayValue = 'All features: \n${features.keys.toString()}';
     });
   }
 
   void flushEvents() {
-    _dvcClient.flushEvents(([error]) {
+    _devCycleClient.flushEvents(([error]) {
       setState(() {
         _displayValue = error ?? 'Flushed events';
       });
@@ -212,7 +212,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void showAllVariables() async {
-    Map<String, DVCVariable> variables = await _dvcClient.allVariables();
+    Map<String, DVCVariable> variables = await _devCycleClient.allVariables();
     setState(() {
       _displayValue =
           'All variables: \n${variables.values.map((variable) => "${variable.key}: ${variable.value}").toString()}';

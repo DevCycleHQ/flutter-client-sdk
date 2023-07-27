@@ -1,4 +1,11 @@
-# Change log
+# Change Log
+
+## [1.7.0] - 2023-09-22
+
+- update Android to 2.0.0
+- update iOS to 1.14.0
+- External interfaces changed to use `DevCycle` over `DVC`. For example: `DVCClient` -> `DevCycleClient`, `DVCUser` -> `DevCycleUser`. 
+Old interfaces are marked as deprecated.
 
 ## [1.6.10] - 2023-06-19
 

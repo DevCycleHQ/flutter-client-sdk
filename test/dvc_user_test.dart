@@ -3,6 +3,21 @@ import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk.dart';
 
 void main() {
   test('builds correct user object', () {
+    DevCycleUser user = DevCycleUserBuilder()
+        .userId('user1')
+        .isAnonymous(false)
+        .email('test@example.com')
+        .name('a b')
+        .country('de')
+        .build();
+    expect(user.userId, equals('user1'));
+    expect(user.isAnonymous, isFalse);
+    expect(user.email, equals('test@example.com'));
+    expect(user.name, equals('a b'));
+    expect(user.country, equals('de'));
+  });
+
+  test('deprecated DVCUserBuilder', () {
     DVCUser user = DVCUserBuilder()
         .userId('user1')
         .isAnonymous(false)
@@ -18,7 +33,7 @@ void main() {
   });
 
   test('creates map from user object', () {
-    DVCUser user = DVCUserBuilder()
+    DevCycleUser user = DevCycleUserBuilder()
         .userId('user1')
         .isAnonymous(false)
         .email('test@example.com')

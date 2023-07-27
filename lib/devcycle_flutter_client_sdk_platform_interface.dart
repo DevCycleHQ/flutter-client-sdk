@@ -29,11 +29,15 @@ abstract class DevCycleFlutterClientSdkPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<void> initialize(String sdkKey, DVCUser user, DVCOptions? options) {
-    throw UnimplementedError('initialize() has not been implemented.');
+  Future<void> initializeDevCycle(
+      String sdkKey,
+      DevCycleUser user,
+      DevCycleOptions? options
+  ) {
+    throw UnimplementedError('initializeDevCycle() has not been implemented.');
   }
 
-  void identifyUser(DVCUser user, [String? callbackId]) {
+  void identifyUser(DevCycleUser user, [String? callbackId]) {
     throw UnimplementedError('identifyUser() has not been implemented.');
   }
 
@@ -53,7 +57,7 @@ abstract class DevCycleFlutterClientSdkPlatform extends PlatformInterface {
     throw UnimplementedError('allVariables() has not been implemented.');
   }
 
-  void track(DVCEvent event) {
+  void track(DevCycleEvent event) {
     throw UnimplementedError('track() has not been implemented.');
   }
 

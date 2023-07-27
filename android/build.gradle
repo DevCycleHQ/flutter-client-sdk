@@ -1,5 +1,5 @@
 group 'com.devcycle.devcycle_flutter_client_sdk'
-version '1.0-SNAPSHOT'
+version '1.7.0'
 
 buildscript {
     ext.kotlin_version = '1.6.10'
@@ -45,6 +45,6 @@ android {
     }
 
     dependencies {
-        implementation("com.devcycle:android-client-sdk:1.7.0")
+        implementation("com.devcycle:android-client-sdk:2.0.0")
     }
 }

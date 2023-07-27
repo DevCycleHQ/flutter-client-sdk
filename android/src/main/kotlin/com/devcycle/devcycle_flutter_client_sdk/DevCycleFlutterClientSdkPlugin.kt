@@ -27,7 +27,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
   private lateinit var context: Context
-  private lateinit var client: DVCClient
+  private lateinit var client: DevCycleClient
   private var stringVariableUpdates = mutableMapOf<String, Variable<String>>()
   private var numberVariableUpdates = mutableMapOf<String, Variable<Number>>()
   private var booleanVariableUpdates = mutableMapOf<String, Variable<Boolean>>()
@@ -54,10 +54,10 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull res: Result) {
     val args = mutableMapOf<String, Any?>()
     when (call.method) {
-      "initialize" -> {
+      "initializeDevCycle" -> {
         val codecOptions: Map<String, Any>? = call.argument("options")
         val logLevel = getLogLevelFromMap(codecOptions)
-        val clientBuilder = DVCClient
+        val clientBuilder = DevCycleClient
           .builder()
           .withContext(context)
           .withSDKKey(call.argument("sdkKey")!!)
@@ -69,7 +69,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
 
         client = clientBuilder.build()
 
-        client.onInitialized(object : DVCCallback<String> {
+        client.onInitialized(object : DevCycleCallback<String> {
           override fun onSuccess(result: String) {
             callFlutter("clientInitialized", args)
           }
@@ -84,7 +84,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
       "identifyUser" -> {
         val user = getUserFromMap(call.argument("user")!!)
         args["callbackId"] = call.argument("callbackId") as String?
-        val callback = object: DVCCallback<Map<String, BaseConfigVariable>> {
+        val callback = object: DevCycleCallback<Map<String, BaseConfigVariable>> {
           override fun onSuccess(result: Map<String, BaseConfigVariable>) {
             args["variables"] = variablesToMap(result)
             callFlutter("userIdentified", args)
@@ -99,7 +99,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
       }
       "resetUser" -> {
         args["callbackId"] = call.argument("callbackId") as String?
-        val callback = object: DVCCallback<Map<String, BaseConfigVariable>> {
+        val callback = object: DevCycleCallback<Map<String, BaseConfigVariable>> {
           override fun onSuccess(result: Map<String, BaseConfigVariable>) {
             args["variables"] = variablesToMap(result)
             callFlutter("userReset", args)
@@ -162,7 +162,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
       }
       "flushEvents" -> {
         args["callbackId"] = call.argument("callbackId") as String?
-        val callback = object: DVCCallback<String> {
+        val callback = object: DevCycleCallback<String> {
           override fun onSuccess(result: String) {
             args["result"] = result
             callFlutter("eventsFlushed", args)
@@ -189,8 +189,8 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(null)
   }
 
-  private fun getUserFromMap(map: Map<String, Any>): DVCUser {
-    val userBuilder = DVCUser.builder()
+  private fun getUserFromMap(map: Map<String, Any>): DevCycleUser {
+    val userBuilder = DevCycleUser.builder()
 
     val anonymous = map["anonymous"] as? Boolean
     if (anonymous is Boolean) userBuilder.withIsAnonymous(anonymous)
@@ -218,8 +218,8 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     return userBuilder.build()
   }
 
-  private fun getEventFromMap(map: Map<String, Any>): DVCEvent {
-    val eventBuilder = DVCEvent.builder()
+  private fun getEventFromMap(map: Map<String, Any>): DevCycleEvent {
+    val eventBuilder = DevCycleEvent.builder()
 
     val type = map["type"] as? String
     if (type is String) eventBuilder.withType(type)
@@ -253,8 +253,8 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
   }
 
 
-  private fun getOptionsFromMap(map: Map<String, Any>?): DVCOptions {
-    val builder = DVCOptions.builder()
+  private fun getOptionsFromMap(map: Map<String, Any>?): DevCycleOptions {
+    val builder = DevCycleOptions.builder()
 
     if (map != null) {
       val flushEventsIntervalMs = map["flushEventsIntervalMs"] as? Long

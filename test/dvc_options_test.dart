@@ -3,6 +3,27 @@ import 'package:devcycle_flutter_client_sdk/devcycle_flutter_client_sdk.dart';
 
 void main() {
   test('builds options object with all params', () {
+    DevCycleOptions options = DevCycleOptionsBuilder()
+        .flushEventsIntervalMs(100)
+        .disableCustomEventLogging(true)
+        .disableAutomaticEventLogging(false)
+        .enableEdgeDB(false)
+        .configCacheTTL(999)
+        .disableConfigCache(false)
+        .disableRealtimeUpdates(false)
+        .logLevel(LogLevel.debug)
+        .build();
+    expect(options.flushEventsIntervalMs, equals(100));
+    expect(options.disableCustomEventLogging, isTrue);
+    expect(options.disableAutomaticEventLogging, isFalse);
+    expect(options.enableEdgeDB, isFalse);
+    expect(options.configCacheTTL, equals(999));
+    expect(options.disableConfigCache, isFalse);
+    expect(options.disableRealtimeUpdates, isFalse);
+    expect(options.logLevel, equals(LogLevel.debug));
+  });
+
+  test('deprecated DVCOptionsBuilder', () {
     DVCOptions options = DVCOptionsBuilder()
         .flushEventsIntervalMs(100)
         .disableCustomEventLogging(true)
@@ -24,7 +45,7 @@ void main() {
   });
 
   test('creates map from options object with all properties', () {
-    DVCOptions options = DVCOptionsBuilder()
+    DevCycleOptions options = DVCOptionsBuilder()
         .flushEventsIntervalMs(100)
         .disableAutomaticEventLogging(true)
         .disableCustomEventLogging(false)
@@ -44,7 +65,7 @@ void main() {
   });
 
   test('creates map from options object with only one property', () {
-    DVCOptions options = DVCOptionsBuilder().flushEventsIntervalMs(100).build();
+    DevCycleOptions options = DVCOptionsBuilder().flushEventsIntervalMs(100).build();
     Map<String, dynamic> codecOptions = options.toCodec();
     expect(codecOptions, {"flushEventsIntervalMs": 100});
   });

@@ -1,11 +1,11 @@
-class DVCEvent {
+class DevCycleEvent {
   final String? type;
   final String? target;
   final double? value;
   final DateTime? date;
   final Map<String, dynamic>? metaData;
 
-  DVCEvent._builder(DVCEventBuilder builder)
+  DevCycleEvent._builder(DevCycleEventBuilder builder)
       : type = builder._type,
         target = builder._target,
         value = builder._value,
@@ -28,8 +28,11 @@ class DVCEvent {
   }
 }
 
-/// A builder for constructing [DVCEvent] objects.
-class DVCEventBuilder {
+@Deprecated('Use DevCycleEvent instead')
+typedef DVCEvent = DevCycleEvent;
+
+/// A builder for constructing [DevCycleEvent] objects.
+class DevCycleEventBuilder {
   String? _type;
   String? _target;
   double? _value;
@@ -37,35 +40,38 @@ class DVCEventBuilder {
   Map<String, dynamic>? _metaData;
 
   /// Custom event type
-  DVCEventBuilder type(String type) {
+  DevCycleEventBuilder type(String type) {
     _type = type;
     return this;
   }
 
   /// Custom event target / subject of event. Contextual to event type
-  DVCEventBuilder target(String target) {
+  DevCycleEventBuilder target(String target) {
     _target = target;
     return this;
   }
 
   /// Sets the user's email attribute.
-  DVCEventBuilder value(double value) {
+  DevCycleEventBuilder value(double value) {
     _value = value;
     return this;
   }
 
-  DVCEventBuilder date(DateTime date) {
+  DevCycleEventBuilder date(DateTime date) {
     _date = date;
     return this;
   }
 
-  DVCEventBuilder metaData(Map<String, dynamic> metaData) {
+  DevCycleEventBuilder metaData(Map<String, dynamic> metaData) {
     _metaData = metaData;
     return this;
   }
 
-  /// Constructs a [DVCEvent] instance from the values currently in the builder.
-  DVCEvent build() {
-    return DVCEvent._builder(this);
+  /// Constructs a [DevCycleEvent] instance from the values currently in the builder.
+  DevCycleEvent build() {
+    return DevCycleEvent._builder(this);
   }
 }
+
+@Deprecated('Use DevCycleEventBuilder instead')
+typedef DVCEventBuilder = DevCycleEventBuilder;
