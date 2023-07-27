@@ -48,7 +48,8 @@ jobs:
 
       - name: Update version in code
         run: |
-          sed -i "s/^version: \".*\"/version: \"${{steps.prepare-release.outputs.next-release-tag}}\"/" ./pubspec.yaml
+          sed -iE "s/version:.*/version: \"${{steps.prepare-release.outputs.next-release-tag}}\"/" ./pubspec.yaml
+          
 
       - name: Commit and push
         if: inputs.draft != true
