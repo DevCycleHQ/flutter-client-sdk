@@ -49,14 +49,16 @@ jobs:
       - name: Update version in code
         run: |
           sed -iE "s/version:.*/version: \"${{steps.prepare-release.outputs.next-release-tag}}\"/" ./pubspec.yaml
-          
+          sed -iE "s/# Change Log/# Change Log\n## [${{steps.prepare-release.outputs.next-release-tag}}] - "$(date "+%Y-%m-%d")"\n${{ steps.prepare-release.outputs.changelog }}/g" CHANGELOG.md
+          sed -iE "s/s.version          = '.*'/s.version          = '${{steps.prepare-release.outputs.next-release-tag}}'/g" ios/devcycle_flutter_client_sdk.podspec
+          sed -iE "s/version '.*'/version '${{steps.prepare-release.outputs.next-release-tag}}'/g" android/build.gradle
 
       - name: Commit and push
         if: inputs.draft != true
         run: |
           git config --global user.email "github-tracker-bot@taplytics.com"
           git config --global user.name "DevCycle Automation"
-          git add ./pubspec.yaml
+          git add .
           git commit -m "Release ${{steps.prepare-release.outputs.next-release-tag}}"
           git push origin HEAD:main
 
