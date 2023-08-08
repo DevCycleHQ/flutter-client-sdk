@@ -38,7 +38,7 @@ jobs:
           flutter-version: '3.x'
           channel: 'stable'
 
-      - uses: DevCycleHQ/release-action/prepare-release@main
+      - uses: DevCycleHQ/release-action/prepare-release@v2
         id: prepare-release
         with:
           github-token: ${{ secrets.AUTOMATION_USER_TOKEN }}
@@ -85,7 +85,7 @@ jobs:
         if: inputs.draft != true
         run: flutter pub publish -f
 
-      - uses: DevCycleHQ/release-action/create-release@main
+      - uses: DevCycleHQ/release-action/create-release@v2
         id: create-release
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
