@@ -1,24 +1,4 @@
 # Change Log
-## [1.7.1] - 2023-08-09
-## Bug Fixes
-
-- fix: release action name change by @JamieSinn in #107
-- fix: rename model files from dvc to devcycle by @jonathannorris in #110
-- fix: Update versions for all sub-projects and add the changelog script by @JamieSinn in #111
-
-## Build System / CI
-
-- ci: revised how the changelog updates in the github action by @chris-hoefgen in #113
-- ci: fixed incorrect changelog filename in release action by @chris-hoefgen in #114
-- ci: another release action fix by @chris-hoefgen in #115
-
-
-
-## Uncategorized
-
-- chore: update to use the tagged version of the release action instead of main by @chris-hoefgen in #112
-
-
 
 ## [1.7.0] - 2023-07-27
 
