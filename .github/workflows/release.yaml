@@ -53,7 +53,7 @@ jobs:
           sed -iE "s/version '.*'/version '${{steps.prepare-release.outputs.next-release-tag}}'/g" android/build.gradle
           sed -iE "s/# Change Log//g" CHANGELOG.md
           echo -e "# Change Log\n## [${{steps.prepare-release.outputs.next-release-tag}}] - "$(date "+%Y-%m-%d")"\n${{ steps.prepare-release.outputs.changelog }}" > update.md
-          cat updates.md CHANGELOG.md > CHANGELOG.md.tmp
+          cat update.md CHANGELOG.md > CHANGELOG.md.tmp
           mv CHANGELOG.md.tmp CHANGELOG.md
           rm update.md
 
