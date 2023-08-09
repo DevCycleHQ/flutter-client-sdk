@@ -49,9 +49,13 @@ jobs:
       - name: Update version in code
         run: |
           sed -iE "s/version:.*/version: \"${{steps.prepare-release.outputs.next-release-tag}}\"/" ./pubspec.yaml
-          sed -iE "s/# Change Log/# Change Log\n## [${{steps.prepare-release.outputs.next-release-tag}}] - "$(date "+%Y-%m-%d")"\n${{ steps.prepare-release.outputs.changelog }}/g" CHANGELOG.md
           sed -iE "s/s.version          = '.*'/s.version          = '${{steps.prepare-release.outputs.next-release-tag}}'/g" ios/devcycle_flutter_client_sdk.podspec
           sed -iE "s/version '.*'/version '${{steps.prepare-release.outputs.next-release-tag}}'/g" android/build.gradle
+          sed -iE "s/# Change Log//g" CHANGELOG.md
+          echo -e "# Change Log\n## [${{steps.prepare-release.outputs.next-release-tag}}] - "$(date "+%Y-%m-%d")"\n${{ steps.prepare-release.outputs.changelog }}" > update.md
+          cat update.md CHANGELOG.md > CHANGELOG.md
+          mv CHANGELOG.md.tmp CHANGELOG.md
+          rm update.md
 
       - name: Commit and push
         if: inputs.draft != true
