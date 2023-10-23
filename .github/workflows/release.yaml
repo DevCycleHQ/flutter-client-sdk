@@ -33,7 +33,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install Flutter
-        uses: subosito/flutter-action@v1
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.x'
           channel: 'stable'
