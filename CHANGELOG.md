@@ -1,4 +1,17 @@
 # Change Log
+## [1.7.2] - 2023-10-24
+
+
+## Uncategorized
+
+- chore: dependabot by @JamieSinn in #116
+- chore(deps): actions/checkout from 2 to 4 by @dependabot[bot] in #120
+- chore(deps): subosito/flutter-action from 1 to 2 by @dependabot[bot] in #118
+- chore(deps): com.devcycle:android-client-sdk from 2.0.0 to 2.0.2 in /android by @dependabot[bot] in #119
+- chore(deps): com.android.tools.build:gradle from 7.1.2 to 8.1.2 in /android by @dependabot[bot] in #117
+- chore(deps): org.jetbrains.kotlin:kotlin-gradle-plugin from 1.6.10 to 1.9.10 in /android by @dependabot[bot] in #121
+
+
 ## [1.7.1] - 2023-08-09
 ## Bug Fixes
 
