@@ -1,4 +1,12 @@
 # Change Log
+## [1.7.3] - 2023-12-19
+
+
+## Uncategorized
+
+- Bump com.devcycle:android-client-sdk from 2.0.2 to 2.0.5 in /android by @dependabot[bot] in #129
+
+
 ## [1.7.2] - 2023-10-24
 
 
