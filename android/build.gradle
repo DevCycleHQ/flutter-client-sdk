@@ -2,7 +2,7 @@ group 'com.devcycle.devcycle_flutter_client_sdk'
 version '1.7.3'
 
 buildscript {
-    ext.kotlin_version = '1.9.10'
+    ext.kotlin_version = '1.9.23'
     repositories {
         google()
         mavenCentral()
