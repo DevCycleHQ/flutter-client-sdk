@@ -2,14 +2,14 @@ group 'com.devcycle.devcycle_flutter_client_sdk'
 version '1.7.3'
 
 buildscript {
-    ext.kotlin_version = '1.9.10'
+    ext.kotlin_version = '1.9.23'
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.2'
+        classpath 'com.android.tools.build:gradle:8.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -45,6 +45,6 @@ android {
     }
 
     dependencies {
-        implementation("com.devcycle:android-client-sdk:2.0.5")
+        implementation("com.devcycle:android-client-sdk:2.0.7")
     }
 }
