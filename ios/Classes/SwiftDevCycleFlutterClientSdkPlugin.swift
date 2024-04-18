@@ -190,6 +190,14 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
       optionsBuilder.logLevel(logLevel)
     }
 
+    if let apiProxyUrl = dict["apiProxyUrl"] as? String {
+        optionsBuilder.apiProxyUrl(apiProxyUrl)
+    }
+
+    if let eventsApiProxyUrl = dict["eventsApiProxyUrl"] as? String {
+        optionsBuilder.eventsApiProxyUrl(eventsApiProxyUrl)
+    }
+
     let options = optionsBuilder.build()
     return options
   }

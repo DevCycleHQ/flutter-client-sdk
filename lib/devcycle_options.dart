@@ -10,6 +10,8 @@ class DevCycleOptions {
   final bool? disableConfigCache;
   final bool? disableRealtimeUpdates;
   final LogLevel? logLevel;
+  final String? apiProxyUrl;
+  final String? eventsApiProxyUrl;
 
   DevCycleOptions._builder(DevCycleOptionsBuilder builder)
       : flushEventsIntervalMs = builder._flushEventsIntervalMs,
@@ -20,7 +22,9 @@ class DevCycleOptions {
         configCacheTTL = builder._configCacheTTL,
         disableConfigCache = builder._disableConfigCache,
         disableRealtimeUpdates = builder._disableRealtimeUpdates,
-        logLevel = builder._logLevel;
+        logLevel = builder._logLevel,
+        apiProxyUrl = builder._apiProxyUrl,
+        eventsApiProxyUrl = builder._eventsApiProxyUrl;
 
   Map<String, dynamic> toCodec() {
     final Map<String, dynamic> result = <String, dynamic>{};
@@ -47,6 +51,12 @@ class DevCycleOptions {
     if (logLevel != null) {
       result['logLevel'] = logLevel?.toString().split('.').last;
     }
+    if (apiProxyUrl != null) {
+      result['apiProxyUrl'] = apiProxyUrl;
+    }
+    if (eventsApiProxyUrl != null) {
+      result['eventsApiProxyUrl'] = eventsApiProxyUrl;
+    }
     return result;
   }
 }
@@ -65,6 +75,8 @@ class DevCycleOptionsBuilder {
   bool? _disableConfigCache;
   bool? _disableRealtimeUpdates;
   LogLevel? _logLevel;
+  String? _apiProxyUrl;
+  String? _eventsApiProxyUrl;
 
   DevCycleOptionsBuilder flushEventsIntervalMs(int flushEventsIntervalMs) {
     _flushEventsIntervalMs = flushEventsIntervalMs;
@@ -78,7 +90,8 @@ class DevCycleOptionsBuilder {
     return this;
   }
 
-  DevCycleOptionsBuilder disableCustomEventLogging(bool disableCustomEventLogging) {
+  DevCycleOptionsBuilder disableCustomEventLogging(
+      bool disableCustomEventLogging) {
     _disableCustomEventLogging = disableCustomEventLogging;
     return this;
   }
@@ -111,6 +124,16 @@ class DevCycleOptionsBuilder {
 
   DevCycleOptionsBuilder logLevel(LogLevel logLevel) {
     _logLevel = logLevel;
+    return this;
+  }
+
+  DevCycleOptionsBuilder apiProxyUrl(String apiProxyUrl) {
+    _apiProxyUrl = apiProxyUrl;
+    return this;
+  }
+
+  DevCycleOptionsBuilder eventsApiProxyUrl(String eventsApiProxyUrl) {
+    _eventsApiProxyUrl = eventsApiProxyUrl;
     return this;
   }
 

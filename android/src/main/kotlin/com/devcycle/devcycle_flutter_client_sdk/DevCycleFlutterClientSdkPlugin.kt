@@ -278,7 +278,11 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
       val disableCustomEventLogging = map["disableCustomEventLogging"] as? Boolean
       if(disableCustomEventLogging is Boolean) builder.disableCustomEventLogging(disableCustomEventLogging)
 
+      val apiProxyUrl = map["apiProxyUrl"] as? String
+      if(apiProxyUrl is String) builder.apiProxyUrl(apiProxyUrl)
 
+      val eventsApiProxyUrl = map["eventsApiProxyUrl"] as? String
+      if(eventsApiProxyUrl is String) builder.eventsApiProxyUrl(eventsApiProxyUrl)
     }
     return builder.build()
   }
