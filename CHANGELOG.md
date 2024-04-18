@@ -1,4 +1,13 @@
 # Change Log
+## [1.7.4] - 2024-04-18
+
+
+## Uncategorized
+
+- chore: Update DevCycle Deps by @kaushalkapasi in #137
+- chore: Bump com.android.tools.build:gradle from 8.3.1 to 8.3.2 in /android by @dependabot[bot] in #138
+
+
 ## [1.7.3] - 2023-12-19
 
 
