@@ -1,4 +1,15 @@
 # Change Log
+## [1.7.5] - 2024-04-19
+## Features
+
+- feat: add apiProxyUrl and eventsApiProxyUrl options to the DevCycle Options Builder by @kaushalkapasi in #139
+
+
+
+## Uncategorized
+
+
+
 ## [1.7.4] - 2024-04-18
 
 

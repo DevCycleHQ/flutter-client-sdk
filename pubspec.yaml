@@ -1,6 +1,6 @@
 name: devcycle_flutter_client_sdk
 description: Official Flutter Client SDK for DevCycle. Supports iOS and Android.
-version: "1.7.4"
+version: "1.7.5"
 homepage: https://www.devcycle.com
 repository: https://github.com/DevCycleHQ/flutter-client-sdk
 documentation: https://docs.devcycle.com/docs/sdk/client-side-sdks/flutter
