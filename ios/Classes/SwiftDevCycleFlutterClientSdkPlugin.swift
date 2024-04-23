@@ -144,8 +144,8 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     return user
   }
   
-  private func getOptionsFromDict(dict: [String: Any?]) -> DVCOptions {
-    let optionsBuilder = DVCOptions.builder()
+  private func getOptionsFromDict(dict: [String: Any?]) -> DevCycleOptions {
+    let optionsBuilder = DevCycleOptions.builder()
     
     if let flushEventsIntervalMs = dict["flushEventsIntervalMs"] as? Int {
       optionsBuilder.flushEventsIntervalMs(flushEventsIntervalMs)
@@ -191,11 +191,11 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     }
 
     if let apiProxyUrl = dict["apiProxyUrl"] as? String {
-        optionsBuilder.apiProxyUrl(apiProxyUrl)
+        optionsBuilder.apiProxyURL(apiProxyUrl)
     }
 
     if let eventsApiProxyUrl = dict["eventsApiProxyUrl"] as? String {
-        optionsBuilder.eventsApiProxyUrl(eventsApiProxyUrl)
+        optionsBuilder.eventsApiProxyURL(eventsApiProxyUrl)
     }
 
     let options = optionsBuilder.build()
