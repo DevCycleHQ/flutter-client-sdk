@@ -42,8 +42,8 @@ class _MyAppState extends State<MyApp> {
 ''';
 
   final _devCycleClient = DevCycleClientBuilder()
-      .sdkKey('mobile-412ecb2f-95a2-42dd-821d-86c1f258e707')
-      .user(DevCycleUserBuilder().userId('kk_flutter_test').build())
+      .sdkKey('<DEVCYCLE_MOBILE_SDK_KEY>')
+      .user(DevCycleUserBuilder().userId('123').build())
       .options(DevCycleOptionsBuilder().logLevel(LogLevel.debug).build())
       .build();
 
