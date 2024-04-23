@@ -42,8 +42,8 @@ class _MyAppState extends State<MyApp> {
 ''';
 
   final _devCycleClient = DevCycleClientBuilder()
-      .sdkKey('<DEVCYCLE_MOBILE_SDK_KEY>')
-      .user(DevCycleUserBuilder().userId('123').build())
+      .sdkKey('mobile-412ecb2f-95a2-42dd-821d-86c1f258e707')
+      .user(DevCycleUserBuilder().userId('kk_flutter_test').build())
       .options(DevCycleOptionsBuilder().logLevel(LogLevel.debug).build())
       .build();
 
@@ -60,8 +60,8 @@ class _MyAppState extends State<MyApp> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      platformVersion =
-          await _devCycleClient.getPlatformVersion() ?? 'Unknown platform version';
+      platformVersion = await _devCycleClient.getPlatformVersion() ??
+          'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -159,7 +159,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   void identifyUser() {
-    DevCycleUser testUser = DevCycleUserBuilder().userId('test_user_123').build();
+    DevCycleUser testUser =
+        DevCycleUserBuilder().userId('test_user_123').build();
     _devCycleClient.identifyUser(testUser, ((err, variables) {
       if (err != null) {
         setState(() {
