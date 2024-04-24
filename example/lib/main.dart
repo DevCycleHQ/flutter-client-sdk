@@ -60,8 +60,8 @@ class _MyAppState extends State<MyApp> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      platformVersion =
-          await _devCycleClient.getPlatformVersion() ?? 'Unknown platform version';
+      platformVersion = await _devCycleClient.getPlatformVersion() ??
+          'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -159,7 +159,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   void identifyUser() {
-    DevCycleUser testUser = DevCycleUserBuilder().userId('test_user_123').build();
+    DevCycleUser testUser =
+        DevCycleUserBuilder().userId('test_user_123').build();
     _devCycleClient.identifyUser(testUser, ((err, variables) {
       if (err != null) {
         setState(() {
