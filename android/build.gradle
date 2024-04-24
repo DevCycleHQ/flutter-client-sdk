@@ -41,10 +41,10 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 23
     }
 
     dependencies {
-        implementation("com.devcycle:android-client-sdk:2.0.7")
+        implementation("com.devcycle:android-client-sdk:2.1.0")
     }
 }
