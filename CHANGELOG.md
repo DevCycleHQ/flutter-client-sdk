@@ -1,4 +1,25 @@
 # Change Log
+## [1.8.0] - 2024-04-24
+## Features
+
+- feat: add apiProxyUrl and eventsApiProxyUrl options to the DevCycle Options Builder by @kaushalkapasi in #139
+
+## Bug Fixes
+
+- fix: update iOS options builder to use the right proxyURL builder options by @kaushalkapasi in #140
+- fix: update Android minSdkVeresion to 23 (Android 6.0 - Marshmallow) by @kaushalkapasi in #142
+
+## Other Changes
+
+- chore: Update android example app by @kaushalkapasi in #141
+- chore: Fix release action by @kaushalkapasi in #143
+
+
+
+## Uncategorized
+
+
+
 ## [1.7.5] - 2024-04-19
 ## Features
 
