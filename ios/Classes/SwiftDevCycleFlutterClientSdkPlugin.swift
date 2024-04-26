@@ -243,7 +243,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     var map: [String: Any] = [:]
     map["id"] = variable._id
     map["key"] = variable.key
-    map["type"] = variable.type
+    map["type"] = variable.type.rawValue
     map["value"] = variable.value
     map["evalReason"] = variable.evalReason
     return map
@@ -252,7 +252,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
   private func dvcVariableToMap(variable: DVCVariable<Any>) -> [String: Any] {
     var map: [String: Any] = [:]
     map["key"] = variable.key
-    map["type"] = variable.type
+    map["type"] = variable.type?.rawValue
     map["value"] = variable.value
     map["evalReason"] = variable.evalReason
     map["isDefaulted"] = variable.isDefaulted
