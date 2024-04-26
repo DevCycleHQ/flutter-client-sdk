@@ -1,4 +1,15 @@
 # Change Log
+## [1.8.2] - 2024-04-26
+## Other Changes
+
+- chore: Enable flutter's native auto publishing based on github tags. by @JamieSinn in #147
+
+
+
+## Uncategorized
+
+
+
 ## [1.8.1] - 2024-04-26
 ## Bug Fixes
 
