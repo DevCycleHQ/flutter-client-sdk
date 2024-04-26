@@ -1,4 +1,16 @@
 # Change Log
+## [1.8.1] - 2024-04-26
+## Bug Fixes
+
+- fix: use raw value instead of returning internal enum class by @jsalaber in #146
+
+
+
+## Uncategorized
+
+- Change dependabot to weekly by @JamieSinn in #144
+
+
 ## [1.8.0] - 2024-04-24
 ## Features
 
