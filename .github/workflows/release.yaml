@@ -20,7 +20,9 @@ on:
           - minor
           - patch
         default: 'patch'
-
+        
+permissions:
+  id-token: write 
 
 jobs:
   build:
@@ -31,13 +33,7 @@ jobs:
         with:
           token: ${{ secrets.AUTOMATION_USER_TOKEN }}
           fetch-depth: 0
-
-      # - name: Install Flutter
-      #   uses: subosito/flutter-action@v2
-      #   with:
-      #     flutter-version: '3.x'
-      #     channel: 'stable'
-
+      - uses: dart-lang/setup-dart@fedb1266e91cf51be2fdb382869461a434b920a3
       - uses: DevCycleHQ/release-action/prepare-release@v2.3.0
         id: prepare-release
         with:
@@ -66,28 +62,16 @@ jobs:
           git commit -m "Release ${{steps.prepare-release.outputs.next-release-tag}}"
           git push origin HEAD:main
 
-      # - name: Install dependencies
-      #   run: flutter pub get
 
-      # - name: Analyze
-      #   run: flutter analyze
-
-      # - name: Run tests
-      #   run: flutter test
-
-      # - name: Create credentials directory
-      #   run: mkdir ~/.config/dart
-
-      # - name: Setup Pub Credentials
-      #   run: |
-      #     echo  '${{ secrets.DART_PUB_CREDENTIALS_JSON }}' > ~/.config/dart/pub-credentials.json
-
-      # - name: Check Publish Warnings
-      #   run: flutter pub publish --dry-run
-
-      # - name: Publish Package
-      #   if: inputs.draft != true
-      #   run: flutter pub publish -f
+      - name: Install dependencies
+        run: dart pub get
+        working-directory: ${{ inputs.working-directory }}
+      - name: Publish - dry run
+        run: dart pub publish --dry-run
+        working-directory: ${{ inputs.working-directory }}
+      - name: Publish to pub.dev
+        run: dart pub publish -f
+        working-directory: ${{ inputs.working-directory }}
 
       - uses: DevCycleHQ/release-action/create-release@v2.3.0
         id: create-release
