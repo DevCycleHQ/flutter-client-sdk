@@ -1,4 +1,15 @@
 # Change Log
+## [1.8.3] - 2024-04-26
+## Other Changes
+
+- chore: release v2 - move all into one file again by @JamieSinn in #148
+
+
+
+## Uncategorized
+
+
+
 ## [1.8.2] - 2024-04-26
 ## Other Changes
 
