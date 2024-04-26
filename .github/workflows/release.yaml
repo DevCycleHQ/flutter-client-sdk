@@ -33,7 +33,7 @@ jobs:
         with:
           token: ${{ secrets.AUTOMATION_USER_TOKEN }}
           fetch-depth: 0
-
+      - uses: dart-lang/setup-dart@fedb1266e91cf51be2fdb382869461a434b920a3
       - uses: DevCycleHQ/release-action/prepare-release@v2.3.0
         id: prepare-release
         with:
@@ -62,7 +62,7 @@ jobs:
           git commit -m "Release ${{steps.prepare-release.outputs.next-release-tag}}"
           git push origin HEAD:main
 
-      - uses: dart-lang/setup-dart@fedb1266e91cf51be2fdb382869461a434b920a3
+
       - name: Install dependencies
         run: dart pub get
         working-directory: ${{ inputs.working-directory }}
