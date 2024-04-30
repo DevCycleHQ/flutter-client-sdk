@@ -1,4 +1,20 @@
 # Change Log
+## [1.8.3] - 2024-04-30
+## Bug Fixes
+
+- fix: Revert to previous release code by @JamieSinn in #149
+
+## Other Changes
+
+- chore: release v2 - move all into one file again by @JamieSinn in #148
+- chore: update DevCycle iOS Client SDK to 1.17.1 by @kaushalkapasi in #150
+
+
+
+## Uncategorized
+
+
+
 ## [1.8.3] - 2024-04-26
 ## Other Changes
 
