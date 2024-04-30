@@ -5,17 +5,17 @@
 Pod::Spec.new do |s|
   s.name             = 'devcycle_flutter_client_sdk'
   s.version          = '1.8.3'
-  s.summary          = 'A new Flutter plugin project.'
+  s.summary          = 'DevCycle Flutter Client SDK plugin project.'
   s.description      = <<-DESC
-A new Flutter plugin project.
+A Flutter plugin to integrate with DevCycle Feature Flags.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://devcycle.com/'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'DevCycle' => 'support@devcycle.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'DevCycle', '1.17.0'
+  s.dependency 'DevCycle', '1.17.1'
   s.platform = :ios, '12.0'
 
   # Flutter.framework does not contain a i386 slice.
