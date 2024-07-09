@@ -1,4 +1,15 @@
 # Change Log
+## [1.8.4] - 2024-07-09
+## Bug Fixes
+
+- fix: pass in type for swift to use the correct variable types by @jsalaber in #158
+
+
+
+## Uncategorized
+
+
+
 ## [1.8.3] - 2024-04-30
 ## Bug Fixes
 

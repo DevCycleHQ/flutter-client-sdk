@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'devcycle_flutter_client_sdk'
-  s.version          = '1.8.3'
+  s.version          = '1.8.4'
   s.summary          = 'DevCycle Flutter Client SDK plugin project.'
   s.description      = <<-DESC
 A Flutter plugin to integrate with DevCycle Feature Flags.
