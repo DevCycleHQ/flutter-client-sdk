@@ -69,11 +69,7 @@ void main() {
       DevCycleUser user = DevCycleUserBuilder().userId('user1').build();
       DevCycleOptions options =
           DVCOptionsBuilder().configCacheTTL(100).enableEdgeDB(true).build();
-      DevCycleClientBuilder()
-          .user(user)
-          .sdkKey('123')
-          .options(options)
-          .build();
+      DevCycleClientBuilder().user(user).sdkKey('123').options(options).build();
       expect(methodCall?.method, 'initializeDevCycle');
       expect(methodCall?.arguments, {
         "sdkKey": "123",
@@ -90,7 +86,8 @@ void main() {
     });
 
     test('fails to initialize without a user', () async {
-      DevCycleClientBuilder clientBuilder = DevCycleClientBuilder().sdkKey('123');
+      DevCycleClientBuilder clientBuilder =
+          DevCycleClientBuilder().sdkKey('123');
 
       expect(clientBuilder.build, throwsException);
     });
@@ -155,19 +152,25 @@ void main() {
       await devcycleFlutterClientSdkPlugin.variable(
           'test-key', 'default-value');
       expect(methodCall?.method, 'variable');
-      expect(methodCall?.arguments,
-          {'key': 'test-key', 'defaultValue': 'default-value'});
+      expect(methodCall?.arguments, {
+        'key': 'test-key',
+        'defaultValue': 'default-value',
+        'type': 'String'
+      });
     });
 
     test('get variable value', () async {
       DevCycleUser user = DevCycleUserBuilder().userId('user1').build();
       DevCycleClient devcycleFlutterClientSdkPlugin =
-      DevCycleClientBuilder().sdkKey('SDK_KEY').user(user).build();
+          DevCycleClientBuilder().sdkKey('SDK_KEY').user(user).build();
       await devcycleFlutterClientSdkPlugin.variableValue(
           'test-key', 'default-value');
       expect(methodCall?.method, 'variable');
-      expect(methodCall?.arguments,
-          {'key': 'test-key', 'defaultValue': 'default-value'});
+      expect(methodCall?.arguments, {
+        'key': 'test-key',
+        'defaultValue': 'default-value',
+        'type': 'String'
+      });
     });
   });
 
@@ -195,8 +198,10 @@ void main() {
       DevCycleUser user = DevCycleUserBuilder().userId('user1').build();
       DevCycleClient devcycleFlutterClientSdkPlugin =
           DevCycleClientBuilder().sdkKey('SDK_KEY').user(user).build();
-      DevCycleEvent event =
-          DevCycleEventBuilder().type('my event type').target('my target').build();
+      DevCycleEvent event = DevCycleEventBuilder()
+          .type('my event type')
+          .target('my target')
+          .build();
 
       await devcycleFlutterClientSdkPlugin.track(event);
       expect(methodCall?.method, 'track');
@@ -221,7 +226,7 @@ void main() {
     test('do not track event with disableCustomEventLogging', () async {
       DevCycleUser user = DevCycleUserBuilder().userId('user1').build();
       DevCycleClient devcycleFlutterClientSdkPlugin =
-      DevCycleClientBuilder().sdkKey('SDK_KEY').user(user).build();
+          DevCycleClientBuilder().sdkKey('SDK_KEY').user(user).build();
       DevCycleEvent event = DevCycleEventBuilder()
           .type('my event type')
           .target('my target')
