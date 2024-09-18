@@ -39,8 +39,10 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
                     .user(dvcUser)
                     .options(getOptionsFromDict(dict: options ?? [:] ))
                     .build(onInitialized: { error in
+                        callbackArgs["isInitialized"] = true
                         if (error != nil) {
                             callbackArgs["error"] = "\(String(describing: error))"
+                            callbackArgs["isInitialized"] = false
                         }
                         self.channel.invokeMethod("clientInitialized", arguments: callbackArgs)
                     })
