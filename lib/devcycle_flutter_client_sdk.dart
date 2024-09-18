@@ -2,6 +2,7 @@ import 'package:devcycle_flutter_client_sdk/devcycle_event.dart';
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 import 'package:logger/logger.dart';
+import 'dart:async';
 
 import 'devcycle_flutter_client_sdk_platform_interface.dart';
 import 'devcycle_user.dart';
@@ -26,6 +27,9 @@ class DevCycleClient {
   static final _logger = Logger();
 
   Future<void>? _clientReady;
+
+  bool _isInitialized = false;
+  Completer<void>? _initializationCompleter;
 
   /// Callback triggered on client initialization
   ErrorCallback? _clientInitializedCallback;
@@ -61,8 +65,13 @@ class DevCycleClient {
 
     switch (call.method) {
       case 'clientInitialized':
+        _isInitialized = call.arguments['isInitialized'];
         if (_clientInitializedCallback != null) {
           _clientInitializedCallback!(error);
+        }
+        // Complete the initialization
+        if (_isInitialized) {
+          _initializationCompleter?.complete();
         }
         break;
       case 'variableUpdated':
@@ -128,8 +137,13 @@ class DevCycleClient {
     }
   }
 
-  DevCycleClient onInitialized(ErrorCallback callback) {
+  Future<DevCycleClient> onInitialized(ErrorCallback callback) async {
     _clientInitializedCallback = callback;
+    _initializationCompleter = Completer<void>();
+
+    // Wait for the initialization to complete
+    await _initializationCompleter?.future;
+
     return this;
   }
 
@@ -138,7 +152,8 @@ class DevCycleClient {
     return DevCycleFlutterClientSdkPlatform.instance.getPlatformVersion();
   }
 
-  Future<void> identifyUser(DevCycleUser user, [VariablesCallback? callback]) async {
+  Future<void> identifyUser(DevCycleUser user,
+      [VariablesCallback? callback]) async {
     await _clientReady;
     if (callback != null) {
       String callbackId = _uuid.v4();

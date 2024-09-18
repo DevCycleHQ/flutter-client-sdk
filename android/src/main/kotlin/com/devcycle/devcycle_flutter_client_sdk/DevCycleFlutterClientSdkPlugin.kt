@@ -71,15 +71,18 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
 
         client.onInitialized(object : DevCycleCallback<String> {
           override fun onSuccess(result: String) {
+            args["isInitialized"] = true
             callFlutter("clientInitialized", args)
+            res.success(null)
           }
 
           override fun onError(t: Throwable) {
             args["error"] = t.message
+            args["isInitialized"] = false
             callFlutter("clientInitialized", args)
+            res.error("error", t.message, null)
           }
         })
-        res.success(null)
       }
       "identifyUser" -> {
         val user = getUserFromMap(call.argument("user")!!)
@@ -196,7 +199,11 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     if (anonymous is Boolean) userBuilder.withIsAnonymous(anonymous)
 
     val userId = map["userId"] as? String
-    if (userId is String) userBuilder.withUserId(userId)
+    if (userId is String) {
+      android.util.Log.e("init", map["name"].toString());
+      userBuilder.withUserId(userId)
+      userBuilder.withIsAnonymous(false)
+    } else userBuilder.withIsAnonymous(true)
 
     val email = map["email"] as? String
     if (email is String) userBuilder.withEmail(email)
