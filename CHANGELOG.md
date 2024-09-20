@@ -1,4 +1,15 @@
 # Change Log
+## [1.9.0] - 2024-09-20
+## Bug Fixes
+
+- fix: onInitialization to wait for initialization to the complete and config received by @suthar26 in #160
+
+
+
+## Uncategorized
+
+
+
 ## [1.8.4] - 2024-07-09
 ## Bug Fixes
 
