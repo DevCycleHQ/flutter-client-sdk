@@ -1,4 +1,15 @@
 # Change Log
+## [1.9.1] - 2024-10-03
+## Other Changes
+
+- chore: update logger, plugin_platform_interface, uuid and flutter_lints dependencies by @kaushalkapasi in #162
+
+
+
+## Uncategorized
+
+
+
 ## [1.9.0] - 2024-09-20
 ## Bug Fixes
 
