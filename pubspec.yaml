@@ -14,14 +14,14 @@ dependencies:
   collection: ^1.15.0
   flutter:
     sdk: flutter
-  logger: ^1.1.0
-  plugin_platform_interface: ^2.0.2
-  uuid: ^3.0.7
+  logger: ^2.4.0
+  plugin_platform_interface: ^2.1.8
+  uuid: ^4.4.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
+  flutter_lints: ^4.0.0
 
 platforms:
   android:
