@@ -1,4 +1,6 @@
 name: Flutter SDK Unit Tests
+permissions:
+  contents: read
 
 # Leverages the Flutter GH Action at https://github.com/marketplace/actions/flutter-action
 
