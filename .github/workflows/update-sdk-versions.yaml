@@ -88,28 +88,28 @@ jobs:
           echo "Updated Android SDK version to ${{ steps.android-version.outputs.version }}"
 
       - name: Setup Ruby for CocoaPods
-        if: steps.check-updates.outputs.updates-needed == 'true'
+        if: steps.check-updates.outputs.ios-update == 'true'
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.0"
           bundler-cache: true
 
       - name: Validate iOS SDK version with CocoaPods
-        if: steps.check-updates.outputs.updates-needed == 'true'
+        if: steps.check-updates.outputs.ios-update == 'true'
         run: |
           cd example/ios
           pod install --repo-update
           echo "✅ iOS SDK version ${{ steps.ios-version.outputs.version }} resolved successfully"
 
       - name: Setup Java for Gradle
-        if: steps.check-updates.outputs.updates-needed == 'true'
+        if: steps.check-updates.outputs.android-update == 'true'
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
           java-version: "17"
 
       - name: Validate Android SDK version with Gradle
-        if: steps.check-updates.outputs.updates-needed == 'true'
+        if: steps.check-updates.outputs.android-update == 'true'
         run: |
           cd example/android
           ./gradlew dependencies --configuration implementation
