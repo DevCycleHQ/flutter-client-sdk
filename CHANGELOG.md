@@ -1,4 +1,21 @@
 # Change Log
+## [1.9.2] - 2025-06-04
+## Bug Fixes
+
+- fix: add namespace to build gradle for newer versions of gradle by @jsalaber in #167
+
+## Other Changes
+
+- chore: Use flutter/dart native OIDC by @JamieSinn in #163
+- chore: Potential fix for code scanning alert no. 1: Workflow does not contain permissions by @JamieSinn in #165
+- chore: Potential fix for code scanning alert no. 2: Workflow does not contain permissions by @JamieSinn in #164
+
+
+
+## Uncategorized
+
+
+
 ## [1.9.1] - 2024-10-03
 ## Other Changes
 
