@@ -11,25 +11,12 @@ permissions:
   contents: read
 
 jobs:
-  trigger-updates:
-    name: Trigger SDK Updates
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger iOS SDK Update
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.AUTOMATION_USER_TOKEN }}
-          event-type: update-ios-sdk
+  trigger-ios-update:
+    name: Update iOS SDK
+    uses: ./.github/workflows/update-ios-sdk-version.yaml
+    secrets: inherit
 
-      - name: Trigger Android SDK Update
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.AUTOMATION_USER_TOKEN }}
-          event-type: update-android-sdk
-
-      - name: Output results
-        run: |
-          echo "::notice title=SDK Updates Triggered::Both iOS and Android SDK update workflows have been triggered"
-          echo "- iOS update workflow: Update iOS SDK Version"
-          echo "- Android update workflow: Update Android SDK Version"
-          echo "Check the Actions tab to see the progress of each workflow."
+  trigger-android-update:
+    name: Update Android SDK
+    uses: ./.github/workflows/update-android-sdk-version.yaml
+    secrets: inherit

@@ -4,8 +4,7 @@ on:
   schedule:
     - cron: "0 9 * * MON"
   workflow_dispatch:
-  repository_dispatch:
-    types: [update-ios-sdk]
+  workflow_call:
 
 permissions:
   contents: write
