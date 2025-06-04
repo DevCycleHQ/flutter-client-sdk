@@ -4,6 +4,8 @@ on:
   schedule:
     - cron: "0 9 * * MON"
   workflow_dispatch:
+  repository_dispatch:
+    types: [update-dvc-sdks]
 
 permissions:
   contents: write
@@ -17,7 +19,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.AUTOMATION_USER_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.AUTOMATION_USER_TOKEN }}
           fetch-depth: 0
 
       - name: Fetch latest iOS SDK version
@@ -74,13 +76,13 @@ jobs:
           fi
 
       - name: Update iOS SDK version
-        if: steps.check-updates.outputs.updates-needed == 'true' && steps.check-updates.outputs.ios-update == 'true'
+        if: steps.check-updates.outputs.ios-update == 'true'
         run: |
           sed -i -E "s/(s\.dependency 'DevCycle', ').*(')/ \1${{ steps.ios-version.outputs.version }}\2/" ios/devcycle_flutter_client_sdk.podspec
           echo "Updated iOS SDK version to ${{ steps.ios-version.outputs.version }}"
 
       - name: Update Android SDK version
-        if: steps.check-updates.outputs.updates-needed == 'true' && steps.check-updates.outputs.android-update == 'true'
+        if: steps.check-updates.outputs.android-update == 'true'
         run: |
           sed -i -E 's/(implementation\("com\.devcycle:android-client-sdk:)[^"]+("\))/\1${{ steps.android-version.outputs.version }}\2/' android/build.gradle
           echo "Updated Android SDK version to ${{ steps.android-version.outputs.version }}"
@@ -117,7 +119,7 @@ jobs:
         if: steps.check-updates.outputs.updates-needed == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.AUTOMATION_USER_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.AUTOMATION_USER_TOKEN }}
           commit-message: |
             chore: update DevCycle SDK versions
 
