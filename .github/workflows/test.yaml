@@ -16,10 +16,10 @@ jobs:
       - name: Checkout Project
         uses: actions/checkout@v4
       - name: Install and set Flutter version
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@e938fdf56512cc96ef2f93601a5a40bde3801046 # v2.19.0
         with:
-          flutter-version: '3.x'
-          channel: 'stable'
+          flutter-version: "3.x"
+          channel: "stable"
       - name: Install Flutter packages
         run: flutter pub get
       - name: Analyze
