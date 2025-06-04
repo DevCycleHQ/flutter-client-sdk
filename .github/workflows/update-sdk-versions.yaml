@@ -87,12 +87,27 @@ jobs:
           sed -i -E 's/(implementation\("com\.devcycle:android-client-sdk:)[^"]+("\))/\1${{ steps.android-version.outputs.version }}\2/' android/build.gradle
           echo "Updated Android SDK version to ${{ steps.android-version.outputs.version }}"
 
+      - name: Setup Flutter
+        uses: subosito/flutter-action@e938fdf56512cc96ef2f93601a5a40bde3801046 # v2.19.0
+        with:
+          flutter-version: "3.x"
+          channel: "stable"
+
+      - name: Prepare Flutter
+        run: |
+          cd example
+          flutter pub get
+
       - name: Setup Ruby for CocoaPods
         if: steps.check-updates.outputs.ios-update == 'true'
         uses: ruby/setup-ruby@13e7a03dc3ac6c3798f4570bfead2aed4d96abfb # v1.244.0
         with:
           ruby-version: "3.0"
           bundler-cache: true
+
+      - name: Install CocoaPods
+        if: steps.check-updates.outputs.ios-update == 'true'
+        run: gem install cocoapods
 
       - name: Validate iOS SDK version with CocoaPods
         if: steps.check-updates.outputs.ios-update == 'true'
