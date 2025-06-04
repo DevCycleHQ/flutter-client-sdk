@@ -113,7 +113,7 @@ jobs:
         if: steps.check-updates.outputs.ios-update == 'true'
         run: |
           cd example/ios
-          pod install --repo-update
+          pod update DevCycle --repo-update
           echo "✅ iOS SDK version ${{ steps.ios-version.outputs.version }} resolved successfully"
 
       - name: Setup Java for Gradle
