@@ -8,7 +8,8 @@ on:
     types: [update-dvc-sdks]
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
 
 jobs:
   trigger-ios-update:
