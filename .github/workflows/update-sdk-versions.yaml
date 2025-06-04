@@ -8,168 +8,28 @@ on:
     types: [update-dvc-sdks]
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
-  update-sdk-versions:
-    name: Update DevCycle SDK Versions
+  trigger-updates:
+    name: Trigger SDK Updates
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Trigger iOS SDK Update
+        uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.AUTOMATION_USER_TOKEN }}
-          fetch-depth: 0
+          event-type: update-ios-sdk
 
-      - name: Fetch latest iOS SDK version
-        id: ios-version
-        run: |
-          LATEST_IOS_VERSION=$(curl -s https://api.github.com/repos/DevCycleHQ/ios-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
-          echo "version=$LATEST_IOS_VERSION" >> $GITHUB_OUTPUT
-          echo "Latest iOS SDK version: $LATEST_IOS_VERSION"
-
-      - name: Fetch latest Android SDK version
-        id: android-version
-        run: |
-          LATEST_ANDROID_VERSION=$(curl -s https://api.github.com/repos/DevCycleHQ/android-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
-          echo "version=$LATEST_ANDROID_VERSION" >> $GITHUB_OUTPUT
-          echo "Latest Android SDK version: $LATEST_ANDROID_VERSION"
-
-      - name: Get current iOS SDK version
-        id: current-ios
-        run: |
-          CURRENT_IOS=$(grep "s.dependency 'DevCycle'" ios/devcycle_flutter_client_sdk.podspec | sed -E "s/.*'([^']+)'.*/\1/")
-          echo "version=$CURRENT_IOS" >> $GITHUB_OUTPUT
-          echo "Current iOS SDK version: $CURRENT_IOS"
-
-      - name: Get current Android SDK version
-        id: current-android
-        run: |
-          CURRENT_ANDROID=$(grep "android-client-sdk" android/build.gradle | sed -E 's/.*:([^"]+)".*/\1/')
-          echo "version=$CURRENT_ANDROID" >> $GITHUB_OUTPUT
-          echo "Current Android SDK version: $CURRENT_ANDROID"
-
-      - name: Check if updates are needed
-        id: check-updates
-        run: |
-          IOS_UPDATE_NEEDED=false
-          ANDROID_UPDATE_NEEDED=false
-
-          if [ "${{ steps.ios-version.outputs.version }}" != "${{ steps.current-ios.outputs.version }}" ]; then
-            IOS_UPDATE_NEEDED=true
-            echo "iOS SDK update needed: ${{ steps.current-ios.outputs.version }} -> ${{ steps.ios-version.outputs.version }}"
-          fi
-
-          if [ "${{ steps.android-version.outputs.version }}" != "${{ steps.current-android.outputs.version }}" ]; then
-            ANDROID_UPDATE_NEEDED=true
-            echo "Android SDK update needed: ${{ steps.current-android.outputs.version }} -> ${{ steps.android-version.outputs.version }}"
-          fi
-
-          if [ "$IOS_UPDATE_NEEDED" = true ] || [ "$ANDROID_UPDATE_NEEDED" = true ]; then
-            echo "updates-needed=true" >> $GITHUB_OUTPUT
-            echo "ios-update=$IOS_UPDATE_NEEDED" >> $GITHUB_OUTPUT
-            echo "android-update=$ANDROID_UPDATE_NEEDED" >> $GITHUB_OUTPUT
-          else
-            echo "updates-needed=false" >> $GITHUB_OUTPUT
-            echo "No SDK updates needed"
-          fi
-
-      - name: Update iOS SDK version
-        if: steps.check-updates.outputs.ios-update == 'true'
-        run: |
-          sed -i -E "s/(s\.dependency 'DevCycle', ').*(')/\1${{ steps.ios-version.outputs.version }}\2/" ios/devcycle_flutter_client_sdk.podspec
-          echo "Updated iOS SDK version to ${{ steps.ios-version.outputs.version }}"
-
-      - name: Update Android SDK version
-        if: steps.check-updates.outputs.android-update == 'true'
-        run: |
-          sed -i -E 's/(implementation\("com\.devcycle:android-client-sdk:)[^"]+("\))/\1${{ steps.android-version.outputs.version }}\2/' android/build.gradle
-          echo "Updated Android SDK version to ${{ steps.android-version.outputs.version }}"
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@e938fdf56512cc96ef2f93601a5a40bde3801046 # v2.19.0
-        with:
-          flutter-version: "3.x"
-          channel: "stable"
-
-      - name: Prepare Flutter
-        run: |
-          cd example
-          flutter pub get
-
-      - name: Setup Ruby for CocoaPods
-        if: steps.check-updates.outputs.ios-update == 'true'
-        uses: ruby/setup-ruby@13e7a03dc3ac6c3798f4570bfead2aed4d96abfb # v1.244.0
-        with:
-          ruby-version: "3.0"
-          bundler-cache: true
-
-      - name: Install CocoaPods
-        if: steps.check-updates.outputs.ios-update == 'true'
-        run: gem install cocoapods
-
-      - name: Validate iOS SDK version with CocoaPods
-        if: steps.check-updates.outputs.ios-update == 'true'
-        run: |
-          cd example/ios
-          pod update DevCycle --repo-update
-          echo "✅ iOS SDK version ${{ steps.ios-version.outputs.version }} resolved successfully"
-
-      - name: Setup Java for Gradle
-        if: steps.check-updates.outputs.android-update == 'true'
-        uses: actions/setup-java@v4
-        with:
-          distribution: "temurin"
-          java-version: "17"
-
-      - name: Validate Android SDK version with Gradle
-        if: steps.check-updates.outputs.android-update == 'true'
-        run: |
-          cd example/android
-          ./gradlew dependencies --configuration implementation
-          echo "✅ Android SDK version ${{ steps.android-version.outputs.version }} resolved successfully"
-
-      - name: Create Pull Request
-        if: steps.check-updates.outputs.updates-needed == 'true'
-        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
+      - name: Trigger Android SDK Update
+        uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.AUTOMATION_USER_TOKEN }}
-          commit-message: |
-            chore: update DevCycle SDK versions
-
-            - iOS SDK: ${{ steps.current-ios.outputs.version }} -> ${{ steps.ios-version.outputs.version }}
-            - Android SDK: ${{ steps.current-android.outputs.version }} -> ${{ steps.android-version.outputs.version }}
-          title: "chore: update DevCycle SDK versions"
-          body: |
-            ## Summary
-            This PR updates the DevCycle native SDK versions to their latest releases.
-
-            ## Changes
-            - **iOS SDK**: `${{ steps.current-ios.outputs.version }}` → `${{ steps.ios-version.outputs.version }}`
-            - **Android SDK**: `${{ steps.current-android.outputs.version }}` → `${{ steps.android-version.outputs.version }}`
-
-            ## Files Modified
-            - `ios/devcycle_flutter_client_sdk.podspec`
-            - `android/build.gradle`
-
-            ## Validation
-            - ✅ iOS SDK version resolved successfully with CocoaPods
-            - ✅ Android SDK version resolved successfully with Gradle
-            - This PR will be automatically tested by the Flutter SDK Unit Tests workflow
-
-            This PR was automatically generated by the Update DevCycle SDK Versions workflow.
-          branch: update-sdk-versions
-          delete-branch: true
-          base: main
-          labels: |
-            dependencies
-            automated-pr
+          event-type: update-android-sdk
 
       - name: Output results
         run: |
-          if [ "${{ steps.check-updates.outputs.updates-needed }}" = "true" ]; then
-            echo "::notice title=SDK Updates::Created PR with SDK version updates"
-          else
-            echo "::notice title=No Updates::All SDK versions are already up to date"
-          fi
+          echo "::notice title=SDK Updates Triggered::Both iOS and Android SDK update workflows have been triggered"
+          echo "- iOS update workflow: Update iOS SDK Version"
+          echo "- Android update workflow: Update Android SDK Version"
+          echo "Check the Actions tab to see the progress of each workflow."
