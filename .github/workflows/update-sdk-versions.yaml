@@ -25,14 +25,14 @@ jobs:
       - name: Fetch latest iOS SDK version
         id: ios-version
         run: |
-          LATEST_IOS_VERSION=$(curl -s https://api.github.com/repos/DevCycleHQ/ios-client-sdk/releases/latest | jq -r '.tag_name')
+          LATEST_IOS_VERSION=$(curl -s https://api.github.com/repos/DevCycleHQ/ios-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
           echo "version=$LATEST_IOS_VERSION" >> $GITHUB_OUTPUT
           echo "Latest iOS SDK version: $LATEST_IOS_VERSION"
 
       - name: Fetch latest Android SDK version
         id: android-version
         run: |
-          LATEST_ANDROID_VERSION=$(curl -s https://api.github.com/repos/DevCycleHQ/android-client-sdk/releases/latest | jq -r '.tag_name')
+          LATEST_ANDROID_VERSION=$(curl -s https://api.github.com/repos/DevCycleHQ/android-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
           echo "version=$LATEST_ANDROID_VERSION" >> $GITHUB_OUTPUT
           echo "Latest Android SDK version: $LATEST_ANDROID_VERSION"
 
@@ -78,7 +78,7 @@ jobs:
       - name: Update iOS SDK version
         if: steps.check-updates.outputs.ios-update == 'true'
         run: |
-          sed -i -E "s/(s\.dependency 'DevCycle', ').*(')/ \1${{ steps.ios-version.outputs.version }}\2/" ios/devcycle_flutter_client_sdk.podspec
+          sed -i -E "s/(s\.dependency 'DevCycle', ').*(')/\1${{ steps.ios-version.outputs.version }}\2/" ios/devcycle_flutter_client_sdk.podspec
           echo "Updated iOS SDK version to ${{ steps.ios-version.outputs.version }}"
 
       - name: Update Android SDK version
