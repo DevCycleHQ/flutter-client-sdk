@@ -5,6 +5,11 @@ on:
     - cron: "0 9 * * MON"
   workflow_dispatch:
   workflow_call:
+    inputs:
+      target-version:
+        description: "Specific iOS SDK version to update to (optional)"
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -24,9 +29,15 @@ jobs:
       - name: Fetch latest iOS SDK version
         id: ios-version
         run: |
-          LATEST_IOS_VERSION=$(curl -s https://api.github.com/repos/DevCycleHQ/ios-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
-          echo "version=$LATEST_IOS_VERSION" >> $GITHUB_OUTPUT
-          echo "Latest iOS SDK version: $LATEST_IOS_VERSION"
+          if [ -n "${{ inputs.target-version }}" ]; then
+            TARGET_VERSION=$(echo "${{ inputs.target-version }}" | sed 's/^v//')
+            echo "version=$TARGET_VERSION" >> $GITHUB_OUTPUT
+            echo "Using specified iOS SDK version: $TARGET_VERSION"
+          else
+            LATEST_IOS_VERSION=$(curl -s https://api.github.com/repos/DevCycleHQ/ios-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+            echo "version=$LATEST_IOS_VERSION" >> $GITHUB_OUTPUT
+            echo "Latest iOS SDK version: $LATEST_IOS_VERSION"
+          fi
 
       - name: Get current iOS SDK version
         id: current-ios
