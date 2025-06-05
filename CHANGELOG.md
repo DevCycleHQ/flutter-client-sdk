@@ -1,4 +1,26 @@
 # Change Log
+## [1.10.0] - 2025-06-05
+## Bug Fixes
+
+- fix: update DevCycle SDKs action by @jonathannorris in #169
+- fix: pod update command by @jonathannorris in #171
+- fix: actions permissions by @jonathannorris in #173
+- fix: update iOS SDK action by @jonathannorris in #175
+
+## Other Changes
+
+- chore: add GH action script to update DevCycle iOS / Android SDKs by @jonathannorris in #168
+- chore: remove 'v' from version check by @jonathannorris in #170
+- chore: split DevCycle SDK Update workflows into two, run iOS workflow on mac by @jonathannorris in #172
+- chore: update Android SDK to v2.3.1 by @DevCycle-Automation in #174
+- chore: update iOS SDK to v1.20.0 by @DevCycle-Automation in #176
+
+
+
+## Uncategorized
+
+
+
 ## [1.9.2] - 2025-06-04
 ## Bug Fixes
 
