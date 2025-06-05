@@ -31,7 +31,7 @@ jobs:
       - name: Get current iOS SDK version
         id: current-ios
         run: |
-          CURRENT_IOS=$(grep "s.dependency 'DevCycle'" ios/devcycle_flutter_client_sdk.podspec | sed -E "s/.*'([^']+)'.*/\1/")
+          CURRENT_IOS=$(grep "s.dependency 'DevCycle'" ios/devcycle_flutter_client_sdk.podspec | sed -E "s/.*'DevCycle', '([^']+)'.*/\1/")
           echo "version=$CURRENT_IOS" >> $GITHUB_OUTPUT
           echo "Current iOS SDK version: $CURRENT_IOS"
 
@@ -49,7 +49,7 @@ jobs:
       - name: Update iOS SDK version
         if: steps.check-update.outputs.update-needed == 'true'
         run: |
-          sed -i '' -E "s/(s\.dependency 'DevCycle', ').*(')/\1${{ steps.ios-version.outputs.version }}\2/" ios/devcycle_flutter_client_sdk.podspec
+          sed -i '' -E "s/(s\.dependency 'DevCycle', ')([^']+)(')/\1${{ steps.ios-version.outputs.version }}\3/" ios/devcycle_flutter_client_sdk.podspec
           echo "Updated iOS SDK version to ${{ steps.ios-version.outputs.version }}"
 
       - name: Setup Flutter
