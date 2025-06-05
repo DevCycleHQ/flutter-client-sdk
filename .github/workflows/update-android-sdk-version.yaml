@@ -5,6 +5,11 @@ on:
     - cron: "0 9 * * MON"
   workflow_dispatch:
   workflow_call:
+    inputs:
+      target-version:
+        description: "Specific Android SDK version to update to (optional)"
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -24,9 +29,15 @@ jobs:
       - name: Fetch latest Android SDK version
         id: android-version
         run: |
-          LATEST_ANDROID_VERSION=$(curl -s https://api.github.com/repos/DevCycleHQ/android-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
-          echo "version=$LATEST_ANDROID_VERSION" >> $GITHUB_OUTPUT
-          echo "Latest Android SDK version: $LATEST_ANDROID_VERSION"
+          if [ -n "${{ inputs.target-version }}" ]; then
+            TARGET_VERSION=$(echo "${{ inputs.target-version }}" | sed 's/^v//')
+            echo "version=$TARGET_VERSION" >> $GITHUB_OUTPUT
+            echo "Using specified Android SDK version: $TARGET_VERSION"
+          else
+            LATEST_ANDROID_VERSION=$(curl -s https://api.github.com/repos/DevCycleHQ/android-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+            echo "version=$LATEST_ANDROID_VERSION" >> $GITHUB_OUTPUT
+            echo "Latest Android SDK version: $LATEST_ANDROID_VERSION"
+          fi
 
       - name: Get current Android SDK version
         id: current-android
