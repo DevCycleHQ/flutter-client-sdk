@@ -1,4 +1,24 @@
 # Change Log
+## [1.10.1] - 2025-06-17
+## Bug Fixes
+
+- fix: update iOS action by @jonathannorris in #181
+- fix: try fixing iOS action again... by @jonathannorris in #182
+- fix: iOS action debugging by @jonathannorris in #183
+
+## Other Changes
+
+- chore: add inputs to update-sdk actions to call from sdk repos by @jonathannorris in #177
+- chore: update Android SDK to v2.4.0 by @DevCycle-Automation in #180
+- chore: update iOS SDK to v1.21.0 by @DevCycle-Automation in #178
+- chore: update iOS SDK to v1.22.0 by @DevCycle-Automation in #184
+
+
+
+## Uncategorized
+
+
+
 ## [1.10.0] - 2025-06-05
 ## Bug Fixes
 
