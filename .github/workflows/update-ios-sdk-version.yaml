@@ -79,14 +79,18 @@ jobs:
       - name: Setup CocoaPods
         if: steps.check-update.outputs.update-needed == 'true'
         run: |
-          gem install cocoapods
-          pod setup --silent
+          echo "Setting up CocoaPods..."
+          gem install cocoapods --no-document
+          echo "CocoaPods version: $(pod --version)"
 
       - name: Update iOS dependency lock file
         if: steps.check-update.outputs.update-needed == 'true'
         run: |
           cd example/ios
-          pod install --repo-update
+          echo "Removing Podfile.lock to avoid version conflicts..."
+          rm -f Podfile.lock
+          echo "Running pod install..."
+          pod install --repo-update --verbose
           echo "✅ Updated iOS Podfile.lock for DevCycle ${{ steps.ios-version.outputs.version }}"
 
       - name: Create Pull Request
