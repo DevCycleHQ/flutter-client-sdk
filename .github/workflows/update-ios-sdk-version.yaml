@@ -76,11 +76,17 @@ jobs:
           cd example
           flutter pub get
 
+      - name: Setup CocoaPods
+        if: steps.check-update.outputs.update-needed == 'true'
+        run: |
+          gem install cocoapods
+          pod setup --silent
+
       - name: Update iOS dependency lock file
         if: steps.check-update.outputs.update-needed == 'true'
         run: |
           cd example/ios
-          pod update DevCycle --repo-update
+          pod install --repo-update
           echo "✅ Updated iOS Podfile.lock for DevCycle ${{ steps.ios-version.outputs.version }}"
 
       - name: Create Pull Request
