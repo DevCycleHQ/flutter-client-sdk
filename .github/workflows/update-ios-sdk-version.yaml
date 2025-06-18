@@ -34,11 +34,7 @@ jobs:
             echo "version=$TARGET_VERSION" >> $GITHUB_OUTPUT
             echo "Using specified iOS SDK version: $TARGET_VERSION"
           else
-            echo "Fetching latest iOS SDK version from GitHub API..."
-            API_RESPONSE=$(curl -s https://api.github.com/repos/DevCycleHQ/ios-client-sdk/releases/latest)
-            echo "API Response: $API_RESPONSE"
-            LATEST_IOS_VERSION=$(echo "$API_RESPONSE" | jq -r '.tag_name' | sed 's/^v//')
-            echo "Extracted version: $LATEST_IOS_VERSION"
+            LATEST_IOS_VERSION=$(curl -s https://api.github.com/repos/DevCycleHQ/ios-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
             if [ "$LATEST_IOS_VERSION" = "null" ] || [ -z "$LATEST_IOS_VERSION" ]; then
               echo "Error: Failed to fetch valid iOS SDK version"
               exit 1
@@ -68,16 +64,11 @@ jobs:
       - name: Update iOS SDK version
         if: steps.check-update.outputs.update-needed == 'true'
         run: |
-          echo "Updating iOS SDK version to: ${{ steps.ios-version.outputs.version }}"
           if [ "${{ steps.ios-version.outputs.version }}" = "null" ] || [ -z "${{ steps.ios-version.outputs.version }}" ]; then
             echo "Error: Invalid version for podspec update"
             exit 1
           fi
-          echo "Current podspec DevCycle line:"
-          grep "s.dependency 'DevCycle'" ios/devcycle_flutter_client_sdk.podspec
           sed -i '' -E "s/(s\.dependency 'DevCycle', ')([^']+)(')/\1${{ steps.ios-version.outputs.version }}\3/" ios/devcycle_flutter_client_sdk.podspec
-          echo "Updated podspec DevCycle line:"
-          grep "s.dependency 'DevCycle'" ios/devcycle_flutter_client_sdk.podspec
           echo "Updated iOS SDK version to ${{ steps.ios-version.outputs.version }}"
 
       - name: Setup Flutter
@@ -97,25 +88,15 @@ jobs:
       - name: Setup CocoaPods
         if: steps.check-update.outputs.update-needed == 'true'
         run: |
-          echo "Setting up CocoaPods..."
           gem install cocoapods --no-document
-          echo "CocoaPods version: $(pod --version)"
 
       - name: Update iOS dependency lock file
         if: steps.check-update.outputs.update-needed == 'true'
         run: |
           cd example/ios
-          echo "Current directory: $(pwd)"
-          echo "Checking updated podspec..."
-          grep -A2 -B2 "DevCycle" .symlinks/plugins/devcycle_flutter_client_sdk/ios/devcycle_flutter_client_sdk.podspec || echo "Could not find DevCycle in podspec"
-          echo "Removing Podfile.lock to avoid version conflicts..."
           rm -f Podfile.lock
-          echo "Removing Pods directory..."
           rm -rf Pods
-          echo "Running pod install..."
-          pod install --repo-update --verbose
-          echo "Final Podfile.lock DevCycle version:"
-          grep -A1 -B1 "DevCycle" Podfile.lock || echo "Could not find DevCycle in Podfile.lock"
+          pod install --repo-update
           echo "✅ Updated iOS Podfile.lock for DevCycle ${{ steps.ios-version.outputs.version }}"
 
       - name: Create Pull Request
