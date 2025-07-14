@@ -58,4 +58,21 @@ void main() {
     expect(variable.type.toString(), equals('VariableType.json'));
     expect(variable.value, equals({"hello": "world"}));
   });
+
+  test('builds variable object from a map with eval reason', () {
+    Map<String, dynamic> codecVariable = {
+      "id": "variable1",
+      "key": "variable-one",
+      "type": "Boolean",
+      "value": true,
+      "eval": {"reason": "TARGETING_MATCH", "details": "Email AND App Version"}
+    };
+    DVCVariable variable = DVCVariable.fromCodec(codecVariable);
+    expect(variable.id, equals('variable1'));
+    expect(variable.key, equals('variable-one'));
+    expect(variable.type.toString(), equals('VariableType.boolean'));
+    expect(variable.value, equals(isTrue));
+    expect(variable.eval?.reason, equals('TARGETING_MATCH'));
+    expect(variable.eval?.details, equals('Email AND App Version'));
+  });
 }

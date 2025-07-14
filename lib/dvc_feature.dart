@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'devcycle_eval_reason.dart';
 
 enum FeatureType { release, experiment, permission, ops }
 
@@ -24,6 +25,9 @@ class DVCFeature {
   /// Variation key
   String? variationKey;
 
+  /// Evaluation reasoning
+  DevCycleEvalReason? eval;
+
   static DVCFeature fromCodec(Map<String, dynamic> map) {
     DVCFeature feature = DVCFeature();
 
@@ -35,6 +39,8 @@ class DVCFeature {
     feature.evalReason = map['evalReason'];
     feature.variationName = map['variationName'];
     feature.variationKey = map['variationKey'];
+    feature.eval =
+        map['eval'] != null ? DevCycleEvalReason.fromCodec(map['eval']) : null;
 
     return feature;
   }
