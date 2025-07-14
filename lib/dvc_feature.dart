@@ -16,7 +16,8 @@ class DVCFeature {
   /// Bucketed feature variation ID
   String? variation;
 
-  /// Evaluation reasoning
+  /// Deprecated, remove in next major version, use [eval] instead
+  @Deprecated('Use [eval] instead')
   String? evalReason;
 
   /// Variation name
@@ -36,7 +37,6 @@ class DVCFeature {
     feature.type = FeatureType.values
         .firstWhereOrNull((e) => e.toString() == "FeatureType.${map['type']}");
     feature.variation = map['variation'];
-    feature.evalReason = map['evalReason'];
     feature.variationName = map['variationName'];
     feature.variationKey = map['variationKey'];
     feature.eval =

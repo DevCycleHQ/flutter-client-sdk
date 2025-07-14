@@ -40,17 +40,13 @@ class DVCVariable<T> {
 
   static DVCVariable fromDefault(String key, dynamic defaultValue) {
     String mapType = defaultValue.runtimeType.toString().toLowerCase();
-    Map<String, dynamic> defaultEvalReason = {
-      "reason": "DEFAULT",
-      "details": "User Not Targeted"
-    };
 
     return DVCVariable(
         key: key,
         value: defaultValue,
         type: VariableType.values
             .firstWhereOrNull((e) => e.toString() == "VariableType.$mapType"),
-        eval: DevCycleEvalReason.fromCodec(defaultEvalReason));
+        eval: DevCycleEvalReason.defaultReason("User Not Targeted"));
   }
 
   ///

@@ -18,4 +18,10 @@ class DevCycleEvalReason {
 
     return evalReason;
   }
+
+  static DevCycleEvalReason defaultReason(String details) {
+    return DevCycleEvalReason()
+      ..reason = "DEFAULT"
+      ..details = details;
+  }
 }
