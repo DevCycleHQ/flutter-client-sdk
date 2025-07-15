@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'devcycle_eval_reason.dart';
 
 enum VariableType { string, boolean, number, json }
 
@@ -15,9 +16,13 @@ class DVCVariable<T> {
   /// Variable value can be a string, number, boolean, or JSON
   T value;
 
+  /// Variable Evaluation Reason
+  DevCycleEvalReason? eval;
+
   void Function(T value)? callback;
 
-  DVCVariable({this.id, required this.key, this.type, required this.value});
+  DVCVariable(
+      {this.id, required this.key, this.type, required this.value, this.eval});
 
   static DVCVariable fromCodec(Map<String, dynamic> map) {
     String mapType = map['type'].toString().toLowerCase();
@@ -27,8 +32,10 @@ class DVCVariable<T> {
         value: map['value'],
         id: map['id'],
         type: VariableType.values
-            .firstWhereOrNull((e) => e.toString() == "VariableType.$mapType")
-    );
+            .firstWhereOrNull((e) => e.toString() == "VariableType.$mapType"),
+        eval: map['eval'] != null
+            ? DevCycleEvalReason.fromCodec(map['eval'])
+            : null);
   }
 
   static DVCVariable fromDefault(String key, dynamic defaultValue) {
@@ -38,8 +45,8 @@ class DVCVariable<T> {
         key: key,
         value: defaultValue,
         type: VariableType.values
-            .firstWhereOrNull((e) => e.toString() == "VariableType.$mapType")
-    );
+            .firstWhereOrNull((e) => e.toString() == "VariableType.$mapType"),
+        eval: DevCycleEvalReason.defaultReason("User Not Targeted"));
   }
 
   ///
