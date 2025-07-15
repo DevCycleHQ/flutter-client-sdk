@@ -5,7 +5,7 @@ class DevCycleEvalReason {
   /// Details
   String? details;
 
-  /// Target Id
+  /// Target ID
   /// This is the id of the target that was evaluated.
   String? targetId;
 
