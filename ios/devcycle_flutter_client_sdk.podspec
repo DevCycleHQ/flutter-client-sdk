@@ -15,7 +15,7 @@ A Flutter plugin to integrate with DevCycle Feature Flags.
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'DevCycle', '1.24.0'
+  s.dependency 'DevCycle', '1.24.2'
   s.platform = :ios, '12.0'
 
   # Flutter.framework does not contain a i386 slice.
