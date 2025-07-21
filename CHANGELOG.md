@@ -1,4 +1,25 @@
 # Change Log
+## [1.11.0] - 2025-07-21
+## Features
+
+- feat: update for eval reasons by @kaushalkapasi in #188
+
+## Bug Fixes
+
+- fix: Create CODEOWNERS by @JamieSinn in #189
+
+## Other Changes
+
+- chore: cleanup actions logs by @jonathannorris in #185
+- chore: update Android SDK to v2.6.0 by @DevCycle-Automation in #190
+- chore: update iOS SDK to v1.24.2 by @DevCycle-Automation in #191
+
+
+
+## Uncategorized
+
+
+
 ## [1.10.1] - 2025-06-17
 ## Bug Fixes
 
