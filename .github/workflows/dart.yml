@@ -1,10 +1,12 @@
 name: Publish to pub.dev
 
 on:
-  - push
+  push:
+    tags:
+      - '*'
 
 jobs:
   publish:
     permissions:
       id-token: write
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@c8d9f105c780f626b21f6929fec7e8162014f5ad
