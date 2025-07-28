@@ -4,6 +4,19 @@
 
 - fix: Use the dart release action as part of the triggered release job by @JamieSinn in #193
 - fix: use actions instead of reusable workflow by @JamieSinn in #194
+- fix: permissions on the job override the overall perms by @JamieSinn in #195
+
+
+
+## Uncategorized
+
+
+
+## [1.11.2] - 2025-07-28
+## Bug Fixes
+
+- fix: Use the dart release action as part of the triggered release job by @JamieSinn in #193
+- fix: use actions instead of reusable workflow by @JamieSinn in #194
 
 
 
