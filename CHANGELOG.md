@@ -1,4 +1,15 @@
 # Change Log
+## [1.11.1] - 2025-07-28
+## Other Changes
+
+- chore: update Android SDK to v2.6.1 by @DevCycle-Automation in #192
+
+
+
+## Uncategorized
+
+
+
 ## [1.11.0] - 2025-07-21
 ## Features
 
