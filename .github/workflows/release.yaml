@@ -88,10 +88,6 @@ jobs:
           prerelease: ${{ github.event.inputs.prerelease }}
           draft: ${{ github.event.inputs.draft }}
           changelog: ${{ steps.prepare-release.outputs.changelog }}
-      - name: Install dependencies
-        run: dart pub get
-      - name: Publish to pub.dev
-        run: dart pub publish -f
       - name: Display link to release
         run: |
           echo "::notice title=Release ID::${{ steps.create-release.outputs.release-id }}"
