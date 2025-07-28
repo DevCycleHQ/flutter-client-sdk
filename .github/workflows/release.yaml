@@ -28,6 +28,8 @@ jobs:
   build:
     name: Release Flutter SDK
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -86,7 +88,7 @@ jobs:
           prerelease: ${{ github.event.inputs.prerelease }}
           draft: ${{ github.event.inputs.draft }}
           changelog: ${{ steps.prepare-release.outputs.changelog }}
-
+      - uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
       - name: Display link to release
         run: |
           echo "::notice title=Release ID::${{ steps.create-release.outputs.release-id }}"
