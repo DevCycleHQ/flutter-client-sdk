@@ -1,4 +1,7 @@
 # Change Log
+## [1.11.6] - 2025-07-28
+- no changes
+
 ## [1.11.5] - 2025-07-28
 - no changes
 
