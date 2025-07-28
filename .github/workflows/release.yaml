@@ -1,8 +1,5 @@
 name: Release
 
-permissions:
-  contents: write
-
 on:
   workflow_dispatch:
     inputs:
@@ -30,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
