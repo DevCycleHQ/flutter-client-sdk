@@ -1,4 +1,20 @@
 # Change Log
+## [1.11.3] - 2025-08-27
+## Bug Fixes
+
+- fix: use the updated eval field instead evalReason by @kaushalkapasi in #198
+
+## Other Changes
+
+- chore: update Android SDK to v2.6.2 by @DevCycle-Automation in #196
+- chore: Update LICENSE copyright to Taplytics Inc. 2025 by @Copilot in #197
+
+
+
+## Uncategorized
+
+
+
 ## [1.11.6] - 2025-07-28
 - no changes
 
