@@ -326,7 +326,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     featureAsMap["key"] = feature.key
     featureAsMap["type"] = feature.type.toString()
     featureAsMap["variation"] = feature.variation
-    featureAsMap["evalReason"] = feature.evalReason
+    featureAsMap["eval"] = feature.eval
     featureAsMap["variationName"] = feature.variationName
     featureAsMap["variationKey"] = feature.variationKey
 
@@ -350,7 +350,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     variableAsMap["key"] = variable.key
     variableAsMap["type"] = variable.type.toString()
     variableAsMap["value"] = value
-    variableAsMap["evalReason"] = variable.evalReason
+    variableAsMap["eval"] = variable.eval
 
     if (value is JSONObject) variableAsMap["value"] = value.toMap()
     if (value is JSONArray) variableAsMap["value"] = value.toMap()
@@ -365,7 +365,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     variableAsMap["key"] = variable.key
     variableAsMap["type"] = variable.type.toString()
     variableAsMap["value"] = value
-    variableAsMap["evalReason"] = variable.evalReason
+    variableAsMap["eval"] = variable.eval
 
     if (value is JSONObject) variableAsMap["value"] = value.toMap()
     if (value is JSONArray) variableAsMap["value"] = value.toMap()
