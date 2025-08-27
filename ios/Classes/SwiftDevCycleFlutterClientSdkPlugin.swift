@@ -283,7 +283,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         map["key"] = variable.key
         map["type"] = variable.type.rawValue
         map["value"] = variable.value
-        map["evalReason"] = variable.evalReason
+        map["eval"] = variable.eval
         return map
     }
     
@@ -292,7 +292,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         map["key"] = variable.key
         map["type"] = variable.type?.rawValue
         map["value"] = variable.value
-        map["evalReason"] = variable.evalReason
+        map["eval"] = variable.eval
         map["isDefaulted"] = variable.isDefaulted
         return map
     }
@@ -311,7 +311,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         map["key"] = feature.key
         map["type"] = feature.type
         map["variation"] = feature._variation
-        map["evalReason"] = feature.evalReason
+        map["eval"] = feature.eval
         map["variationKey"] = feature.variationKey
         map["variationName"] = feature.variationName
         return map
