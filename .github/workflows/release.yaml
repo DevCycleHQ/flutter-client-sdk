@@ -37,7 +37,7 @@ jobs:
 
       - uses: dart-lang/setup-dart@e51d8e571e22473a2ddebf0ef8a2123f0ab2c02c
       - name: Install Flutter
-        uses: flutter-actions/setup-flutter@54feb1e258158303e041b9eaf89314dcfbf6d38a # v2.19.0
+        uses: flutter-actions/setup-flutter@d4e97a6e7467ef062618c9af927f90bc9651b876 # v2.19.0
         with:
           flutter-version: "latest"
           channel: "stable"
