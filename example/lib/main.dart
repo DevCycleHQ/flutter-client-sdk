@@ -27,7 +27,6 @@ class _MyAppState extends State<MyApp> {
   num _doubleValue = 0.0;
   var _jsonArrayValue = '';
   var _jsonObjectValue = '';
-  String _evalReasonInfo = 'EvalReason: Not loaded yet';
 
   var encodedJsonArray = '''
   [
@@ -88,28 +87,10 @@ class _MyAppState extends State<MyApp> {
           await _devCycleClient.variable('string-variable', 'Default Value');
       setState(() {
         _variableValue = variable.value;
-        // Display EvalReason information
-        if (variable.eval != null) {
-          _evalReasonInfo = 'EvalReason:\n'
-              '  reason: ${variable.eval!.reason}\n'
-              '  details: ${variable.eval!.details}\n'
-              '  targetId: ${variable.eval!.targetId}';
-        } else {
-          _evalReasonInfo = 'EvalReason: null ish';
-        }
       });
       variable.onUpdate((updatedValue) {
         setState(() {
           _variableValue = updatedValue;
-          // Display EvalReason information
-          if (variable.eval != null) {
-            _evalReasonInfo = 'EvalReason:\n'
-                '  reason: ${variable.eval!.reason}\n'
-                '  details: ${variable.eval!.details}\n'
-                '  targetId: ${variable.eval!.targetId}';
-          } else {
-            _evalReasonInfo = 'EvalReason: null ish';
-          }
         });
       });
 
@@ -302,6 +283,16 @@ class _MyAppState extends State<MyApp> {
                 const SizedBox(height: 4),
                 Text(
                   "Double Value: $_doubleValue",
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "JSON Array Value: $_jsonArrayValue",
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "JSON Object Value: $_jsonObjectValue",
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 4),
