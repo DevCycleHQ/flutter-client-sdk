@@ -1,4 +1,20 @@
 # Change Log
+## [1.11.4] - 2026-01-21
+## Bug Fixes
+
+- fix: Update action-semantic-pull-request version by @JamieSinn in #209
+- fix: update eval reason serialization by @suthar26 in #210
+
+## Other Changes
+
+- chore: update Android SDK to v2.6.3 by @DevCycle-Automation in #199
+
+
+
+## Uncategorized
+
+
+
 ## [1.11.3] - 2025-08-27
 ## Bug Fixes
 
