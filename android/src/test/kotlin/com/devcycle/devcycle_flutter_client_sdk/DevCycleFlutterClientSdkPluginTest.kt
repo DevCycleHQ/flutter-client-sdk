@@ -33,7 +33,7 @@ class DevCycleFlutterClientSdkPluginTest {
         assertNotNull(result)
         assertEquals("TARGETING_MATCH", result?.get("reason"))
         assertEquals("Email AND App Version", result?.get("details"))
-        assertEquals("target_123", result?.get("targetId"))
+        assertEquals("target_123", result?.get("target_id"))
     }
     
     @Test
@@ -52,7 +52,7 @@ class DevCycleFlutterClientSdkPluginTest {
         assertNotNull(result)
         assertEquals("DEFAULT", result?.get("reason"))
         assertEquals("User Not Targeted", result?.get("details"))
-        assertNull(result?.get("targetId"))
+        assertNull(result?.get("target_id"))
     }
     
     @Test
@@ -64,7 +64,7 @@ class DevCycleFlutterClientSdkPluginTest {
         assertNotNull(result)
         assertEquals("ERROR", result?.get("reason"))
         assertNull(result?.get("details"))
-        assertEquals("target_456", result?.get("targetId"))
+        assertEquals("target_456", result?.get("target_id"))
     }
     
     @Test
@@ -74,9 +74,11 @@ class DevCycleFlutterClientSdkPluginTest {
         val result = evalReasonToMap(evalReason)
         
         assertNotNull(result)
-        assertTrue(result?.containsKey("reason") == true)
-        assertTrue(result?.containsKey("details") == true)
-        assertTrue(result?.containsKey("targetId") == true)
+        assertEquals(3, result?.size)
+        // When reason is null, EvalReason constructor uses "" as default
+        assertEquals("", result?.get("reason"))
+        assertNull(result?.get("details"))
+        assertNull(result?.get("target_id"))
     }
     
     @Test
@@ -122,25 +124,25 @@ class DevCycleFlutterClientSdkPluginTest {
     }
     
     @Test
-    fun `evalReasonToMap result contains exactly three keys`() {
-        val evalReason = createMockEvalReason("DEFAULT", "Test", null)
+    fun `evalReasonToMap result contains exactly three keys with correct values`() {
+        val evalReason = createMockEvalReason("DEFAULT", "Test details", null)
         
         val result = evalReasonToMap(evalReason)
         
         assertNotNull(result)
         assertEquals(3, result?.size)
-        assertTrue(result?.containsKey("reason") == true)
-        assertTrue(result?.containsKey("details") == true)
-        assertTrue(result?.containsKey("targetId") == true)
+        assertEquals("DEFAULT", result?.get("reason"))
+        assertEquals("Test details", result?.get("details"))
+        assertNull(result?.get("target_id"))
     }
     
-    // Helper method to create mock EvalReason
-    // This is a placeholder - adjust based on actual EvalReason implementation
+    // Helper method to create EvalReason instances for testing
+    // Uses the EvalReason data class constructor from the Android SDK
     private fun createMockEvalReason(reason: String?, details: String?, targetId: String?): EvalReason {
-        // Note: This needs to be implemented based on the actual EvalReason class
-        // For now, this is a placeholder that shows the test structure
-        throw NotImplementedError(
-            "This helper needs to be implemented based on the actual EvalReason class constructor/factory"
+        return EvalReason(
+            reason = reason ?: "",
+            details = details,
+            targetId = targetId
         )
     }
 }
