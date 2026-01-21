@@ -27,6 +27,7 @@ class _MyAppState extends State<MyApp> {
   num _doubleValue = 0.0;
   var _jsonArrayValue = '';
   var _jsonObjectValue = '';
+  String _evalReasonInfo = 'EvalReason: Not loaded yet';
 
   var encodedJsonArray = '''
   [
@@ -87,10 +88,28 @@ class _MyAppState extends State<MyApp> {
           await _devCycleClient.variable('string-variable', 'Default Value');
       setState(() {
         _variableValue = variable.value;
+        // Display EvalReason information
+        if (variable.eval != null) {
+          _evalReasonInfo = 'EvalReason:\n'
+              '  reason: ${variable.eval!.reason}\n'
+              '  details: ${variable.eval!.details}\n'
+              '  targetId: ${variable.eval!.targetId}';
+        } else {
+          _evalReasonInfo = 'EvalReason: null ish';
+        }
       });
       variable.onUpdate((updatedValue) {
         setState(() {
           _variableValue = updatedValue;
+          // Display EvalReason information
+          if (variable.eval != null) {
+            _evalReasonInfo = 'EvalReason:\n'
+                '  reason: ${variable.eval!.reason}\n'
+                '  details: ${variable.eval!.details}\n'
+                '  targetId: ${variable.eval!.targetId}';
+          } else {
+            _evalReasonInfo = 'EvalReason: null ish';
+          }
         });
       });
 
@@ -214,9 +233,43 @@ class _MyAppState extends State<MyApp> {
 
   void showAllVariables() async {
     Map<String, DVCVariable> variables = await _devCycleClient.allVariables();
+
+    // Build detailed info including EvalReason
+    String variableInfo = 'All variables:\n';
+    for (var variable in variables.values) {
+      variableInfo += '\n${variable.key}: ${variable.value}\n';
+      if (variable.eval != null) {
+        variableInfo +=
+            '  Eval: ${variable.eval!.reason} - ${variable.eval!.details}';
+        if (variable.eval!.targetId != null) {
+          variableInfo += ' (target: ${variable.eval!.targetId})';
+        }
+        variableInfo += '\n';
+      }
+    }
+
     setState(() {
-      _displayValue =
-          'All variables: \n${variables.values.map((variable) => "${variable.key}: ${variable.value}").toString()}';
+      _displayValue = variableInfo;
+    });
+  }
+
+  void showEvalReason() async {
+    final variable =
+        await _devCycleClient.variable('string-variable', 'Default Value');
+    String info = 'Variable: ${variable.key}\n';
+    info += 'Value: ${variable.value}\n';
+    info += 'Type: ${variable.type}\n';
+    if (variable.eval != null) {
+      info += '\nEvalReason:\n';
+      info += '  reason: ${variable.eval!.reason}\n';
+      info += '  details: ${variable.eval!.details}\n';
+      info += '  targetId: ${variable.eval!.targetId}\n';
+    } else {
+      info += '\nEvalReason: null\n';
+    }
+
+    setState(() {
+      _displayValue = info;
     });
   }
 
@@ -227,49 +280,101 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Value: $_variableValue"),
-            Text("Value: $_booleanValue"),
-            Text("Value: $_integerValue"),
-            Text("Value: $_doubleValue"),
-            Text("Value: $_jsonArrayValue"),
-            Text("Value: $_jsonObjectValue"),
-            Text('Running on: $_platformVersion\n'),
-            Icon(
-              Icons.star,
-              color: _booleanValue ? Colors.blue[500] : Colors.red[500],
-            ),
-            _booleanValue
-                ? const Icon(
-                    Icons.sentiment_very_satisfied,
-                    color: Colors.grey,
-                  )
-                : const Icon(
-                    Icons.sentiment_very_dissatisfied,
-                    color: Colors.grey,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  "String Value: $_variableValue",
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  "Bool Value: $_booleanValue",
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "Int Value: $_integerValue",
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "Double Value: $_doubleValue",
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Running on: $_platformVersion',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.star,
+                      color: _booleanValue ? Colors.blue[500] : Colors.red[500],
+                    ),
+                    const SizedBox(width: 16),
+                    _booleanValue
+                        ? const Icon(
+                            Icons.sentiment_very_satisfied,
+                            color: Colors.grey,
+                          )
+                        : const Icon(
+                            Icons.sentiment_very_dissatisfied,
+                            color: Colors.grey,
+                          ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                    onPressed: showAllFeatures,
+                    child: const Text('All Features')),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                    onPressed: showAllVariables,
+                    child: const Text('All Variables')),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                    onPressed: showEvalReason,
+                    child: const Text('Show EvalReason')),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                    onPressed: identifyUser,
+                    child: const Text('Identify User')),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                    onPressed: identifyAnonUser,
+                    child: const Text('Identify Anonymous User')),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                    onPressed: resetUser, child: const Text('Reset User')),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                    onPressed: trackEvent, child: const Text('Track Event')),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                    onPressed: flushEvents, child: const Text('FlushEvents')),
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.all(12.0),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8),
                   ),
-            ElevatedButton(
-                onPressed: showAllFeatures, child: const Text('All Features')),
-            ElevatedButton(
-                onPressed: showAllVariables,
-                child: const Text('All Variables')),
-            ElevatedButton(
-                onPressed: identifyUser, child: const Text('Identify User')),
-            ElevatedButton(
-                onPressed: identifyAnonUser,
-                child: const Text('Identify Anonymous User')),
-            ElevatedButton(
-                onPressed: resetUser, child: const Text('Reset User')),
-            ElevatedButton(
-                onPressed: trackEvent, child: const Text('Track Event')),
-            ElevatedButton(
-                onPressed: flushEvents, child: const Text('FlushEvents')),
-            Text(_displayValue)
-          ],
-        )),
+                  child: Text(
+                    _displayValue,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

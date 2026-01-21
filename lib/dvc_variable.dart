@@ -34,7 +34,8 @@ class DVCVariable<T> {
         type: VariableType.values
             .firstWhereOrNull((e) => e.toString() == "VariableType.$mapType"),
         eval: map['eval'] != null
-            ? DevCycleEvalReason.fromCodec(map['eval'])
+            ? DevCycleEvalReason.fromCodec(
+                Map<String, dynamic>.from(map['eval']))
             : null);
   }
 
