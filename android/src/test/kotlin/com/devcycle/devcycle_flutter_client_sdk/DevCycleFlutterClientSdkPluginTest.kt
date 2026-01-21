@@ -9,17 +9,17 @@ import org.junit.Assert.*
  * 
  * Specifically testing EvalReason serialization to ensure proper
  * conversion from Kotlin objects to Maps for Flutter platform channel.
+ * 
+ * Note: The evalReasonToMap method is internal (package-private) to allow
+ * direct testing without reflection, which is fragile and breaks with obfuscation.
  */
 class DevCycleFlutterClientSdkPluginTest {
     
     private val plugin = DevCycleFlutterClientSdkPlugin()
     
-    // Use reflection to access private method for testing
+    // Direct access to internal method - no reflection needed
     private fun evalReasonToMap(evalReason: EvalReason?): Map<String, Any?>? {
-        val method = plugin::class.java.getDeclaredMethod("evalReasonToMap", EvalReason::class.java)
-        method.isAccessible = true
-        @Suppress("UNCHECKED_CAST")
-        return method.invoke(plugin, evalReason) as? Map<String, Any?>
+        return plugin.evalReasonToMap(evalReason)
     }
     
     @Test
@@ -68,14 +68,15 @@ class DevCycleFlutterClientSdkPluginTest {
     }
     
     @Test
-    fun `evalReasonToMap converts EvalReason with all null fields`() {
-        val evalReason = createMockEvalReason(null, null, null)
+    fun `evalReasonToMap converts EvalReason with null optional fields`() {
+        // EvalReason.reason is non-nullable with default "", so we test with default reason
+        val evalReason = EvalReason(reason = "", details = null, targetId = null)
         
         val result = evalReasonToMap(evalReason)
         
         assertNotNull(result)
         assertEquals(3, result?.size)
-        // When reason is null, EvalReason constructor uses "" as default
+        // EvalReason.reason has default value "" per Android SDK data class definition
         assertEquals("", result?.get("reason"))
         assertNull(result?.get("details"))
         assertNull(result?.get("target_id"))
@@ -136,11 +137,51 @@ class DevCycleFlutterClientSdkPluginTest {
         assertNull(result?.get("target_id"))
     }
     
-    // Helper method to create EvalReason instances for testing
-    // Uses the EvalReason data class constructor from the Android SDK
-    private fun createMockEvalReason(reason: String?, details: String?, targetId: String?): EvalReason {
+    @Test
+    fun `evalReasonToMap works with EvalReason constructor directly`() {
+        // Test using actual EvalReason API without helper to ensure real-world accuracy
+        val evalReason = EvalReason(
+            reason = "TARGETING_MATCH",
+            details = "User ID",
+            targetId = "6970d55494529ca5258ea054"
+        )
+        
+        val result = evalReasonToMap(evalReason)
+        
+        assertNotNull(result)
+        assertEquals("TARGETING_MATCH", result?.get("reason"))
+        assertEquals("User ID", result?.get("details"))
+        assertEquals("6970d55494529ca5258ea054", result?.get("target_id"))
+    }
+    
+    @Test
+    fun `evalReasonToMap handles EvalReason with default values`() {
+        // Test using EvalReason's default parameter values
+        val evalReason = EvalReason()  // Uses defaults: reason="", details=null, targetId=null
+        
+        val result = evalReasonToMap(evalReason)
+        
+        assertNotNull(result)
+        assertEquals("", result?.get("reason"))
+        assertNull(result?.get("details"))
+        assertNull(result?.get("target_id"))
+    }
+    
+    /**
+     * Helper method to create EvalReason instances for testing.
+     * 
+     * Uses the actual EvalReason data class constructor from the Android SDK:
+     * data class EvalReason(
+     *     val reason: String = "",           // Non-nullable with default
+     *     val details: String? = null,       // Nullable
+     *     val targetId: String? = null       // Nullable
+     * )
+     * 
+     * Note: This directly uses the EvalReason API to ensure tests reflect real-world behavior.
+     */
+    private fun createMockEvalReason(reason: String, details: String?, targetId: String?): EvalReason {
         return EvalReason(
-            reason = reason ?: "",
+            reason = reason,
             details = details,
             targetId = targetId
         )

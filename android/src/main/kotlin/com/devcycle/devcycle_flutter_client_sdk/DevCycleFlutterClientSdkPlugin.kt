@@ -343,7 +343,14 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     return map
   }
 
-  private fun evalReasonToMap(evalReason: EvalReason?): Map<String, Any?>? {
+  /**
+   * Converts an EvalReason to a Map that can be sent through Flutter's platform channel.
+   * Made internal (package-private) for testing purposes.
+   * 
+   * @param evalReason The EvalReason to convert, or null
+   * @return A Map with keys "reason", "details", and "target_id", or null if input is null
+   */
+  internal fun evalReasonToMap(evalReason: EvalReason?): Map<String, Any?>? {
     if (evalReason == null) return null
     return mapOf(
       "reason" to evalReason.reason.toString(),

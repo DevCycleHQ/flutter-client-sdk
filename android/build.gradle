@@ -39,6 +39,7 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
     }
 
     defaultConfig {
@@ -47,5 +48,10 @@ android {
 
     dependencies {
         implementation("com.devcycle:android-client-sdk:2.6.3")
+        
+        // Test dependencies
+        testImplementation 'junit:junit:4.13.2'
+        testImplementation 'org.jetbrains.kotlin:kotlin-test'
+        testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
     }
 }
