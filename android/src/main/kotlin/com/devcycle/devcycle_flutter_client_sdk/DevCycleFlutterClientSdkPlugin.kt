@@ -343,6 +343,22 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     return map
   }
 
+  /**
+   * Converts an EvalReason to a Map that can be sent through Flutter's platform channel.
+   * Made internal (package-private) for testing purposes.
+   * 
+   * @param evalReason The EvalReason to convert, or null
+   * @return A Map with keys "reason", "details", and "target_id", or null if input is null
+   */
+  internal fun evalReasonToMap(evalReason: EvalReason?): Map<String, Any?>? {
+    if (evalReason == null) return null
+    return mapOf(
+      "reason" to evalReason.reason.toString(),
+      "details" to evalReason.details,
+      "target_id" to evalReason.targetId
+    )
+  }
+
   private fun variableToMap(variable: BaseConfigVariable): Map<String, Any?> {
     val variableAsMap = mutableMapOf<String, Any?>()
     var value = variable.value
@@ -350,7 +366,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     variableAsMap["key"] = variable.key
     variableAsMap["type"] = variable.type.toString()
     variableAsMap["value"] = value
-    variableAsMap["eval"] = variable.eval
+    variableAsMap["eval"] = evalReasonToMap(variable.eval)
 
     if (value is JSONObject) variableAsMap["value"] = value.toMap()
     if (value is JSONArray) variableAsMap["value"] = value.toMap()
@@ -365,7 +381,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     variableAsMap["key"] = variable.key
     variableAsMap["type"] = variable.type.toString()
     variableAsMap["value"] = value
-    variableAsMap["eval"] = variable.eval
+    variableAsMap["eval"] = evalReasonToMap(variable.eval)
 
     if (value is JSONObject) variableAsMap["value"] = value.toMap()
     if (value is JSONArray) variableAsMap["value"] = value.toMap()
