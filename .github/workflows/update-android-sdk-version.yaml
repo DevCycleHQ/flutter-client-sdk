@@ -78,7 +78,7 @@ jobs:
 
       - name: Setup Java for Gradle
         if: steps.check-update.outputs.update-needed == 'true'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: "temurin"
           java-version: "17"
