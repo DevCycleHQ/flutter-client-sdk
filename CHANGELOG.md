@@ -1,4 +1,21 @@
 # Change Log
+## [1.11.5] - 2026-01-28
+## Bug Fixes
+
+- fix: update mapFeature function for Swift Client by @kaushalkapasi in #211
+
+## Other Changes
+
+- chore: Bump actions/setup-java from 4 to 5 by @dependabot[bot] in #200
+- chore: Bump actions/checkout from 4 to 5 by @dependabot[bot] in #202
+- chore: Bump subosito/flutter-action from 2.19.0 to 2.21.0 by @dependabot[bot] in #201
+
+
+
+## Uncategorized
+
+
+
 ## [1.11.4] - 2026-01-21
 ## Bug Fixes
 
