@@ -326,7 +326,7 @@ class DevCycleFlutterClientSdkPlugin: FlutterPlugin, MethodCallHandler {
     featureAsMap["key"] = feature.key
     featureAsMap["type"] = feature.type.toString()
     featureAsMap["variation"] = feature.variation
-    featureAsMap["eval"] = feature.eval
+    featureAsMap["eval"] = evalReasonToMap(feature.eval)
     featureAsMap["variationName"] = feature.variationName
     featureAsMap["variationKey"] = feature.variationKey
 

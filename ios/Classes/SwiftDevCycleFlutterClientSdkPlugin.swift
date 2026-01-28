@@ -283,7 +283,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         map["key"] = variable.key
         map["type"] = variable.type.rawValue
         map["value"] = variable.value
-        map["eval"] = variable.eval
+        map["eval"] = evalReasonToMap(evalReason: variable.eval)
         return map
     }
     
@@ -292,7 +292,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         map["key"] = variable.key
         map["type"] = variable.type?.rawValue
         map["value"] = variable.value
-        map["eval"] = variable.eval
+        map["eval"] = evalReasonToMap(evalReason: variable.eval)
         map["isDefaulted"] = variable.isDefaulted
         return map
     }
@@ -305,15 +305,30 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         return map
     }
     
-    private func featureToMap(feature: Feature) -> [String: String] {
-        var map: [String: String] = [:]
+    private func featureToMap(feature: Feature) -> [String: Any] {
+        var map: [String: Any] = [:]
         map["id"] = feature._id
         map["key"] = feature.key
         map["type"] = feature.type
         map["variation"] = feature._variation
-        map["eval"] = feature.eval
+        map["eval"] = evalReasonToMap(evalReason: feature.eval)
         map["variationKey"] = feature.variationKey
         map["variationName"] = feature.variationName
+        return map
+    }
+
+    private func evalReasonToMap(evalReason: EvalReason?) -> [String: Any]? {
+        guard let evalReason = evalReason,
+              let reason = evalReason.reason.toString() as String? else {
+            return nil
+        }
+        var map: [String: Any] = ["reason": reason]
+        if let details = evalReason.details {
+            map["details"] = details
+        }
+        if let targetId = evalReason.targetId {
+            map["target_id"] = targetId
+        }
         return map
     }
 }
