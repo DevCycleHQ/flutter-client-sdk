@@ -305,8 +305,8 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
         return map
     }
     
-    private func featureToMap(feature: Feature) -> [String: String] {
-        var map: [String: String] = [:]
+    private func featureToMap(feature: Feature) -> [String: Any] {
+        var map: [String: Any] = [:]
         map["id"] = feature._id
         map["key"] = feature.key
         map["type"] = feature.type
