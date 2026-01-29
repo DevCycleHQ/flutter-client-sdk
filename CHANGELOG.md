@@ -1,4 +1,15 @@
 # Change Log
+## [1.11.6] - 2026-01-29
+## Bug Fixes
+
+- fix: update iOS client plugin evalReasonToMap to match Android by @kaushalkapasi in #212
+
+
+
+## Uncategorized
+
+
+
 ## [1.11.5] - 2026-01-28
 ## Bug Fixes
 
