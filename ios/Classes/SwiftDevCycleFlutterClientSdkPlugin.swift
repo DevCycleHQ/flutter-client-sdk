@@ -318,11 +318,10 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     }
 
     private func evalReasonToMap(evalReason: EvalReason?) -> [String: Any]? {
-        guard let evalReason = evalReason,
-              let reason = evalReason.reason.toString() as String? else {
+        guard let evalReason = evalReason else {
             return nil
         }
-        var map: [String: Any] = ["reason": reason]
+        var map: [String: Any] = ["reason": evalReason.reason]
         if let details = evalReason.details {
             map["details"] = details
         }
