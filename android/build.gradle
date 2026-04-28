@@ -47,7 +47,7 @@ android {
     }
 
     dependencies {
-        implementation("com.devcycle:android-client-sdk:2.7.0")
+        implementation("com.devcycle:android-client-sdk:2.7.1")
         
         // Test dependencies
         testImplementation 'junit:junit:4.13.2'
