@@ -35,7 +35,7 @@ jobs:
             echo "version=$TARGET_VERSION" >> $GITHUB_OUTPUT
             echo "Using specified Android SDK version: $TARGET_VERSION"
           else
-            LATEST_ANDROID_VERSION=$(curl -s https://api.github.com/repos/DevCycleHQ/android-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+            LATEST_ANDROID_VERSION=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/DevCycleHQ/android-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
             echo "version=$LATEST_ANDROID_VERSION" >> $GITHUB_OUTPUT
             echo "Latest Android SDK version: $LATEST_ANDROID_VERSION"
           fi
