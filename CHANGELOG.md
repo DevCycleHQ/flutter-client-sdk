@@ -1,4 +1,21 @@
 # Change Log
+## [1.11.7] - 2026-04-28
+## Bug Fixes
+
+- fix: explicitly checkout flutter-client-sdk repo in update-android-sdk-version workflow by @Copilot in #234
+
+## Other Changes
+
+- chore: Bump dart-lang/setup-dart/.github/workflows/publish.yml from c8d9f105c780f626b21f6929fec7e8162014f5ad to cb7127289503113089d94a9c7247ada34feeb436 by @dependabot[bot] in #231
+- chore: update Android SDK to v2.7.0 by @DevCycle-Automation in #237
+- chore: update Android SDK to v2.7.1 by @DevCycle-Automation in #240
+
+
+
+## Uncategorized
+
+
+
 ## [1.11.6] - 2026-01-29
 ## Bug Fixes
 
