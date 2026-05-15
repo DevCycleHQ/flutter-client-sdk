@@ -35,7 +35,7 @@ jobs:
             echo "version=$TARGET_VERSION" >> $GITHUB_OUTPUT
             echo "Using specified iOS SDK version: $TARGET_VERSION"
           else
-            LATEST_IOS_VERSION=$(curl -s https://api.github.com/repos/DevCycleHQ/ios-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+            LATEST_IOS_VERSION=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/DevCycleHQ/ios-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
             if [ "$LATEST_IOS_VERSION" = "null" ] || [ -z "$LATEST_IOS_VERSION" ]; then
               echo "Error: Failed to fetch valid iOS SDK version"
               exit 1
