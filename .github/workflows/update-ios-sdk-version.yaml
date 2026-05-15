@@ -23,6 +23,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
+          repository: DevCycleHQ/flutter-client-sdk
           token: ${{ secrets.AUTOMATION_USER_TOKEN }}
           fetch-depth: 0
 
