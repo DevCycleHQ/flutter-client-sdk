@@ -29,7 +29,7 @@ jobs:
       id-token: write
       contents: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           token: ${{ secrets.AUTOMATION_USER_TOKEN }}
           fetch-depth: 0
