@@ -35,7 +35,7 @@ jobs:
             echo "version=$TARGET_VERSION" >> $GITHUB_OUTPUT
             echo "Using specified Android SDK version: $TARGET_VERSION"
           else
-            LATEST_ANDROID_VERSION=$(curl -s https://api.github.com/repos/DevCycleHQ/android-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+            LATEST_ANDROID_VERSION=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/DevCycleHQ/android-client-sdk/releases/latest | jq -r '.tag_name' | sed 's/^v//')
             echo "version=$LATEST_ANDROID_VERSION" >> $GITHUB_OUTPUT
             echo "Latest Android SDK version: $LATEST_ANDROID_VERSION"
           fi
@@ -66,7 +66,7 @@ jobs:
 
       - name: Setup Flutter
         if: steps.check-update.outputs.update-needed == 'true'
-        uses: subosito/flutter-action@fd55f4c5af5b953cc57a2be44cb082c8f6635e8e # v2.21.0
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: "3.x"
           channel: "stable"
@@ -93,7 +93,7 @@ jobs:
 
       - name: Create Pull Request
         if: steps.check-update.outputs.update-needed == 'true'
-        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           token: ${{ secrets.AUTOMATION_USER_TOKEN }}
           commit-message: |
