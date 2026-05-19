@@ -1,5 +1,5 @@
 group 'com.devcycle.devcycle_flutter_client_sdk'
-version '1.11.7'
+version '1.11.8'
 
 buildscript {
     ext.kotlin_version = '2.3.21'

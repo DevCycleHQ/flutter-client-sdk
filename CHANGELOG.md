@@ -1,4 +1,30 @@
 # Change Log
+## [1.11.8] - 2026-05-19
+## Bug Fixes
+
+- fix: authenticate GitHub API curl call in update-android-sdk-version workflow by @jonathannorris in #246
+- fix: explicitly checkout flutter-client-sdk repo in update-ios-sdk-version workflow by @jonathannorris in #245
+
+## Other Changes
+
+- chore: update Android SDK to v2.7.3 by @DevCycle-Automation in #244
+- chore: Bump actions/checkout from 5 to 6 by @dependabot[bot] in #214
+- chore: Bump dart-lang/setup-dart from 1.7.1 to 1.7.2 by @dependabot[bot] in #233
+- chore: Bump subosito/flutter-action from 2.21.0 to 2.23.0 by @dependabot[bot] in #229
+- chore: Bump flutter-actions/setup-flutter from 54feb1e258158303e041b9eaf89314dcfbf6d38a to 18c66a64fb6f6d3338c63cabbc5cd6da395e7f1d by @dependabot[bot] in #230
+- chore: Bump peter-evans/create-pull-request from 7.0.8 to 8.1.1 by @dependabot[bot] in #232
+- chore: Bump org.jetbrains.kotlin:kotlin-gradle-plugin from 1.9.23 to 2.3.21 in /android by @dependabot[bot] in #239
+- chore: Bump com.android.tools.build:gradle from 8.3.2 to 9.2.1 in /android by @dependabot[bot] in #242
+- chore: Bump dart-lang/setup-dart/.github/workflows/publish.yml from cb7127289503113089d94a9c7247ada34feeb436 to 2bd11704788983a6a210731656d0042e2df8b2c1 by @dependabot[bot] in #247
+- chore: Bump gradle-wrapper from 8.0 to 9.5.1 in /android by @dependabot[bot] in #248
+- chore: update Android SDK to v2.8.0 by @DevCycle-Automation in #249
+
+
+
+## Uncategorized
+
+
+
 ## [1.11.7] - 2026-04-28
 ## Bug Fixes
 
