@@ -26,5 +26,7 @@ jobs:
         run: flutter analyze
       - name: Run Unit Tests
         run: flutter test
+      - name: Restore generated analyzer configs
+        run: git restore --source=HEAD --worktree -- analysis_options.yaml example/analysis_options.yaml
       - name: Run Publish Dry Run
         run: flutter pub publish --dry-run
