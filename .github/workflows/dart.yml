@@ -10,4 +10,4 @@ jobs:
   publish:
     permissions:
       id-token: write
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@43c102f4dc9b9829c862401f0b64c7c9184eab4e
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@92cfcc5b56b5f03d4418281fd5b0ae0dacbfd9fa
