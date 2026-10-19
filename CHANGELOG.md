@@ -1,4 +1,32 @@
 # Change Log
+## [1.11.9] - 2026-10-19
+## Other Changes
+
+- chore: Bump com.devcycle:android-client-sdk from 2.8.0 to 2.8.1 in /android by @dependabot[bot] in #252
+- chore: Bump org.jetbrains.kotlin:kotlin-gradle-plugin from 2.3.21 to 2.4.0 in /android by @dependabot[bot] in #251
+- chore: Bump gradle-wrapper from 9.5.1 to 9.6.0 in /android by @dependabot[bot] in #254
+- chore: Bump actions/checkout from 6 to 7 by @dependabot[bot] in #253
+- chore: Bump gradle-wrapper from 9.6.0 to 9.6.1 in /android by @dependabot[bot] in #255
+- chore: update Android SDK to v2.9.0 by @DevCycle-Automation in #256
+- chore: Bump dart-lang/setup-dart/.github/workflows/publish.yml from 2bd11704788983a6a210731656d0042e2df8b2c1 to 43c102f4dc9b9829c862401f0b64c7c9184eab4e by @dependabot[bot] in #258
+- chore: Bump org.jetbrains.kotlin:kotlin-gradle-plugin from 2.4.0 to 2.4.10 in /android by @dependabot[bot] in #260
+- chore: Bump com.android.tools.build:gradle from 9.2.1 to 9.3.0 in /android by @dependabot[bot] in #261
+- chore: update GitHub Actions to Node 24 by @jonathannorris in #267
+- chore: Bump com.android.tools.build:gradle from 9.3.0 to 9.3.1 in /android by @dependabot[bot] in #262
+- chore: Bump flutter-actions/setup-flutter from 18c66a64fb6f6d3338c63cabbc5cd6da395e7f1d to 6e2468fd827c4a7337cd4b835a6049b78bc0bd1f by @dependabot[bot] in #269
+- chore: Bump actions/setup-java from 5 to 6 by @dependabot[bot] in #271
+- chore: Bump dart-lang/setup-dart from 1.7.2 to 1.8.1 by @dependabot[bot] in #272
+- chore: Bump dart-lang/setup-dart/.github/workflows/publish.yml from 43c102f4dc9b9829c862401f0b64c7c9184eab4e to 92cfcc5b56b5f03d4418281fd5b0ae0dacbfd9fa by @dependabot[bot] in #273
+- chore: Bump com.devcycle:android-client-sdk from 2.9.0 to 2.9.2 in /android by @dependabot[bot] in #277
+- chore: Bump org.jetbrains.kotlin:kotlin-gradle-plugin from 2.4.10 to 2.4.21 in /android by @dependabot[bot] in #278
+- chore: Bump gradle-wrapper from 9.6.1 to 9.8.1 in /android by @dependabot[bot] in #279
+
+
+
+## Uncategorized
+
+
+
 ## [1.11.8] - 2026-05-19
 ## Bug Fixes
 
