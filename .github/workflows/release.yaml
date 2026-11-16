@@ -35,7 +35,7 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
+      - uses: dart-lang/setup-dart@2286a0c042b44434fe26d292bbce8d34f7ec662b
       - name: Install Flutter
         uses: flutter-actions/setup-flutter@6e2468fd827c4a7337cd4b835a6049b78bc0bd1f # v2.19.0
         with:
