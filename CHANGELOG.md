@@ -1,4 +1,16 @@
 # Change Log
+## [1.11.10](https://github.com/DevCycleHQ/flutter-client-sdk/compare/v1.11.9...v1.11.10) (2026-11-17)
+
+
+### Bug Fixes
+
+* **deps:** ship dependency updates ([#290](https://github.com/DevCycleHQ/flutter-client-sdk/issues/290)) ([df3732e](https://github.com/DevCycleHQ/flutter-client-sdk/commit/df3732e85a45798009530d007574c62842db9917))
+
+
+### Miscellaneous Chores
+
+* release 1.11.10 ([df3732e](https://github.com/DevCycleHQ/flutter-client-sdk/commit/df3732e85a45798009530d007574c62842db9917))
+
 ## [1.11.9] - 2026-10-19
 ## Other Changes
 
