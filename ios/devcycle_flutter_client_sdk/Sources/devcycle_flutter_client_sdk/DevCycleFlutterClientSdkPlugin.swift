@@ -3,7 +3,7 @@ import UIKit
 
 import DevCycle
 
-public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
+public class DevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     private var dvcClient: DVCClient?
     private let channel: FlutterMethodChannel
     private var variableUpdates: [String: Any] = [:]
@@ -15,7 +15,7 @@ public class SwiftDevCycleFlutterClientSdkPlugin: NSObject, FlutterPlugin {
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "devcycle_flutter_client_sdk", binaryMessenger: registrar.messenger())
-        let instance = SwiftDevCycleFlutterClientSdkPlugin(channel: channel)
+        let instance = DevCycleFlutterClientSdkPlugin(channel: channel)
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
     
