@@ -28,3 +28,7 @@ pubspec.lock
 .dart_tool/
 .packages
 build/
+
+# Swift Package Manager
+.build/
+.swiftpm/
