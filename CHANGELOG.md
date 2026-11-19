@@ -1,4 +1,11 @@
 # Change Log
+## [1.12.0](https://github.com/DevCycleHQ/flutter-client-sdk/compare/v1.11.10...v1.12.0) (2026-11-19)
+
+
+### Features
+
+* add Swift Package Manager support to the iOS plugin ([#292](https://github.com/DevCycleHQ/flutter-client-sdk/issues/292)) ([0f25616](https://github.com/DevCycleHQ/flutter-client-sdk/commit/0f2561614c8762252beeebbe34020c0c4761c3bd))
+
 ## [1.11.10](https://github.com/DevCycleHQ/flutter-client-sdk/compare/v1.11.9...v1.11.10) (2026-11-17)
 
 
